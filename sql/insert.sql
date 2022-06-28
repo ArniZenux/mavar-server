@@ -1,47 +1,68 @@
-INSERT INTO vidburdur 
-(namevidburdur, slug, description, userid ) 
-VALUES ('Ski school', 
-        'ski-school', 
-        'Saturday in Skalfell',
-        1
+INSERT INTO tblTulkur 
+(nafn, simi, netfang) 
+VALUES ('Johnny Deep', 
+        '9871234', 
+        'jdepp@mavar.is'
       );
 
-INSERT INTO vidburdur 
-(namevidburdur, slug, description, userid ) 
-VALUES ('Handball',
-        'handball', 
-        'Handball school',
-        1
+INSERT INTO tblTulkur 
+(nafn, simi, netfang) 
+VALUES ('Brad Bitt', 
+        '9877777', 
+        'bbitt@mavar.is'
       );
 
-INSERT INTO vidburdur 
-(namevidburdur, slug, description, userid ) 
-VALUES ('NBA school', 
-        'nba-school', 
-        'To be master!',
-        2
+INSERT INTO tblTulkur 
+(nafn, simi, netfang) 
+VALUES ('Tom Hanks Sören', 
+        '4448785', 
+        'tomhankssoren@mavar.is'
       );
 
-INSERT INTO skraning 
-(nameskra, comment, eventid, userid ) 
-VALUES ('Andri Mars', 
-        'I like ski so much', 
-        1,
-        1
+INSERT INTO tblVerkefni 
+(heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur) 
+VALUES ('Marel í viðtal', 
+        'Garðabæ', 
+        '16 júni',
+        '9:00',
+        '10:00',
+        'Atvinnumál'
       );
 
-INSERT INTO skraning 
-(nameskra, comment, eventid, userid ) 
-VALUES ('Arnar Jonas', 
-        'I love handball', 
-        2,
-        1
+INSERT INTO tblVerkefni 
+(heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur) 
+VALUES ('Brúðkaup þeirra Katheine og John Romer', 
+        'Viðey', 
+        '15 júli',
+        '12:00',
+        '18:00',
+        'Skemmtun og afþreyting'
       );
 
-INSERT INTO skraning
-(nameskra, comment, eventid, userid ) 
-VALUES ('Micheal Jordan', 
-        'I am best player in the world', 
-        3,
-        2
+INSERT INTO tblVerkefni 
+(heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur) 
+VALUES ('Námskeið fyrir viðgerð á hjól', 
+        'Reykholt', 
+        '5 september',
+        '19:00',
+        '20:00',
+        'Námskeið'
+      );
+
+INSERT INTO tblVinna 
+(idtulkur, idverkefni) 
+VALUES ('1', 
+        '1' 
+      );
+
+INSERT INTO tblVinna 
+(idtulkur, idverkefni) 
+VALUES ('2', 
+        '2' 
+      );
+
+INSERT INTO tblVinna 
+(idtulkur, idverkefni) 
+VALUES ('2', 
+        '3' 
       );
