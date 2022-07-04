@@ -3,11 +3,11 @@ import { fileURLToPath } from 'url';
 
 import express from 'express';
 import dotenv from 'dotenv';
-import { cors } from './lib/cors.js';
+import bodyParse from 'body-parser';
+import cors from 'cors'; 
 
 import { router as tulkurRoute } from './api/tulkur.js';
 import { router as projectRoute } from './api/project.js';
-//import { router as notandaRoute } from './api/notendur.js';
 
 dotenv.config();
 
@@ -27,11 +27,10 @@ if (!connectionString )  {
 
 const app = express();
 
-// Sér um að req.body innihaldi gögn úr formi
-app.use(cors);
-
+app.use(cors());
+app.use(bodyParse.json());
+app.use(bodyParse.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-
 const path = dirname(fileURLToPath(import.meta.url));
 
 /**
@@ -61,13 +60,25 @@ app.locals.formatDate = (str) => {
   return date;
 };
 
-app.use('/tulkur', tulkurRoute );
-app.use('/project', projectRoute); 
-//app.use('/events', eventRouter);
-
+/*
+/   use for dump data.
+*/
 app.get('/' , (req, res) => {
   res.send('Hello server-mavar');
 });
+
+app.post('/hello', (req, res) => {
+  const myname = 'Arni';
+  const title = [ req.body.firstname, req.body.phonenr, req.body.email ]; 
+  const body = req.body; 
+  console.log(myname);
+  console.log(title); 
+  console.log(body); 
+  res.send("res-posts say hello to you ");
+})
+
+app.use('/tulkur', tulkurRoute );
+app.use('/project', projectRoute); 
 
 function notFoundHandler(req, res, next) {
   const title = 'Sida fannst ekki';

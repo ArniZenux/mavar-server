@@ -24,7 +24,7 @@ async function user(req, res) {
 
 
 /*
-/   að velja ein túlk fyrir uppfæra  
+/   List of one user  
 */
 async function userSelect(req, res) {
   const { id } = req.params;
@@ -46,7 +46,7 @@ async function userSelect(req, res) {
 }
 
 /*
-/   að velja verkefna túlka - einn túlkur  
+/   List of project's user  
 */
 async function userSelectByWork(req, res) {
   const { id } = req.params;
@@ -71,9 +71,42 @@ async function userSelectByWork(req, res) {
   return res.json(events); 
 }
 
+/*
+/   Insert new user  
+*/
+async function userNew(req, res) {
+  const info = [req.body.firstname, req.body.phonenr, req.body.email];
+  const infob = req.body
+  let success = true; 
+
+  const sql = `
+    INSERT INTO 
+      tblTulkur(nafn, simi, netfang)
+    VALUES($1, $2, $3);
+  `;
+
+  console.log("Hello new user");
+  console.log(info);
+  console.log(infob);
+
+  try {
+    success = await insertApp(sql, info); 
+  }
+  catch(e){
+    console.error(e);
+  }
+    
+  if(success){
+    return res.redirect('/');
+  }
+
+}
+/*
+/   Update user  
+*/
 async function userUpdate(req, res) {
-  const { kt } = req.params;
-  const tulkur = [req.body.nafn, req.body.simi, req.body.netfang, req.params.kt];
+  const { id } = req.params;
+  const tulkur = [req.body.nafn, req.body.simi, req.body.netfang, req.params.id];
 
   const sql = `
     UPDATE 
@@ -86,32 +119,9 @@ async function userUpdate(req, res) {
       tblTulkur.id = $4;
   `;
   
-  const events = await listApp(sql, [kt]);
+  const events = await listApp(sql, [id]);
   
   return res.json(events); 
-}
-
-async function userNew(req, res) {
-  const info = [req.body.nafn, req.body.simi, req.body.netfang];
-
-  let success = true; 
-
-  const sql = `
-    INSERT INTO 
-      tblTulkur(nafn, simi, netfang)
-    VALUES($1, $2, $3);
-  `;
-
-  try {
-    success = await insertApp(sql, info); 
-  }
-  catch(e){
-    console.error(e);
-  }
-
-  if(success){
-    return res.redirect('/');
-  }
 }
 
 async function userChange(req, res) {
@@ -137,11 +147,11 @@ async function userChange(req, res) {
 
 }
 
-router.get('/', catchErrors(user));
+router.get('/', user);
 router.get('/:id', catchErrors(userSelect));
 router.get('/tulkurskoda/:id', catchErrors(userSelectByWork));
 
-//router.post('/', catchErrors(userPostNewEvent));
-//router.patch('/:id', getVidburdur);
+router.post('/adduser', catchErrors(userNew));
+//router.patch('/updatedadd/:id', catchErros(userUpdate));
 //router.delete(d)
 //router.post('/:id/register', catchErrors(userPostEvent));
