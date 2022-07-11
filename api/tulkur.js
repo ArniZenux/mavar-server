@@ -24,6 +24,24 @@ async function user(req, res) {
 
 
 /*
+/   Túlkur by name. 
+*/
+async function userbyname(req, res) {
+
+  const sql = `
+    SELECT 
+      id, nafn
+    FROM 
+      tblTulkur;
+  `;
+  
+  const events = await listApp(sql);
+  
+  return res.json(events); 
+}
+
+
+/*
 /   List of one user  
 */
 async function userSelect(req, res) {
@@ -95,11 +113,11 @@ async function userNew(req, res) {
   catch(e){
     console.error(e);
   }
-    
+  
   if(success){
     return res.redirect('/');
   }
-
+  
 }
 /*
 /   Update user  
@@ -148,10 +166,10 @@ async function userChange(req, res) {
 }
 
 router.get('/', user);
+router.get('/byname', userbyname);
 router.get('/:id', catchErrors(userSelect));
 router.get('/tulkurskoda/:id', catchErrors(userSelectByWork));
 
 router.post('/adduser', catchErrors(userNew));
 //router.patch('/updatedadd/:id', catchErros(userUpdate));
 //router.delete(d)
-//router.post('/:id/register', catchErrors(userPostEvent));
