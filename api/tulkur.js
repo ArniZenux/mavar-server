@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { listApp, insertApp } from '../lib/db.js';
+import { listApp, insertApp, updateApp } from '../lib/db.js';
 import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
@@ -94,7 +94,6 @@ async function userSelectByWork(req, res) {
 */
 async function userNew(req, res) {
   const info = [req.body.firstname, req.body.phonenr, req.body.email];
-  const infob = req.body
   let success = true; 
 
   const sql = `
@@ -102,10 +101,6 @@ async function userNew(req, res) {
       tblTulkur(nafn, simi, netfang)
     VALUES($1, $2, $3);
   `;
-
-  console.log("Hello new user");
-  console.log(info);
-  console.log(infob);
 
   try {
     success = await insertApp(sql, info); 
@@ -117,14 +112,16 @@ async function userNew(req, res) {
   if(success){
     return res.redirect('/');
   }
-  
 }
+
 /*
 /   Update user  
 */
 async function userUpdate(req, res) {
   const { id } = req.params;
-  const tulkur = [req.body.nafn, req.body.simi, req.body.netfang, req.params.id];
+  const info = [req.body.firstname, req.body.phonenr, req.body.email, req.body.id];
+  
+  let success = true; 
 
   const sql = `
     UPDATE 
@@ -137,9 +134,16 @@ async function userUpdate(req, res) {
       tblTulkur.id = $4;
   `;
   
-  const events = await listApp(sql, [id]);
-  
-  return res.json(events); 
+  try{
+    success = await updateApp(sql, info)
+  }
+  catch(e){
+    console.error(e); 
+  }
+
+  if(success){
+    return res.redirect('/');
+  }
 }
 
 async function userChange(req, res) {
@@ -171,5 +175,5 @@ router.get('/:id', catchErrors(userSelect));
 router.get('/tulkurskoda/:id', catchErrors(userSelectByWork));
 
 router.post('/adduser', catchErrors(userNew));
-//router.patch('/updatedadd/:id', catchErros(userUpdate));
+router.put('/updateuser/:id', catchErrors(userUpdate));
 //router.delete(d)

@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { listApp, insertApp } from '../lib/db.js';
+import { listApp, insertApp, updateApp } from '../lib/db.js';
 import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
@@ -49,6 +49,9 @@ async function projectAdd(req, res){
 
   const verkefni_body = req.body; 
   const nafn_tulkur = verkefni_body.tulkur;
+
+  console.log(verkefni_body);
+  console.log(nafn_tulkur); 
 
   const sql_verkefni = `
     INSERT INTO 
@@ -122,7 +125,93 @@ async function projectAdd(req, res){
   }
 }
 
-//async function projectUpdate(req, res){}
+async function projectUpdate(req, res){
+  const { id } = req.params;
+  const verkefni = [
+    req.body.heiti, 
+    req.body.stadur, 
+    req.body.dagur, 
+    req.body.byrja_timi, 
+    req.body.endir_timi, 
+    req.body.vettvangur,
+    req.body.idverkefni
+  ];
+  
+  let success = true; 
+
+  const sql = `
+    UPDATE 
+      tblVerkefni 
+    SET 
+      heiti = $1, 
+      stadur = $2, 
+      dagur = $3,
+      byrja_timi = $4,
+      endir_timi = $5,
+      vettvangur = $6 
+    WHERE 
+      tblVerkefni.id = $7;
+  `;
+  
+  try{
+    success = await updateApp(sql, verkefni)
+  }
+  catch(e){
+    console.error(e); 
+  }
+
+  if(success){
+    return res.redirect('/');
+  }
+}
+
+async function VinnaUpdate(req, res){
+  const data = req.body
+
+  const tulkur = data.tulkur; 
+  const idverkefni = data.idverkefni; 
+  
+  console.log(tulkur);
+  console.log(idverkefni);  
+
+  let success = true; 
+  
+  const sql_oneTulkur = `
+  SELECT 
+    id
+  FROM
+    tblTulkur
+  WHERE
+    tblTulkur.nafn = $1;
+  `;
+
+  const sql = `
+    UPDATE 
+      tblVinna 
+    SET 
+      idtulkur = $1 
+    WHERE 
+      tblVinna.idverkefni = $2;
+  `;
+  
+  const ress = await listApp(sql_oneTulkur, [tulkur]); 
+  const obj2 = JSON.stringify(ress);
+  const obj_st = obj2.split(":");
+  const id_t = obj_st[1];
+  const idt = id_t.slice(0,1);
+  
+  try{
+    success = await updateApp(sql, [idt, idverkefni]);
+  }
+  catch(e){
+    console.error(e); 
+  }
+
+  if(success){
+    return res.redirect('/');
+  }
+}
+
 //async function projectDelete(req, res){}
 
 router.get('/', catchErrors(projectAll));
@@ -130,6 +219,5 @@ router.get('/byTulkur', catchErrors(projectByTulkur));
 
 router.post('/addproject', catchErrors(projectAdd));
 
-//router.patch('/:id', getVidburdur);
-//router.delete(d)
-//router.post('/:id/register', catchErrors(userPostEvent));
+router.put('/updateproject/:id', catchErrors(projectUpdate));
+router.put('/updatevinna/:id', catchErrors(VinnaUpdate));
