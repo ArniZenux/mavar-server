@@ -7,7 +7,7 @@
   "scripts": {
     "setup": "node setupApp.js",
     "start": "node server.js",
-    "dev": "dotenv -e .env -- nodemon server.js",
+    "dev": "dotenv -e .env -- nodemon server.js"
   },
   "repository": {
     "type": "git",
