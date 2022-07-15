@@ -1,11 +1,14 @@
 import express from 'express';
-
 import { listApp, insertApp, updateApp } from '../lib/db.js';
 import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
 
+/*
+/   All projects  
+*/
 async function projectAll(req, res) {
+
   const tblVerkefni = `
     SELECT 
       *
@@ -18,8 +21,12 @@ async function projectAll(req, res) {
   return res.json(events); 
 }
 
+/*
+/   Project by user  
+*/
 async function projectByTulkur(req, res) {
-   const sql = `
+
+  const sql = `
     SELECT 
       *
     FROM 
@@ -37,7 +44,11 @@ async function projectByTulkur(req, res) {
   return res.json(events); 
 }
 
+/*
+/   Add new project  
+*/
 async function projectAdd(req, res){
+
   const verkefni = [
       req.body.nameproject, 
       req.body.place, 
@@ -125,7 +136,11 @@ async function projectAdd(req, res){
   }
 }
 
+/*
+/   Update project  
+*/
 async function projectUpdate(req, res){
+  
   const { id } = req.params;
   const verkefni = [
     req.body.heiti, 
@@ -165,7 +180,11 @@ async function projectUpdate(req, res){
   }
 }
 
+/*
+/   Update tblvinna - change user - skipta um túlk.  
+*/
 async function VinnaUpdate(req, res){
+  
   const data = req.body
 
   const tulkur = data.tulkur; 
@@ -212,7 +231,49 @@ async function VinnaUpdate(req, res){
   }
 }
 
-//async function projectDelete(req, res){}
+/*
+/   Delete project  
+*/
+async function projectDelete(req, res){
+  
+  const info = req.body;
+  const id_verkefni = req.body.idverkefni;
+
+  let success = true; 
+  let success2 = true; 
+
+  const deleteVerkefniSql = `
+    DELETE FROM 
+      tblVerkefni
+    WHERE 
+      tblVerkefni.id = $1;
+    `;
+  
+  const deleteVinnaSql = `
+    DELETE FROM
+      tblVinna 
+    WHERE
+      tblVinna.idverkefni = $1;
+  `; 
+
+  try {
+    success2 = await updateApp(deleteVinnaSql, [id_verkefni]);
+  }
+  catch(e){
+    console.log(e); 
+  }
+
+  try {
+    success = await updateApp(deleteVerkefniSql, [id_verkefni]);
+  }
+  catch(e){
+    console.log(e); 
+  }
+
+  if(success && success2){
+    return res.redirect('/');
+  }
+}
 
 router.get('/', catchErrors(projectAll));
 router.get('/byTulkur', catchErrors(projectByTulkur));
@@ -221,3 +282,5 @@ router.post('/addproject', catchErrors(projectAdd));
 
 router.put('/updateproject/:id', catchErrors(projectUpdate));
 router.put('/updatevinna/:id', catchErrors(VinnaUpdate));
+
+router.delete('/delverkefniprofa', catchErrors(projectDelete));

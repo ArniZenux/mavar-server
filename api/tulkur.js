@@ -1,5 +1,4 @@
 import express from 'express';
-
 import { listApp, insertApp, updateApp } from '../lib/db.js';
 import { catchErrors } from '../lib/utils.js';
 
@@ -146,6 +145,9 @@ async function userUpdate(req, res) {
   }
 }
 
+/*
+/   Change user  
+*/
 async function userChange(req, res) {
   const nafn = [req.body.nafn];
 
@@ -166,7 +168,6 @@ async function userChange(req, res) {
   const kt_ = obj_s[1];
   const kt = kt_.slice(1,11);        
   const change = [req.params.nr];
-
 }
 
 router.get('/', user);
@@ -176,4 +177,3 @@ router.get('/tulkurskoda/:id', catchErrors(userSelectByWork));
 
 router.post('/adduser', catchErrors(userNew));
 router.put('/updateuser/:id', catchErrors(userUpdate));
-//router.delete(d)
