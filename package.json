@@ -5,10 +5,9 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "node setupApp.js",
     "start": "node server.js",
     "dev": "dotenv -e .env -- nodemon server.js",
-    "setup": "node setupApp.js"
   },
   "repository": {
     "type": "git",
