@@ -22,3 +22,11 @@ CREATE TABLE IF NOT EXISTS tblVinna (
   constraint idtulkur foreign key (idtulkur) references tblTulkur(id),
   constraint idverkefni foreign key (idverkefni) references tblVerkefni (id)
 );
+
+CREATE TABLE IF NOT EXISTS tblUsers (
+  id serial primary key,
+  nameuser varchar(64) not null, 
+  username character varying(64) not null,
+  password character varying(256) not null,
+  admin boolean not null
+);

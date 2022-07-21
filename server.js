@@ -1,27 +1,30 @@
-import { join, dirname } from 'path';
+import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 import express from 'express';
+import session from 'express-session';
 import dotenv from 'dotenv';
 import bodyParse from 'body-parser';
 import cors from 'cors'; 
+
+//import passport from './auth/login.js'
+//import { router as adminRoute } from './auth/auth.js';
 
 import { router as tulkurRoute } from './api/tulkur.js';
 import { router as projectRoute } from './api/project.js';
 
 dotenv.config();
 
-export function catchErrors(fn) {
-  return (req, res, next) => fn(req, res, next).catch(next);
-}
+const sessionSecret = 'leyndarmál';
 
 const {
   PORT: port,
+  //SESSION_SECRET: sessionSecret,
   DATABASE_URL: connectionString,
 } = process.env;
 
-if (!connectionString )  {
-  console.error('Vantar ConnectionString í env - app');
+if ( !connectionString || !sessionSecret )  {
+  console.error('Vantar ConnectionString eða SessionSecret í env - app');
   process.exit(1);
 }
 
@@ -30,7 +33,19 @@ const app = express();
 app.use(cors());
 app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({ extended: true }));
+
 app.use(express.urlencoded({ extended: true }));
+
+/*app.use(session({
+    sercet: sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    maxAge: 20 * 1000, // 20 sek   
+}));*/
+
+//app.use(passport.initialize());
+//app.use(passport.session());
+
 const path = dirname(fileURLToPath(import.meta.url));
 
 /**
@@ -61,22 +76,16 @@ app.locals.formatDate = (str) => {
 };
 
 /*
-/   use for dump data.
+/   Main server.
 */
 app.get('/' , (req, res) => {
   res.send('Hello server-mavar');
 });
 
-app.post('/hello', (req, res) => {
-  const myname = 'Arni';
-  const title = [ req.body.firstname, req.body.phonenr, req.body.email ]; 
-  const body = req.body; 
-  console.log(myname);
-  console.log(title); 
-  console.log(body); 
-  res.send("res-posts say hello to you ");
-})
-
+/*
+/   Route - server.
+*/
+//app.use('/', adminRoute ); 
 app.use('/tulkur', tulkurRoute );
 app.use('/project', projectRoute); 
 
