@@ -1,20 +1,39 @@
 import express from 'express';
-
 import passport, { ensureLoggedIn } from './login.js';
 import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
 
 /*
-/   Login - index  
+/   Login - indexAdmin  
 */
-async function indez(req, res) {
-  res.send('Hello admin server - Mavar');
+async function indexAdmin(req, res) {
+  if(req.isAuthenticated()){
+    res.send(
+     `<p> Hello ${req.user ? 'admin.' : 'ekki admin.'} í mavar-server </p>      
+    `);
+  }
+
+  return res.send(
+    `<p> Innskraning admin-bord - admin/login</p>
+  `);
 }
 
-function login(req, res) {
+/*
+/   Info about Admin  
+*/
+async function infoAdmin(req, res) {
+  res.send(`
+    Herna upplysing um thig !!  
+  `);
+}
+
+/*
+/   Login  
+*/
+async function login(req, res) {
   if (req.isAuthenticated()) {
-    return res.redirect('/admin');
+    return res.redirect('/admin/login');
   }
 
   let message = '';
@@ -24,14 +43,14 @@ function login(req, res) {
     req.session.messages = [];
   }
 
-  return res.render('login', { message, title: 'Innskráning' });
+  return res.send(`Login <p>${message}</p>`);
 }
 
-router.get('/', catchErrors(indez));
+router.get('/', indexAdmin);
 router.get('/login', login); 
+router.get('/info', ensureLoggedIn, infoAdmin);
 
 router.post('/login', 
-
   passport.authenticate('local', {
     failureMessage: 'Notandi eða password vitlaust.',
     failureRedirect: '/admin/login',

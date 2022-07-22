@@ -8,7 +8,14 @@ export async function comparePasswords(password, hash) {
 }
 
 export async function findByUsername(username) {
-  const q = 'SELECT * FROM tblUsers WHERE username = $1';
+  const q = `
+    SELECT 
+      * 
+    FROM 
+      tblUsers 
+    WHERE 
+      username = $1;
+  `;
 
   try {
     const result = await query(q, [username]);
@@ -25,7 +32,14 @@ export async function findByUsername(username) {
 }
 
 export async function findById(id) {
-  const q = 'SELECT * FROM tblUsers WHERE id = $1';
+  const q = `
+    SELECT 
+      * 
+    FROM 
+      tblUsers 
+    WHERE 
+      id = $1;
+  `;
 
   try {
     const result = await query(q, [id]);

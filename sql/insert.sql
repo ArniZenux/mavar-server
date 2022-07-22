@@ -36,7 +36,7 @@ VALUES ('Brúðkaup þeirra Katheine og John Romer',
         '15 júli',
         '12:00',
         '18:00',
-        'Skemmtun og afþreyting'
+        'Almennt'
       );
 
 INSERT INTO tblVerkefni 
@@ -46,7 +46,7 @@ VALUES ('Námskeið fyrir viðgerð á hjól',
         '5 september',
         '19:00',
         '20:00',
-        'Námskeið'
+        'Skólamál'
       );
 
 INSERT INTO tblVinna 
