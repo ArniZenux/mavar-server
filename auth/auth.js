@@ -1,8 +1,20 @@
 import express from 'express';
-import passport, { ensureLoggedIn } from './login.js';
+//import passport, { ensureLoggedIn } from './login.js';
 import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
+
+
+//*****************************/
+//   route                    //
+//*****************************/
+export function ensureLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  return res.redirect('/admin/login');
+}
 
 /*
 /   Login - indexAdmin  
@@ -43,7 +55,10 @@ async function login(req, res) {
     req.session.messages = [];
   }
 
-  return res.send(`Login <p>${message}</p>`);
+  return res.send(`
+    <p>Login - innskraning</p>
+    <p>${message}</p>
+  `);
 }
 
 router.get('/', indexAdmin);
@@ -57,7 +72,7 @@ router.post('/login',
   }),
     
   (req, res) => {
-    res.redirect('/admin');
+    res.redirect('/admin/info');
   }
 );
 

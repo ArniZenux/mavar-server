@@ -61,4 +61,15 @@ export function ensureLoggedIn(req, res, next) {
   return res.redirect('/admin/login');
 }
 
+export function isAdmin(req, res, next){
+  if (req.isAuthenticated()){
+    const u = req.user;
+    console.log('user.admin --> ' + u.admin);
+    if(u.amdin) {
+      return next(); 
+    }
+  }
+  return res.send('Ekki admin\nSkradu thig inn a /admin/login\n');
+}
+
 export default passport;
