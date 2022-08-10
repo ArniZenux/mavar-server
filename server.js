@@ -7,6 +7,7 @@ import cors from 'cors';
 //import passport from './auth/login.js';
 import passport from 'passport';
 import { Strategy } from 'passport-local';
+//import { comparePasswords, findByUsername, findById } from './auth/users.js';
 import { comparePasswords, findByUsername, findById } from './auth/users.js';
 
 //import { router as adminRoute } from './auth/auth.js';
@@ -35,7 +36,7 @@ app.use(bodyParse.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
 //*******************************************************************/
-//                                                                   /
+//                       Login - passport                            /
 //*******************************************************************/
 app.use(session({
     resave: false,
@@ -46,15 +47,22 @@ app.use(session({
 
 async function strat(username, password, done) {
   try {
+    
+    console.log(`Notandi:  ${username}`);
+    console.log(`Passord:  ${password}`); 
+    
     const user = await findByUsername(username);
-
+    console.log(user); 
+    
     if (!user) {
       return done(null, false);
     }
-
+   
     // Verður annað hvort notanda hlutur ef lykilorð rétt, eða false
-    const result = await comparePasswords(password, user.password);
+    console.log("password.hash: " + user.password); 
+    const result = await comparePasswords(password, user);
     return done(null, result ? user : false);
+    //return done(null, result);
   } catch (err) {
     console.error(err);
     return done(err);
@@ -141,7 +149,7 @@ app.get('/login', (req, res) => {
 
 app.post(
   '/login',
-
+  
   // Þetta notar strat að ofan til að skrá notanda inn
   passport.authenticate('local', {
     failureMessage: 'Notandanafn eða lykilorð vitlaust.',
@@ -150,7 +158,9 @@ app.post(
 
   // Ef við komumst hingað var notandi skráður inn, senda á /admin
   (req, res) => {
-    res.redirect('/admin');
+    res.send({ token : true });
+    //res.redirect('/admin');
+    //console.log('hello admin');
   },
 );
 
@@ -170,7 +180,7 @@ app.get('/admin', ensureLoggedIn, (req, res) => {
 });
 
 //*******************************************************************/
-//                                                                   /
+//                          End of Login                             /
 //*******************************************************************/
 
 /*
