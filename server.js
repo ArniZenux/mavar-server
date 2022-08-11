@@ -3,12 +3,7 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 import bodyParse from 'body-parser';
 import cors from 'cors'; 
-
-//import passport from './auth/login.js';
-import passport from 'passport';
-import { Strategy } from 'passport-local';
-//import { comparePasswords, findByUsername, findById } from './auth/users.js';
-import { comparePasswords, findByUsername, findById } from './auth/users.js';
+import passport from './auth/login.js';
 
 //import { router as adminRoute } from './auth/auth.js';
 import { router as tulkurRoute } from './api/tulkur.js';
@@ -35,55 +30,12 @@ app.use(bodyParse.urlencoded({ extended: true }));
 
 app.use(express.urlencoded({ extended: true }));
 
-//*******************************************************************/
-//                       Login - passport                            /
-//*******************************************************************/
 app.use(session({
     resave: false,
     saveUninitialized: false,
     secret: sessionSecret,
     maxAge: 20 * 1000, // 20 sek
 }));
-
-async function strat(username, password, done) {
-  try {
-    
-    console.log(`Notandi:  ${username}`);
-    console.log(`Passord:  ${password}`); 
-    
-    const user = await findByUsername(username);
-    console.log(user); 
-    
-    if (!user) {
-      return done(null, false);
-    }
-   
-    // Verður annað hvort notanda hlutur ef lykilorð rétt, eða false
-    console.log("password.hash: " + user.password); 
-    const result = await comparePasswords(password, user);
-    return done(null, result ? user : false);
-    //return done(null, result);
-  } catch (err) {
-    console.error(err);
-    return done(err);
-  }
-}
-
-passport.use(new Strategy(strat));
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-// Sækir notanda út frá id
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -97,54 +49,11 @@ app.use((req, res, next) => {
   next();
 });
 
-export function ensureLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-
-  return res.redirect('/login');
-}
-
-app.get('/', (req, res) => {
-  if (req.isAuthenticated()) {
-    // req.user kemur beint úr users.js
-    return res.send(`
-      <p>Innskráður notandi er ${req.user.username}</p>
-      <p>Þú ert ${req.user.admin ? 'admin.' : 'ekki admin.'}</p>
-      <p><a href="/logout">Útskráning</a></p>
-      <p><a href="/admin">Skoða leyndarmál</a></p>
-    `);
-  }
-
-  return res.send(`
-    <p><a href="/login">Innskráning</a></p>
-  `);
-});
-
-app.get('/login', (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.redirect('/');
-  }
-
-  let message = '';
-
-  // Athugum hvort einhver skilaboð séu til í session, ef svo er birtum þau
-  // og hreinsum skilaboð
-  if (req.session.messages && req.session.messages.length > 0) {
-    message = req.session.messages.join(', ');
-    req.session.messages = [];
-  }
-
-  // Ef við breytum name á öðrum hvorum reitnum að neðan mun ekkert virka
-  // nema við höfum stillt í samræmi, sjá línu 64
-  return res.send(`
-    <form method="post" action="/login" autocomplete="off">
-      <label>Notendanafn: <input type="text" name="username"></label>
-      <label>Lykilorð: <input type="password" name="password"></label>
-      <button>Innskrá</button>
-    </form>
-    <p>${message}</p>
-  `);
+//-------------------//
+//   Main server     //
+//-------------------//
+app.get('/' , (req, res) => {
+  res.send('Hello server-mavar');
 });
 
 app.post(
@@ -169,26 +78,6 @@ app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
-
-// ensureLoggedIn middleware passar upp á að aðeins innskráðir notendur geti
-// skoðað efnið, aðrir lenda í redirect á /login, stillt í línu 103
-app.get('/admin', ensureLoggedIn, (req, res) => {
-  res.send(`
-    <p>Hér eru leyndarmál</p>
-    <p><a href="/">Forsíða</a></p>
-  `);
-});
-
-//*******************************************************************/
-//                          End of Login                             /
-//*******************************************************************/
-
-/*
-/   Main server.
-app.get('/' , (req, res) => {
-  res.send('Hello server-mavar');
-});
-*/
 
 /*
 /   Route - server.

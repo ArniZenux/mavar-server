@@ -22,7 +22,7 @@ async function strat(username, password, done) {
     }
 
     // Verður annað hvort notanda hlutur ef lykilorð rétt, eða false
-    const result = await comparePasswords(password, user.password);
+    const result = await comparePasswords(password, user);
     return done(null, result ? user : false);
   } catch (err) {
     console.error(err);
@@ -58,7 +58,7 @@ export function ensureLoggedIn(req, res, next) {
     return next();
   }
 
-  return res.redirect('/admin/login');
+  return res.redirect('/login');
 }
 
 export function isAdmin(req, res, next){

@@ -1,30 +1,5 @@
-/**
- * "Static notendagrunnur"
- * Notendur eru harðkóðaðir og ekkert hægt að breyta þeim.
- * Ef við notum notendagagnagrunn, t.d. í postgres, útfærum við leit að notendum
- * hér, ásamt því að passa upp á að lykilorð séu lögleg.
- */
-
 import bcrypt from 'bcrypt';
-
-const records = [
-  {
-    id: 1,
-    username: 'admin',
-
-    // 123
-    password: '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
-    admin: true,
-  },
-  {
-    id: 2,
-    username: 'oli',
-
-    // 123
-    password: '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
-    admin: false,
-  },
-];
+import { query } from '../lib/db.js';
 
 export async function comparePasswords(password, user) {
   const ok = await bcrypt.compare(password, user.password);
@@ -36,25 +11,69 @@ export async function comparePasswords(password, user) {
   return false;
 }
 
-// Merkjum sem async þó ekki verið að nota await, þar sem þetta er notað í
-// app.js gerir ráð fyrir async falli
 export async function findByUsername(username) {
-  const found = records.find((u) => u.username === username);
+  const q = `
+    SELECT 
+      * 
+    FROM 
+      tblUsers 
+    WHERE 
+      username = $1;
+  `;
 
-  if (found) {
-    return found;
+  try {
+    const result = await query(q, [username]);
+    
+    if (result.rowCount === 1) {
+      return result.rows[0];
+    }
+  } catch (e) {
+    console.error('Gat ekki fundið notanda eftir notendnafni');
+    return null;
+  }
+
+  return false;
+}
+
+export async function findById(id) {
+  const q = `
+    SELECT 
+      * 
+    FROM 
+      tblUsers 
+    WHERE 
+      id = $1;
+  `;
+
+  try {
+    const result = await query(q, [id]);
+
+    if (result.rowCount === 1) {
+      return result.rows[0];
+    }
+  } catch (e) {
+    console.error('Gat ekki fundið notanda eftir id');
   }
 
   return null;
 }
 
-// Merkjum sem async þó ekki verið að nota await, þar sem þetta er notað í
-// app.js gerir ráð fyrir async falli
-export async function findById(id) {
-  const found = records.find((u) => u.id === id);
+export async function createUser(username, password) {
+  // Geymum hashað password!
+  const hashedPassword = await bcrypt.hash(password, 11);
 
-  if (found) {
-    return found;
+  const q = `
+    INSERT INTO
+      tblUsers (username, password)
+    VALUES ($1, $2)
+    RETURNING *
+  `;
+
+  try {
+    const result = await query(q, [username, hashedPassword]);
+    return result.rows[0];
+  } catch (e) {
+    console.error('Gat ekki búið til notanda');
   }
 
   return null;
