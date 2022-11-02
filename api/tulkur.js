@@ -4,6 +4,11 @@ import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
 
+function checkTulkur(req, res){
+  console.log("hello tulkur - console");
+  return res.json('hello Check tulkur');
+}
+
 /*
 /   Allir túlkur  
 */
@@ -21,7 +26,6 @@ async function user(req, res) {
   return res.json(events); 
 }
 
-
 /*
 /   Túlkur by name. 
 */
@@ -38,7 +42,6 @@ async function userbyname(req, res) {
   
   return res.json(events); 
 }
-
 
 /*
 /   List of one user  
@@ -145,6 +148,31 @@ async function userUpdate(req, res) {
   }
 }
 
+async function checkInterpreter(req, res) {
+  //let info  = [ req.body.dag ];
+  const info = [req.body.day, req.body.start, req.body.last];
+
+  console.log(info); 
+  
+  let interpreter = ''; 
+  try {
+    interpreter = 'Enginn túlkur sé laus'; 
+  }
+  catch(e){
+    console.error(e); 
+  }
+  /*if(info === ''){
+    console.log("Engin text í textarea");
+  } else {
+    let newtext = await translate(info, {from: 'en', to: 'is'});
+    tyding_setning += newtext.text; 
+  }*/
+
+  console.log(interpreter); 
+  return res.json(interpreter);
+}
+
+
 /*
 /   Change user  
 */
@@ -172,8 +200,11 @@ async function userUpdate(req, res) {
 
 router.get('/', user);
 router.get('/byname', userbyname);
+router.get('/athuga', checkTulkur);
 router.get('/:id', catchErrors(userSelect));
 router.get('/tulkurskoda/:id', catchErrors(userSelectByWork));
 
 router.post('/adduser', catchErrors(userNew));
 router.put('/updateuser/:id', catchErrors(userUpdate));
+
+router.post('/athugapost', catchErrors(checkInterpreter));

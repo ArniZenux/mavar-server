@@ -4,10 +4,13 @@ import dotenv from 'dotenv';
 import bodyParse from 'body-parser';
 import cors from 'cors'; 
 import passport from './auth/login.js';
+//import jsonwebtoken from 'jsonwebtoken'; 
+//const jwt = require('jsonwebtoken');
 
 //import { router as adminRoute } from './auth/auth.js';
 import { router as tulkurRoute } from './api/tulkur.js';
 import { router as projectRoute } from './api/project.js';
+import { findById } from './auth/users.js';
 
 dotenv.config();
 
@@ -49,6 +52,10 @@ app.use((req, res, next) => {
   next();
 });
 
+function generateAccessToken(username){
+  return jwt.sign(username, process.env.SESSION_SECRET, { expiresIn: '1800s' });
+}
+
 //-------------------//
 //   Main server     //
 //-------------------//
@@ -67,7 +74,9 @@ app.post(
 
   // Ef við komumst hingað var notandi skráður inn, senda á /admin
   (req, res) => {
-    res.send({ token : true });
+    const token = "asdf"; //generateAccessToken(user); //getToken(); 
+    //const user = findById(username);
+    res.send({ success : true, token });
     //res.redirect('/admin');
     //console.log('hello admin');
   },

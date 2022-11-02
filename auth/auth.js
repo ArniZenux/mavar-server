@@ -1,4 +1,5 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
 //import passport, { ensureLoggedIn } from './login.js';
 import { catchErrors } from '../lib/utils.js';
 
@@ -66,14 +67,19 @@ router.get('/login', login);
 router.get('/info', ensureLoggedIn, infoAdmin);
 
 router.post('/login', 
+  // Þetta notar strat að ofan til að skrá notanda inn
   passport.authenticate('local', {
-    failureMessage: 'Notandi eða password vitlaust.',
-    failureRedirect: '/admin/login',
+    failureMessage: 'Notandanafn eða lykilorð vitlaust.',
+    failureRedirect: '/login',
   }),
-    
+
+  // Ef við komumst hingað var notandi skráður inn, senda á /admin
   (req, res) => {
-    res.redirect('/admin/info');
-  }
+    const token = "#$asdfasdf"; //getToken(); 
+    res.send({ success : true, token });
+    //res.redirect('/admin');
+    //console.log('hello admin');
+  },
 );
 
 router.get('/logout', (req, res) => {
