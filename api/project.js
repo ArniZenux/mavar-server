@@ -22,6 +22,24 @@ async function projectAll(req, res) {
 }
 
 /*
+/   All beidni - projects  
+*/
+async function projectBeidni(req, res) {
+
+  const tblVerkefni = `
+    SELECT 
+      *
+    FROM 
+      tblBeidni;
+  `;
+  
+  const events = await listApp(tblVerkefni);
+  
+  return res.json(events); 
+}
+
+
+/*
 /   Project by user  
 */
 async function projectByTulkur(req, res) {
@@ -133,6 +151,48 @@ async function projectAdd(req, res){
 
   if(success && success1){
       return res.redirect('/');
+  }
+}
+
+/*
+/   Add new beidni  
+*/
+async function addBeidni(req, res){
+  const newBeidni = [
+    req.body.nameproject, 
+    req.body.place, 
+    req.body.day, 
+    req.body.start, 
+    req.body.nafn
+  ]; 
+
+  const sql_beidni = `
+    INSERT INTO 
+      tblBeidni(
+          lysing, 
+          stadur, 
+          dagur, 
+          byrja_timi, 
+          nameuser) 
+    VALUES($1, 
+           $2, 
+           $3, 
+           $4, 
+           $5 
+           );
+  `;
+
+  let success = true; 
+
+  try {
+      success = await insertApp(sql_beidni, newBeidni);
+  }
+  catch(e) {
+    console.error(e);
+  }
+
+  if(success){
+    return res.redirect('/');
   }
 }
 
@@ -277,8 +337,10 @@ async function projectDelete(req, res){
 
 router.get('/', catchErrors(projectAll));
 router.get('/byTulkur', catchErrors(projectByTulkur));
+router.get('/byBeidni', catchErrors(projectBeidni));
 
 router.post('/addproject', catchErrors(projectAdd));
+router.post('/sendaBeidni', catchErrors(addBeidni));
 
 router.put('/updateproject/:id', catchErrors(projectUpdate));
 router.put('/updatevinna/:id', catchErrors(VinnaUpdate));

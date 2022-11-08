@@ -151,24 +151,61 @@ async function userUpdate(req, res) {
 async function checkInterpreter(req, res) {
   //let info  = [ req.body.dag ];
   const info = [req.body.day, req.body.start, req.body.last];
+  //const dagur = [req.body.day];
+  const dagur = '16 júni';
 
-  console.log(info); 
-  
+  const dagur1 = req.body.day;
+  const timi1 = req.body.start;
+  let teljari = 0; 
+
+  console.log(dagur); 
+  console.log(dagur1);
+  console.log(timi1);
+
+  const sqlTulkur = `
+  SELECT 
+    count(*)
+  FROM 
+    tblTulkur
+  `;
+
+  const sql = `
+  SELECT 
+    count(*)
+  FROM 
+    tblVerkefni
+  WHERE
+    tblVerkefni.dagur = $1
+  AND 
+    tblVerkefni.byrja_timi = $2
+  `;
+
   let interpreter = ''; 
-  try {
+
+  const events = await listApp(sql, [dagur1, timi1]);
+  //const many = await listApp(sqlTulkur);
+  const obj = JSON.stringify(events);
+  const obj_s = obj.split(":");
+  const id_v = obj_s[1];
+  const idv = id_v.slice(1,2);
+
+  const many = await listApp(sqlTulkur);
+  const obj2 = JSON.stringify(many);
+  const obj_s2 = obj2.split(":");
+  const id_v2 = obj_s2[1];
+  const idv2 = id_v2.slice(1,2);
+
+  if( idv < idv2){
+    teljari = idv2 - idv;
+    interpreter = 'Það er ' + teljari + ' túlkur sé laus á þessu tíma, endalega að panta túlk'; 
+  }
+  else {
     interpreter = 'Enginn túlkur sé laus'; 
   }
-  catch(e){
-    console.error(e); 
-  }
-  /*if(info === ''){
-    console.log("Engin text í textarea");
-  } else {
-    let newtext = await translate(info, {from: 'en', to: 'is'});
-    tyding_setning += newtext.text; 
-  }*/
+  
+  console.log(idv); 
+  console.log(idv2); 
 
-  console.log(interpreter); 
   return res.json(interpreter);
 }
 

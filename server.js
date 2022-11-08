@@ -6,7 +6,6 @@ import cors from 'cors';
 import passport from './auth/login.js';
 //import jsonwebtoken from 'jsonwebtoken'; 
 //const jwt = require('jsonwebtoken');
-
 //import { router as adminRoute } from './auth/auth.js';
 import { router as tulkurRoute } from './api/tulkur.js';
 import { router as projectRoute } from './api/project.js';

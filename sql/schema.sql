@@ -30,3 +30,14 @@ CREATE TABLE IF NOT EXISTS tblUsers (
   password character varying(256) not null,
   admin boolean not null
 );
+
+CREATE TABLE IF NOT EXISTS tblBeidni (
+  id serial primary key,
+  lysing varchar(300) not null, 
+  stadur varchar(64) not null,
+  dagur varchar(64) not null,
+  byrja_timi varchar(64) not null,
+  nameuser varchar(64) not null 
+);
+
+

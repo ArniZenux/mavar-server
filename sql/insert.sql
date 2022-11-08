@@ -82,3 +82,12 @@ VALUES ('John',
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         false
       );
+
+INSERT INTO tblBeidni
+(lysing, stadur, dagur, byrja_timi, nameuser)
+VALUES ('Námskeið í Reykjavíkarskóli um ljós og hljóð',
+        'Reykjavík',
+        '18 nóvember',
+        '18:00',
+        'Rúnar Karlsson'
+       );
