@@ -38,6 +38,25 @@ async function projectBeidni(req, res) {
   return res.json(events); 
 }
 
+/*
+/   By one (id) beidni - projects  
+*/
+async function projectIdBeidni(req, res){
+  const { id } = req.params;
+
+  const sql = `
+    SELECT 
+      *
+    FROM 
+     tblBeidni
+    WHERE 
+      tblBeidnir.id = $1;
+  `;
+  
+  const events = await listApp(sql, [id]);
+  
+  return res.json(events); 
+}
 
 /*
 /   Project by user  
@@ -338,6 +357,7 @@ async function projectDelete(req, res){
 router.get('/', catchErrors(projectAll));
 router.get('/byTulkur', catchErrors(projectByTulkur));
 router.get('/byBeidni', catchErrors(projectBeidni));
+router.get('/byIdBeidni/:id', catchErrors(projectIdBeidni));
 
 router.post('/addproject', catchErrors(projectAdd));
 router.post('/sendaBeidni', catchErrors(addBeidni));
