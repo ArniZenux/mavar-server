@@ -1,5 +1,12 @@
 INSERT INTO tblTulkur 
 (nafn, simi, netfang) 
+VALUES ('...', 
+        '...', 
+        '...'
+      );
+
+INSERT INTO tblTulkur 
+(nafn, simi, netfang) 
 VALUES ('Johnny Deep', 
         '9871234', 
         'jdepp@mavar.is'
