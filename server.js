@@ -9,7 +9,8 @@ import passport from './auth/login.js';
 //import { router as adminRoute } from './auth/auth.js';
 import { router as tulkurRoute } from './api/tulkur.js';
 import { router as projectRoute } from './api/project.js';
-import { findById } from './auth/users.js';
+import { router as beidniRoute } from './api/beidni.js';
+//import { findById } from './auth/users.js';
 
 dotenv.config();
 
@@ -93,6 +94,7 @@ app.get('/logout', (req, res) => {
 //app.use('/admin', adminRoute ); 
 app.use('/tulkur', tulkurRoute );
 app.use('/project', projectRoute); 
+app.use('/beidni', beidniRoute); 
 
 function notFoundHandler(req, res, next) {
   const title = 'Sida fannst ekki';

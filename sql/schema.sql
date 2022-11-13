@@ -37,7 +37,9 @@ CREATE TABLE IF NOT EXISTS tblBeidni (
   stadur varchar(64) not null,
   dagur varchar(64) not null,
   byrja_timi varchar(64) not null,
-  nameuser varchar(64) not null 
+  nameuser varchar(64) not null, 
+  off integer not null
 );
+
 
 
