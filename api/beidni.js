@@ -164,7 +164,7 @@ async function addDeafBeidni(req, res){
     req.body.place, 
     req.body.day, 
     req.body.start, 
-    req.body.nafn,
+    req.body.nameuser,
     1
   ]; 
 

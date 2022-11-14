@@ -1,12 +1,5 @@
 INSERT INTO tblTulkur 
 (nafn, simi, netfang) 
-VALUES ('...', 
-        '...', 
-        '...'
-      );
-
-INSERT INTO tblTulkur 
-(nafn, simi, netfang) 
 VALUES ('Johnny Deep', 
         '9871234', 
         'jdepp@mavar.is'
@@ -27,33 +20,36 @@ VALUES ('Tom Hanks Sören',
       );
 
 INSERT INTO tblVerkefni 
-(heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur) 
+(heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur, nameuser) 
 VALUES ('Marel í viðtal', 
         'Garðabæ', 
         '16 júni',
         '9:00',
         '10:00',
-        'Atvinnumál'
+        'Atvinnumál',
+        'Rúnar Karl'
       );
 
 INSERT INTO tblVerkefni 
-(heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur) 
+(heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur, nameuser) 
 VALUES ('Brúðkaup þeirra Katheine og John Romer', 
         'Viðey', 
         '15 júli',
         '12:00',
         '18:00',
-        'Almennt'
+        'Almennt',
+        'Ronaldo Hanks'
       );
 
 INSERT INTO tblVerkefni 
-(heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur) 
+(heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur, nameuser) 
 VALUES ('Námskeið fyrir viðgerð á hjól', 
         'Reykholt', 
         '5 september',
         '19:00',
         '20:00',
-        'Skólamál'
+        'Skólamál',
+        'James Dean'
       );
 
 INSERT INTO tblVinna 

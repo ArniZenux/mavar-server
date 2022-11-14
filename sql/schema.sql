@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS tblVerkefni (
   dagur varchar(64) not null,
   byrja_timi varchar(64) not null,
   endir_timi varchar(64) not null,
-  vettvangur varchar(64) not null
+  vettvangur varchar(64) not null,
+  nameuser varchar(64) not null 
 );
 
 CREATE TABLE IF NOT EXISTS tblVinna (

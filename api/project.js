@@ -55,7 +55,8 @@ async function projectAdd(req, res){
       req.body.day, 
       req.body.start, 
       req.body.last, 
-      req.body.vettvangur
+      req.body.vettvangur,
+      req.body.nameuser
     ];
 
   const verkefni_body = req.body; 
@@ -72,13 +73,15 @@ async function projectAdd(req, res){
           dagur, 
           byrja_timi, 
           endir_timi, 
-          vettvangur) 
+          vettvangur,
+          nameuser) 
     VALUES($1, 
            $2, 
            $3, 
            $4, 
            $5, 
-           $6);
+           $6,
+           $7);
   `;
   
   const sql_lastverkefni = `
@@ -134,6 +137,7 @@ async function projectAdd(req, res){
   if(success && success1){
       return res.redirect('/');
   }
+  
 }
 
 /*
