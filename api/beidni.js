@@ -203,6 +203,6 @@ async function addDeafBeidni(req, res){
 router.get('/byBeidni', catchErrors(projectBeidni));
 //router.get('/byIdBeidni/:id', catchErrors(projectIdBeidni));
 
-router.post('/addBeidniProject/:id', catchErrors(addBeidni));  // CMS
+router.post('/addBeidniProject/:id', catchErrors(addBeidni));   // CMS
 router.post('/sendaBeidni', catchErrors(addDeafBeidni));        // Deaf viewer
 

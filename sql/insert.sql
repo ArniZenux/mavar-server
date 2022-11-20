@@ -23,7 +23,7 @@ INSERT INTO tblVerkefni
 (heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur, nameuser) 
 VALUES ('Marel í viðtal', 
         'Garðabæ', 
-        '16 júni',
+        '23.12.2022',
         '9:00',
         '10:00',
         'Atvinnumál',
@@ -34,7 +34,7 @@ INSERT INTO tblVerkefni
 (heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur, nameuser) 
 VALUES ('Brúðkaup þeirra Katheine og John Romer', 
         'Viðey', 
-        '15 júli',
+        '1.7.2022',
         '12:00',
         '18:00',
         'Almennt',
@@ -45,7 +45,7 @@ INSERT INTO tblVerkefni
 (heiti, stadur, dagur, byrja_timi, endir_timi, vettvangur, nameuser) 
 VALUES ('Námskeið fyrir viðgerð á hjól', 
         'Reykholt', 
-        '5 september',
+        '11.10.2022',
         '19:00',
         '20:00',
         'Skólamál',
@@ -90,7 +90,7 @@ INSERT INTO tblBeidni
 (lysing, stadur, dagur, byrja_timi, nameuser, off)
 VALUES ('Námskeið í Reykjavíkarskóli um ljós og hljóð',
         'Reykjavík',
-        '18 nóvember',
+        '18.11.2022',
         '18:00',
         'Rúnar Karlsson',
         1
