@@ -57,7 +57,8 @@ async function addBeidni(req, res){
       req.body.dagur, 
       req.body.byrja_timi, 
       req.body.endir_timi, 
-      req.body.vettvangur
+      req.body.vettvangur,
+      req.body.nameuser
     ];
   
   const verkefni_body = req.body; 
@@ -77,13 +78,15 @@ async function addBeidni(req, res){
           dagur, 
           byrja_timi, 
           endir_timi, 
-          vettvangur) 
+          vettvangur,
+          nameuser) 
     VALUES($1, 
            $2, 
            $3, 
            $4, 
            $5, 
-           $6);
+           $6,
+           $7);
   `;
   
   const sql_lastverkefni = `
@@ -149,9 +152,7 @@ async function addBeidni(req, res){
 
   if(success && success1){
       return res.redirect('/');
-  }
-  
-  
+  }  
 }
 
 /*
@@ -164,6 +165,7 @@ async function addDeafBeidni(req, res){
     req.body.place, 
     req.body.day, 
     req.body.start, 
+    req.body.last,
     req.body.nameuser,
     1
   ]; 
@@ -175,6 +177,7 @@ async function addDeafBeidni(req, res){
           stadur, 
           dagur, 
           byrja_timi, 
+          endir_timi,
           nameuser,
           off) 
     VALUES($1, 
@@ -182,7 +185,8 @@ async function addDeafBeidni(req, res){
            $3, 
            $4, 
            $5,
-           $6 
+           $6, 
+           $7
            );
   `;
 

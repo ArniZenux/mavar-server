@@ -87,11 +87,23 @@ VALUES ('John',
       );
 
 INSERT INTO tblBeidni
-(lysing, stadur, dagur, byrja_timi, nameuser, off)
+(lysing, stadur, dagur, byrja_timi, endir_timi, nameuser, off)
 VALUES ('Námskeið í Reykjavíkarskóli um ljós og hljóð',
         'Reykjavík',
         '18.11.2022',
         '18:00',
+        '18:30',
         'Rúnar Karlsson',
+        1
+       );
+
+INSERT INTO tblBeidni
+(lysing, stadur, dagur, byrja_timi, endir_timi, nameuser, off)
+VALUES ('Námskeið í vinnuskólann',
+        'Reykjavík',
+        '11.12.2022',
+        '11:00',
+        '00:00',
+        'Sæþór Jónsson',
         1
        );
