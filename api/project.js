@@ -22,6 +22,24 @@ async function projectAll(req, res) {
 }
 
 /*
+/   All projects - DEAF  
+*/
+async function projectDeaf(req, res) {
+
+  const tblVerkefni4 = `
+    SELECT 
+      *
+    FROM 
+      tblList;
+  `;
+  
+  const events4 = await listApp(tblVerkefni4);
+  
+  return res.json(events4); 
+}
+
+
+/*
 /   Project by user  
 */
 async function projectByTulkur(req, res) {
@@ -280,6 +298,9 @@ async function projectDelete(req, res){
 }
 
 router.get('/', catchErrors(projectAll));
+
+router.get('/all', catchErrors(projectDeaf));
+
 router.get('/byTulkur', catchErrors(projectByTulkur));
 
 router.post('/addproject', catchErrors(projectAdd)); 

@@ -63,22 +63,27 @@ app.get('/' , (req, res) => {
   res.send('Hello server-mavar');
 });
 
+app.post('/loginfuck', (req,res) => {
+  res.send('hello fucklogin');
+});
+
 app.post(
   '/login',
   
   // Þetta notar strat að ofan til að skrá notanda inn
   passport.authenticate('local', {
-    failureMessage: 'Notandanafn eða lykilorð vitlaust.',
+    failureMessage: 'Email eða lykilorð vitlaust.',
     failureRedirect: '/login',
   }),
-
+  
   // Ef við komumst hingað var notandi skráður inn, senda á /admin
   (req, res) => {
-    const token = "asdf"; //generateAccessToken(user); //getToken(); 
+    const token = "asdfasdf"; //generateAccessToken(user); //getToken(); 
     //const user = findById(username);
     res.send({ success : true, token });
     //res.redirect('/admin');
     //console.log('hello admin');
+    //res.send('asdfdsaf');
   },
 );
 

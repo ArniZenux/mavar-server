@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS tblVinna (
 CREATE TABLE IF NOT EXISTS tblUsers (
   id serial primary key,
   nameuser varchar(64) not null, 
+  email character varying(100) not null, 
   username character varying(64) not null,
   password character varying(256) not null,
   admin boolean not null
@@ -42,6 +43,16 @@ CREATE TABLE IF NOT EXISTS tblBeidni (
   nameuser varchar(64) not null, 
   off integer not null
 );
+
+CREATE TABLE IF NOT EXISTS tblList (
+  id serial primary key,
+  lysing varchar(300) not null, 
+  stadur varchar(64) not null,
+  dagur varchar(64) not null,
+  byrja_timi varchar(64) not null,
+  tulkur varchar(64) not null 
+);
+
 
 
 

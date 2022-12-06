@@ -1,7 +1,6 @@
 import passport from 'passport';
-
 import { Strategy } from 'passport-local';
-import { comparePasswords, findByUsername, findById } from './users.js';
+import { comparePasswords, findByUsername, findByEmail, findById } from './users.js';
 
 /**
  * Athugar hvort username og password sé til í notandakerfi.
@@ -13,12 +12,19 @@ import { comparePasswords, findByUsername, findById } from './users.js';
  * @param {string} password Lykilorð til að athuga
  * @param {function} done Fall sem kallað er í með niðurstöðu
  */
-async function strat(username, password, done) {
+async function strat(email, password, done) {
   try {
-    const user = await findByUsername(username);
+    //const user = await findByUsername(username);  // Username
+    const user = await findByEmail(email);       // Email
+    
+    console.log("hello FindByUsername");
 
     if (!user) {
+      console.log('Ekki til');
       return done(null, false);
+    }
+    else{
+      console.log('yes found');
     }
 
     // Verður annað hvort notanda hlutur ef lykilorð rétt, eða false
@@ -32,9 +38,9 @@ async function strat(username, password, done) {
 
 // Notum local strategy með „strattinu“ okkar til að leita að notanda
 passport.use(new Strategy(strat));
+passport.use(new Strategy({ usernameField: 'email' }, strat));
 
 // getum stillt með því að senda options hlut með
-// passport.use(new Strategy({ usernameField: 'email' }, strat));
 
 // Geymum id á notanda í session, það er nóg til að vita hvaða notandi þetta er
 passport.serializeUser((user, done) => {

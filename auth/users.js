@@ -35,6 +35,32 @@ export async function findByUsername(username) {
   return false;
 }
 
+export async function findByEmail(email) {
+  const q = `
+    SELECT 
+      * 
+    FROM 
+      tblUsers 
+    WHERE 
+      email = $1;
+  `;
+  console.log("helo");
+
+  try {
+    const result = await query(q, [email]);
+    console.log("hello - Email soul");
+
+    if (result.rowCount === 1) {
+      return result.rows[0];
+    }
+  } catch (e) {
+    console.error('Gat ekki fundið notanda eftir notendnafni');
+    return null;
+  }
+
+  return false;
+}
+
 export async function findById(id) {
   const q = `
     SELECT 

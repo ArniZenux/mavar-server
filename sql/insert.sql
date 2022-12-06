@@ -71,16 +71,18 @@ VALUES ('2',
       );
 
 INSERT INTO tblUsers 
-(nameuser, username, password, admin) 
-VALUES ('Fanney', 
+(nameuser, email, username, password, admin) 
+VALUES ('Fanney',
+        'admin@shh.is',
         'admin', 
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         true
       );
 
 INSERT INTO tblUsers 
-(nameuser, username, password, admin) 
+(nameuser, email, username, password, admin) 
 VALUES ('John', 
+        'anna@simnet.is',
         'anna', 
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         false
@@ -106,4 +108,13 @@ VALUES ('Námskeið í vinnuskólann',
         '00:00',
         'Sæþór Jónsson',
         1
+       );
+
+INSERT INTO tblList
+(lysing, stadur, dagur, byrja_timi, tulkur)
+VALUES ('Námskeið í vinnuskólann',
+        'Reykjavík',
+        '11.12.2022',
+        '11:00',
+        'Rósa Björk'
        );
