@@ -14,7 +14,7 @@ import { comparePasswords, findByUsername, findByEmail, findById } from './users
  */
 async function strat(email, password, done) {
   try {
-    //const user = await findByUsername(username);  // Username
+    //const user = await findByUsername(email);  // Username
     const user = await findByEmail(email);       // Email
     
     console.log("hello FindByUsername");
