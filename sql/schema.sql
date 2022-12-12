@@ -2,7 +2,8 @@ CREATE TABLE IF NOT EXISTS tblTulkur (
   id serial primary key,
   nafn varchar(64) not null, 
   simi varchar(64) not null,
-  netfang varchar(256) not null
+  netfang varchar(256) not null,
+  stada varchar(64) not null
 );
 
 CREATE TABLE IF NOT EXISTS tblVerkefni (

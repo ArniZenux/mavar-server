@@ -66,8 +66,19 @@ async function projectByTulkur(req, res) {
 /   Add new project  
 */
 async function projectAdd(req, res){
-
   const verkefni = [
+    req.body.id,
+    req.body.lysing, 
+    req.body.stadur, 
+    req.body.dagur, 
+    req.body.byrja_timi, 
+    req.body.endir_timi, 
+    req.body.vettvangur,
+  ];
+  
+  console.log(verkefni); 
+
+  /*const verkefni = [
       req.body.nameproject, 
       req.body.place, 
       req.body.day, 
@@ -155,39 +166,41 @@ async function projectAdd(req, res){
   if(success && success1){
       return res.redirect('/');
   }
-  
+  */
 }
 
 /*
 /   Update project  
 */
 async function projectUpdate(req, res){
-  
-  const { id } = req.params;
+  //const { id } = req.params;
   const verkefni = [
+    req.body.id,
     req.body.heiti, 
     req.body.stadur, 
     req.body.dagur, 
     req.body.byrja_timi, 
     req.body.endir_timi, 
     req.body.vettvangur,
-    req.body.idverkefni
+    req.body.nameuser
   ];
-  
+
   let success = true; 
 
   const sql = `
     UPDATE 
       tblVerkefni 
     SET 
-      heiti = $1, 
-      stadur = $2, 
-      dagur = $3,
-      byrja_timi = $4,
-      endir_timi = $5,
-      vettvangur = $6 
+      id = $1,
+      heiti = $2, 
+      stadur = $3, 
+      dagur = $4,
+      byrja_timi = $5,
+      endir_timi = $6,
+      vettvangur = $7,
+      nameuser = $8 
     WHERE 
-      tblVerkefni.id = $7;
+      tblVerkefni.id = $1;
   `;
   
   try{

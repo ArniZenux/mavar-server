@@ -1,22 +1,25 @@
 INSERT INTO tblTulkur 
-(nafn, simi, netfang) 
+(nafn, simi, netfang, stada) 
 VALUES ('Johnny Deep', 
         '9871234', 
-        'jdepp@mavar.is'
+        'jdepp@mavar.is',
+        'Virkur'
       );
 
 INSERT INTO tblTulkur 
-(nafn, simi, netfang) 
+(nafn, simi, netfang, stada) 
 VALUES ('Brad Bitt', 
         '9877777', 
-        'bbitt@mavar.is'
+        'bbitt@mavar.is',
+        'Virkur'
       );
 
 INSERT INTO tblTulkur 
-(nafn, simi, netfang) 
+(nafn, simi, netfang, stada) 
 VALUES ('Tom Hanks Sören', 
         '4448785', 
-        'tomhankssoren@mavar.is'
+        'tomhankssoren@mavar.is',
+        'Fri'
       );
 
 INSERT INTO tblVerkefni 

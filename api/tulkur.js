@@ -95,13 +95,14 @@ async function userSelectByWork(req, res) {
 /   Insert new user  
 */
 async function userNew(req, res) {
-  const info = [req.body.firstname, req.body.phonenr, req.body.email];
+  const info = [req.body.nafn, req.body.simi, req.body.netfang];
   let success = true; 
 
   const sql = `
     INSERT INTO 
-      tblTulkur(nafn, simi, netfang)
-    VALUES($1, $2, $3);
+      tblTulkur(nafn, simi, netfang, stada)
+    VALUES($1, $2, $3, $4rs
+      );
   `;
 
   try {
@@ -120,24 +121,29 @@ async function userNew(req, res) {
 /   Update user  
 */
 async function userUpdate(req, res) {
-  const { id } = req.params;
-  const info = [req.body.firstname, req.body.phonenr, req.body.email, req.body.id];
+  //const { id } = req.params;
+  const info = [req.body.id, req.body.nafn, req.body.simi, req.body.netfang, req.body.stada];
   
+  console.log(info); 
+
   let success = true; 
 
   const sql = `
     UPDATE 
       tblTulkur 
     SET 
-      nafn = $1, 
-      simi = $2, 
-      netfang = $3 
+      id = $1,
+      nafn = $2, 
+      simi = $3, 
+      netfang = $4, 
+      stada = $5
     WHERE 
-      tblTulkur.id = $4;
+      tblTulkur.id = $1;
   `;
   
   try{
     success = await updateApp(sql, info)
+    //console.log('ello');
   }
   catch(e){
     console.error(e); 
@@ -242,6 +248,6 @@ router.get('/:id', catchErrors(userSelect));
 router.get('/tulkurskoda/:id', catchErrors(userSelectByWork));
 
 router.post('/adduser', catchErrors(userNew));
-router.put('/updateuser/:id', catchErrors(userUpdate));
+router.put('/updateuser', catchErrors(userUpdate));
 
 router.post('/athugapost', catchErrors(checkInterpreter));
