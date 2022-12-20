@@ -30,7 +30,7 @@ VALUES ('Marel í viðtal',
         '9:00',
         '10:00',
         'Atvinnumál',
-        'Rúnar Karl'
+        'Þórhallur Snær Árnasson'
       );
 
 INSERT INTO tblVerkefni 
@@ -98,7 +98,7 @@ VALUES ('Námskeið í Reykjavíkarskóli um ljós og hljóð',
         '18.11.2022',
         '18:00',
         '18:30',
-        'Rúnar Karlsson',
+        'Þórhallur Ingasson',
         1
        );
 
