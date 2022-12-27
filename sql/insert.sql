@@ -1,25 +1,25 @@
 INSERT INTO tblTulkur 
 (nafn, simi, netfang, stada) 
-VALUES ('Johnny Deep', 
+VALUES ('Eyrún Helga', 
         '9871234', 
-        'jdepp@mavar.is',
-        'Virkur'
+        'eh@mavar.is',
+        'Hættur'
       );
 
 INSERT INTO tblTulkur 
 (nafn, simi, netfang, stada) 
-VALUES ('Brad Bitt', 
+VALUES ('Anna Dagmar', 
         '9877777', 
-        'bbitt@mavar.is',
+        'ad@mavar.is',
         'Virkur'
       );
 
 INSERT INTO tblTulkur 
 (nafn, simi, netfang, stada) 
-VALUES ('Tom Hanks Sören', 
+VALUES ('Sigrún Erna', 
         '4448785', 
-        'tomhankssoren@mavar.is',
-        'Fri'
+        'se@mavar.is',
+        'í leyfi'
       );
 
 INSERT INTO tblVerkefni 
@@ -41,7 +41,7 @@ VALUES ('Brúðkaup þeirra Katheine og John Romer',
         '12:00',
         '18:00',
         'Almennt',
-        'Ronaldo Hanks'
+        'Páll Óskar Jónasson'
       );
 
 INSERT INTO tblVerkefni 
@@ -52,7 +52,7 @@ VALUES ('Námskeið fyrir viðgerð á hjól',
         '19:00',
         '20:00',
         'Skólamál',
-        'James Dean'
+        'Haukur Hjálmarsson'
       );
 
 INSERT INTO tblVinna 
