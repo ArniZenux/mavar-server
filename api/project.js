@@ -22,6 +22,23 @@ async function projectAll(req, res) {
 }
 
 /*
+/   All projects  - FullCalander - Table
+*/
+async function projectAllEvents(req, res) {
+
+  const tblEvents = `
+    SELECT 
+      *
+    FROM 
+      tblEventTable;
+  `;
+  
+  const events = await listApp(tblEvents);
+  
+  return res.json(events); 
+}
+
+/*
 /   All projects - DEAF  
 */
 async function projectDeaf(req, res) {
@@ -311,6 +328,7 @@ async function projectDelete(req, res){
 }
 
 router.get('/', catchErrors(projectAll));
+router.get('/events', catchErrors(projectAllEvents));
 
 router.get('/all', catchErrors(projectDeaf));
 

@@ -121,3 +121,10 @@ VALUES ('Námskeið í vinnuskólann',
         '11:00',
         'Rósa Björk'
        );
+
+INSERT INTO tblEventTable
+(title, start_event, end_event)
+VALUES ('Bauhaus - stöðufundur',
+        '2022-12-22',
+        '2022-12-24'
+       );

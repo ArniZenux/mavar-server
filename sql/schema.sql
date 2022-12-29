@@ -54,6 +54,9 @@ CREATE TABLE IF NOT EXISTS tblList (
   tulkur varchar(64) not null 
 );
 
-
-
-
+CREATE TABLE IF NOT EXISTS tblEventTable (
+  id serial primary key,
+  title varchar(300) not null, 
+  start_event varchar(64) not null,
+  end_event varchar(64) not null
+);
