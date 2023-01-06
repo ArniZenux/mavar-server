@@ -125,6 +125,13 @@ VALUES ('Námskeið í vinnuskólann',
 INSERT INTO tblEventTable
 (title, start_event, end_event)
 VALUES ('Bauhaus - stöðufundur',
-        '2022-12-22',
-        '2022-12-24'
+        'January 2, 2023 10:00:00',
+        'January 2, 2023 12:00:00'
+       );
+
+INSERT INTO tblEventTable
+(title, start_event, end_event)
+VALUES ('Byko - stöðufundur',
+        'January 12, 2023 10:00:00',
+        'January 12, 2023 12:00:00'
        );

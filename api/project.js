@@ -25,17 +25,26 @@ async function projectAll(req, res) {
 /   All projects  - FullCalander - Table
 */
 async function projectAllEvents(req, res) {
+  //const id = [req.body.id]
+  const { id } = req.params;
+  
+  //console.log('x_id : ' + x_id);
+  //console.log('id : ' + id);
 
   const tblEvents = `
     SELECT 
       *
     FROM 
-      tblEventTable;
-  `;
+      tblEventTable
+    WHERE 
+      tblEventTable.id = $1;
+    `;
   
-  const events = await listApp(tblEvents);
-  
+  //console.log('hello events');
+  //const strengur = 'Hello events';
+  const events = await listApp(tblEvents, [id] );
   return res.json(events); 
+  //return strengur; 
 }
 
 /*
@@ -328,7 +337,7 @@ async function projectDelete(req, res){
 }
 
 router.get('/', catchErrors(projectAll));
-router.get('/events', catchErrors(projectAllEvents));
+router.get('/events/:id', catchErrors(projectAllEvents));
 
 router.get('/all', catchErrors(projectDeaf));
 
