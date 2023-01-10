@@ -135,3 +135,11 @@ VALUES ('Byko - stöðufundur',
         'January 12, 2023 10:00:00',
         'January 12, 2023 12:00:00'
        );
+
+INSERT INTO tblEventTable
+(title, start_event, end_event)
+VALUES ('Húsafundur - Breiðholt',
+        'January 22, 2023 20:00:00',
+        'January 22, 2023 21:00:00'
+       );
+
