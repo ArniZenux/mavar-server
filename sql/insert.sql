@@ -1,4 +1,4 @@
-INSERT INTO tblTulkur 
+ INSERT INTO tblTulkur 
 (nafn, simi, netfang, stada) 
 VALUES ('Eyrún Helga', 
         '9871234', 
@@ -91,6 +91,20 @@ VALUES ('John',
         false
       );
 
+INSERT INTO tblVidskiptavinur 
+(nameuser, email, phonenr) 
+VALUES ('Þór Ingi Jónsson',
+        'thor@hti.is',
+        '5551254'
+      );
+
+INSERT INTO tblVidskiptavinur 
+(nameuser, email, phonenr) 
+VALUES ('Hjördis Ösp Karlsdóttir',
+        'hjordis_osp@gmail.com',
+        '8548362'
+      );
+
 INSERT INTO tblBeidni
 (lysing, stadur, dagur, byrja_timi, endir_timi, nameuser, off)
 VALUES ('Námskeið í Reykjavíkarskóli um ljós og hljóð',
@@ -123,23 +137,49 @@ VALUES ('Námskeið í vinnuskólann',
        );
 
 INSERT INTO tblEventTable
-(title, start_event, end_event)
+(title, start_event, end_event, allDay)
 VALUES ('Bauhaus - stöðufundur',
         'January 2, 2023 10:00:00',
-        'January 2, 2023 12:00:00'
+        'January 2, 2023 12:00:00',
+        true
        );
 
 INSERT INTO tblEventTable
-(title, start_event, end_event)
+(title, start_event, end_event, allDay)
 VALUES ('Byko - stöðufundur',
         'January 12, 2023 10:00:00',
-        'January 12, 2023 12:00:00'
+        'January 12, 2023 12:00:00',
+        true
        );
 
 INSERT INTO tblEventTable
-(title, start_event, end_event)
-VALUES ('Húsafundur - Breiðholt',
-        'January 22, 2023 20:00:00',
-        'January 22, 2023 21:00:00'
+(title, start_event, end_event, allDay)
+VALUES ('Vinnufundur Sigrun - Hafnarfjörður',
+        'January 26, 2023 20:00:00',
+        'January 26, 2023 21:00:00',
+        true
        );
 
+INSERT INTO tblEventTable
+(title, start_event, end_event, allDay)
+VALUES ('Húsafundur Sigrun - Breiðholt',
+        'January 22, 2023 20:00:00',
+        'January 22, 2023 21:00:00',
+        true
+       );
+
+INSERT INTO tblEventVinna 
+(idtulkur) 
+VALUES ('1');
+
+INSERT INTO tblEventVinna 
+(idtulkur) 
+VALUES ('2');
+
+INSERT INTO tblEventVinna 
+(idtulkur) 
+VALUES ('3');
+
+INSERT INTO tblEventVinna 
+(idtulkur) 
+VALUES ('3');

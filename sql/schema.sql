@@ -34,6 +34,13 @@ CREATE TABLE IF NOT EXISTS tblUsers (
   admin boolean not null
 );
 
+CREATE TABLE IF NOT EXISTS tblVidskiptavinur (
+  id serial primary key,
+  nameuser varchar(64) not null, 
+  email character varying(100) not null,
+  phonenr varchar(64) not null 
+);
+
 CREATE TABLE IF NOT EXISTS tblBeidni (
   id serial primary key,
   lysing varchar(300) not null, 
@@ -58,5 +65,16 @@ CREATE TABLE IF NOT EXISTS tblEventTable (
   id serial primary key,
   title varchar(300) not null, 
   start_event varchar(64) not null,
-  end_event varchar(64) not null
+  end_event varchar(64) not null,
+  allDay boolean not null
 );
+
+CREATE TABLE IF NOT EXISTS tblEventVinna (
+  id serial primary key,
+  idtulkur integer not null, 
+  idverkefni serial, 
+  constraint idtulkur foreign key (idtulkur) references tblTulkur(id),
+  constraint idverkefni foreign key (idverkefni) references tblEventTable (id)
+);
+
+/*idverkefni integer not null,*/

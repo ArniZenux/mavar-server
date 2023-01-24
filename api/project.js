@@ -35,9 +35,15 @@ async function projectAllEvents(req, res) {
     SELECT 
       *
     FROM 
+      tblTulkur,
+      tblEventVinna,
       tblEventTable
     WHERE 
-      tblEventTable.id = $1;
+      tblTulkur.id=tblEventVinna.idtulkur
+    AND
+      tblEventVinna.idverkefni=tblEventTable.id
+    AND
+      tblTulkur.id=$1;
     `;
   
   //console.log('hello events');
@@ -45,6 +51,45 @@ async function projectAllEvents(req, res) {
   const events = await listApp(tblEvents, [id] );
   return res.json(events); 
   //return strengur; 
+}
+
+
+async function addEvent(req, res){
+  const info = [req.body.title, req.body.dag_byrja, req.body.dag_endir, req.body.satt];
+  const idTulkur = [req.body.id];
+
+  console.log(info); 
+  console.log(idTulkur); 
+
+  let success = true; 
+  let success2 = true; 
+
+  const sqlNewEvent = `
+    INSERT INTO 
+      tblEventTable(title, start_event, end_event, allDay)
+    VALUES($1, $2, $3, $4);
+  `;
+
+  const sqlNewEventVinna = `
+    INSERT INTO 
+      tblEventVinna(idtulkur)
+    VALUES($1);
+  `;
+  
+  try {
+    success = await insertApp(sqlNewEvent, info); 
+    success2 = await insertApp(sqlNewEventVinna, idTulkur); 
+  }
+  catch(e){
+    console.error(e);
+  }
+  
+  if(success){
+    return res.redirect('/');
+  }
+  
+  //console.log('hello hello');
+  //res.send('hello res');
 }
 
 /*
@@ -344,6 +389,7 @@ router.get('/all', catchErrors(projectDeaf));
 router.get('/byTulkur', catchErrors(projectByTulkur));
 
 router.post('/addproject', catchErrors(projectAdd)); 
+router.post('/addnewevent', catchErrors(addEvent)); 
 
 router.put('/updateproject/:id', catchErrors(projectUpdate));
 router.put('/updatevinna/:id', catchErrors(VinnaUpdate));
