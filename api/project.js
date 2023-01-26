@@ -24,16 +24,11 @@ async function projectAll(req, res) {
 /*
 /   All projects  - FullCalander - Table
 */
-async function projectAllEvents(req, res) {
-  //const id = [req.body.id]
-  const { id } = req.params;
-  
-  //console.log('x_id : ' + x_id);
-  //console.log('id : ' + id);
+async function CountEvents(id) {
 
   const tblEvents = `
     SELECT 
-      *
+      COUNT(tblEventVinna.idverkefni)
     FROM 
       tblTulkur,
       tblEventVinna,
@@ -46,13 +41,76 @@ async function projectAllEvents(req, res) {
       tblTulkur.id=$1;
     `;
   
-  //console.log('hello events');
-  //const strengur = 'Hello events';
-  const events = await listApp(tblEvents, [id] );
+  let events = await listApp(tblEvents, [id] );
+  return events;
+  //console.log(events);
+  //return res.json(events);  
+  //return events; 
+}
+
+/*
+/   All projects  - FullCalander - Table
+*/
+async function projectAllEvents(req, res) {
+  const { id } = req.params;
+  
+  let group = []; 
+
+  const tblEventsCounter = `
+  SELECT 
+    COUNT(tblEventVinna.idverkefni)
+  FROM 
+    tblTulkur,
+    tblEventVinna,
+    tblEventTable
+  WHERE 
+    tblTulkur.id=tblEventVinna.idtulkur
+  AND
+    tblEventVinna.idverkefni=tblEventTable.id
+  AND
+    tblTulkur.id=$1;
+  `;
+
+  const tblEvents = `
+    SELECT
+      tblEventTable.title, 
+      tblEventTable.start_event, 
+      tblEventTable.end_event, 
+      tblEventTable.allday
+    FROM 
+      tblTulkur
+      INNER JOIN tblEventVinna ON tblTulkur.id=tblEventVinna.idtulkur
+      INNER JOIN tblEventTable ON tblEventVinna.idverkefni=tblEventTable.id
+    WHERE 
+      tblTulkur.id=$1;
+    `;
+  
+  //let counts = CountEvents(id);
+  //let counter = await listApp(tblEventsCounter, [id] );
+  let events = await listApp(tblEvents, [id] );
+  console.log(events); 
+  /* let nr = 0; 
+  counter.map(data => {
+    nr = data.count; 
+  });
+  */
+  //console.log(nr); 
+  /*let obj = JSON.stringify(counter); 
+  const obj_st = obj.split(":");
+  console.log(obj_st);
+  const id_t = obj_st[1];
+  console.log(id_t);
+  const idt = id_t.slice(0,1);
+  console.log(idt);
+  */
+  //console.log(events);
+  //group.push(counter)
+  //group.push(events);
+  //console.log(group); 
+  //console.log( group.length ); 
   return res.json(events); 
   //return strengur; 
 }
-
 
 async function addEvent(req, res){
   const info = [req.body.title, req.body.dag_byrja, req.body.dag_endir, req.body.satt];
