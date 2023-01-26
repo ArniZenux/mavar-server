@@ -73,6 +73,7 @@ async function projectAllEvents(req, res) {
 
   const tblEvents = `
     SELECT
+      tblEventVinna.idverkefni,
       tblEventTable.title, 
       tblEventTable.start_event, 
       tblEventTable.end_event, 
