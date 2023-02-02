@@ -9,18 +9,59 @@ export const router = express.Router();
 */
 async function projectBeidni(req, res) {
 
-  const tblVerkefni = `
+  /*const tblVerkefni = `
     SELECT 
       *
     FROM 
       tblBeidni
     WHERE 
       tblBeidni.off = 1
-  `;
+  `;*/
   
+  
+  const tblVerkefni = `
+    SELECT 
+      *
+    FROM 
+      tblBeidni
+    ORDER BY 
+      id 
+    DESC;
+  `;
+
   const events = await listApp(tblVerkefni);
   
   return res.json(events); 
+}
+
+/*
+/   Afbókun beiðni  
+*/
+async function afbokaBeidniFall(req, res) {
+  const id = req.body;
+
+  let success = true; 
+
+  const sql = `
+    UPDATE 
+      tblBeidni 
+    SET 
+      zstatus = 3
+    WHERE 
+      tblBeidni.id = $1;
+  `;
+  
+  try{
+    success = await updateApp(sql, id)
+  }
+  catch(e){
+    console.error(e); 
+  }
+  
+
+  if(success){
+    return res.redirect('/');
+  }
 }
 
 /*
@@ -160,40 +201,48 @@ async function addBeidni(req, res){
 /   DEAF VIEWER  
 */
 async function addDeafBeidni(req, res){
-  const newBeidni = [
-    req.body.nameproject, 
+  /*const newBeidni = [
+    req.body.name, 
     req.body.place, 
     req.body.day, 
-    req.body.start, 
-    req.body.last,
-    req.body.nameuser,
-    1
-  ]; 
+    req.body._start_time, 
+    req.body._last_time
+  ];*/ 
+  
+  const newOrder = req.body;  
+
+  //console.log(newOrder);
 
   const sql_beidni = `
     INSERT INTO 
       tblBeidni(
-          lysing, 
-          stadur, 
-          dagur, 
-          byrja_timi, 
-          endir_timi,
-          nameuser,
-          off) 
+          zname,
+          place, 
+          zdesc,
+          zday, 
+          start_time, 
+          last_time,
+          zstatus,
+          explanation,
+          interpreter
+          )
+
     VALUES($1, 
            $2, 
            $3, 
            $4, 
            $5,
            $6, 
-           $7
+           $7,
+           $8,
+           $9
            );
   `;
 
   let success = true; 
-
+  
   try {
-      success = await insertApp(sql_beidni, newBeidni);
+      success = await insertApp(sql_beidni, newOrder);
   }
   catch(e) {
     console.error(e);
@@ -202,11 +251,12 @@ async function addDeafBeidni(req, res){
   if(success){
     return res.redirect('/');
   }
+
 }
 
 router.get('/byBeidni', catchErrors(projectBeidni));
 //router.get('/byIdBeidni/:id', catchErrors(projectIdBeidni));
+router.post('/afbokaBeidni', catchErrors(afbokaBeidniFall));
 
 router.post('/addBeidniProject/:id', catchErrors(addBeidni));   // CMS
 router.post('/sendaBeidni', catchErrors(addDeafBeidni));        // Deaf viewer
-

@@ -74,18 +74,20 @@ VALUES ('2',
       );
 
 INSERT INTO tblUsers 
-(nameuser, email, username, password, admin) 
-VALUES ('Fanney',
+(nameuser, email, phonenr, username, password, admin) 
+VALUES ('Admin',
         'admin@shh.is',
+        '1234567',
         'admin', 
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         true
       );
 
 INSERT INTO tblUsers 
-(nameuser, email, username, password, admin) 
+(nameuser, email, phonenr, username, password, admin) 
 VALUES ('John', 
         'anna@simnet.is',
+        '9876543',
         'anna', 
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         false
@@ -106,25 +108,42 @@ VALUES ('Hjördis Ösp Karlsdóttir',
       );
 
 INSERT INTO tblBeidni
-(lysing, stadur, dagur, byrja_timi, endir_timi, nameuser, off)
-VALUES ('Námskeið í Reykjavíkarskóli um ljós og hljóð',
+(zname, zdesc, place, zday, start_time, last_time, zstatus, explanation, interpreter)
+VALUES ('Þórhallur Ingasson',
+        'Námskeið í Reykjavíkarskóli um ljós og hljóð',
         'Reykjavík',
         '18.11.2022',
         '18:00',
         '18:30',
-        'Þórhallur Ingasson',
-        1
+        1,
+        'Túlkur kemur',
+        'Árný Rósa'
        );
 
 INSERT INTO tblBeidni
-(lysing, stadur, dagur, byrja_timi, endir_timi, nameuser, off)
-VALUES ('Námskeið í vinnuskólann',
+(zname, zdesc, place, zday, start_time, last_time, zstatus, explanation, interpreter)
+VALUES ('Sæþór Jónsson',
+        'Námskeið í FB',
         'Reykjavík',
-        '11.12.2022',
+        '11.03.2023',
         '11:00',
         '00:00',
-        'Sæþór Jónsson',
-        1
+        0,
+        'Enginn laus',
+        'Enginn laus'
+       );
+
+INSERT INTO tblBeidni
+(zname, zdesc, place, zday, start_time, last_time, zstatus, explanation, interpreter)
+VALUES ('Sæþór Jónsson',
+        'Fundur með ráðherra um túlkamál',
+        'Reykjavík',
+        '11.04.2023',
+        '10:00',
+        '12:00',
+        3,
+        'Afbókun',
+        'Afbókun'
        );
 
 INSERT INTO tblList

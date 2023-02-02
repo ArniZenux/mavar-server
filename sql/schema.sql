@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS tblUsers (
   id serial primary key,
   nameuser varchar(64) not null, 
   email character varying(100) not null, 
+  phonenr varchar(10) not null, 
   username character varying(64) not null,
   password character varying(256) not null,
   admin boolean not null
@@ -43,13 +44,15 @@ CREATE TABLE IF NOT EXISTS tblVidskiptavinur (
 
 CREATE TABLE IF NOT EXISTS tblBeidni (
   id serial primary key,
-  lysing varchar(300) not null, 
-  stadur varchar(64) not null,
-  dagur varchar(64) not null,
-  byrja_timi varchar(64) not null,
-  endir_timi varchar(64) not null,
-  nameuser varchar(64) not null, 
-  off integer not null
+  zname varchar(64) not null, 
+  zdesc varchar(300) not null, 
+  place varchar(64) not null,
+  zday varchar(64) not null,
+  start_time varchar(64) not null,
+  last_time varchar(64) not null,
+  zstatus integer not null,
+  explanation varchar(64),
+  interpreter varchar(64)
 );
 
 CREATE TABLE IF NOT EXISTS tblList (
