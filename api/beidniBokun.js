@@ -5,20 +5,10 @@ import { catchErrors } from '../lib/utils.js';
 export const router = express.Router();
 
 /*
-/   All beidni - projects  
+/   All beidni - Listi by order DESC.   
 */
 async function projectBeidni(req, res) {
 
-  /*const tblVerkefni = `
-    SELECT 
-      *
-    FROM 
-      tblBeidni
-    WHERE 
-      tblBeidni.off = 1
-  `;*/
-  
-  
   const tblVerkefni = `
     SELECT 
       *
@@ -39,13 +29,14 @@ async function projectBeidni(req, res) {
 */
 async function afbokaBeidniFall(req, res) {
   const id = req.body;
-
   let success = true; 
 
   const sql = `
     UPDATE 
       tblBeidni 
     SET 
+      explanation = 'Afbókun',
+      interpreter = 'Afbókun',
       zstatus = 3
     WHERE 
       tblBeidni.id = $1;
@@ -57,7 +48,6 @@ async function afbokaBeidniFall(req, res) {
   catch(e){
     console.error(e); 
   }
-  
 
   if(success){
     return res.redirect('/');
@@ -87,8 +77,9 @@ async function projectIdBeidni(req, res){
 
 /*
 /   Add new beidni - project
-/   CMS - VIWER  
+/   Bókunarsíða  
 */
+/*
 async function addBeidni(req, res){
 
   const { id } = req.params;
@@ -194,24 +185,15 @@ async function addBeidni(req, res){
   if(success && success1){
       return res.redirect('/');
   }  
-}
+}*/
 
 /*
 /   Add new beidni
-/   DEAF VIEWER  
+/   Pöntunarsíða  
 */
-async function addDeafBeidni(req, res){
-  /*const newBeidni = [
-    req.body.name, 
-    req.body.place, 
-    req.body.day, 
-    req.body._start_time, 
-    req.body._last_time
-  ];*/ 
-  
-  const newOrder = req.body;  
-
-  //console.log(newOrder);
+async function newBeidni(req, res){
+  const newOrder = req.body;
+  let success = true; 
 
   const sql_beidni = `
     INSERT INTO 
@@ -238,8 +220,6 @@ async function addDeafBeidni(req, res){
            $9
            );
   `;
-
-  let success = true; 
   
   try {
       success = await insertApp(sql_beidni, newOrder);
@@ -251,12 +231,15 @@ async function addDeafBeidni(req, res){
   if(success){
     return res.redirect('/');
   }
-
 }
 
+/* GET */
 router.get('/byBeidni', catchErrors(projectBeidni));
 //router.get('/byIdBeidni/:id', catchErrors(projectIdBeidni));
+
+/* PUT - UPDATE */
 router.post('/afbokaBeidni', catchErrors(afbokaBeidniFall));
 
-router.post('/addBeidniProject/:id', catchErrors(addBeidni));   // CMS
-router.post('/sendaBeidni', catchErrors(addDeafBeidni));        // Deaf viewer
+/* POST */
+//router.post('/addBeidniProject/:id', catchErrors(addBeidni));   // Bókunarsíða
+router.post('/sendaBeidni', catchErrors(newBeidni));      // Pöntunarsíða 
