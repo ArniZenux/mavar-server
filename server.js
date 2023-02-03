@@ -65,7 +65,7 @@ app.get('/' , (req, res) => {
   res.send('Hello server-mavar');
 });
 
-app.post('/login', (req,res) => {
+app.post('/loginHello', (req,res) => {
   res.send('hello login');
 });
 
