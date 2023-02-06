@@ -4,21 +4,19 @@ import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
 
-function checkTulkur(req, res){
-  console.log("hello tulkur - console");
-  return res.json('hello Check tulkur');
-}
-
 /*
-/   Allir túlkur  
+/   All interpreters  
 */
-async function user(req, res) {
+async function getInterpreter(req, res) {
 
   const sql = `
     SELECT 
       *
     FROM 
-      tblTulkur;
+      tblTulkur  
+    ORDER BY 
+      id 
+    DESC;
   `;
   
   const events = await listApp(sql);
@@ -27,13 +25,85 @@ async function user(req, res) {
 }
 
 /*
+/   Insert new interpreter  
+*/
+async function addInterprter(req, res) {
+  const info = [
+      req.body.zname, 
+      req.body.phonenr, 
+      req.body.email,
+      req.body.zstatus
+  ];
+  
+  let success = true; 
+
+  console.log(info); 
+
+  const sql = `
+    INSERT INTO 
+      tblTulkur(zname, phonenr, email, zstatus)
+    VALUES($1, $2, $3, $4);
+  `;
+
+  try {
+    success = await insertApp(sql, info); 
+  }
+  catch(e){
+    console.error(e);
+  }
+  
+  if(success){
+    return res.redirect('/');
+  }
+}
+
+/*
+/   Update interpreter
+*/
+async function updateInterpreter(req, res) {
+  const info = [
+    req.body.id, 
+    req.body.zname, 
+    req.body.phonenr, 
+    req.body.email, 
+    req.body.zstatus
+  ];
+  
+  let success = true; 
+
+  const sql = `
+    UPDATE 
+      tblTulkur 
+    SET 
+      zname = $2, 
+      phonenr = $3, 
+      email = $4, 
+      zstatus = $5
+    WHERE 
+      tblTulkur.id = $1;
+  `;
+  
+  try{
+    success = await updateApp(sql, info)
+  }
+  catch(e){
+    console.error(e); 
+  }
+
+  if(success){
+    return res.redirect('/');
+  }
+}
+
+
+/*
 /   Túlkur by name. 
 */
-async function userbyname(req, res) {
+async function getNameInterpreter(req, res) {
 
   const sql = `
     SELECT 
-      id, nafn
+      id, zname
     FROM 
       tblTulkur;
   `;
@@ -44,9 +114,9 @@ async function userbyname(req, res) {
 }
 
 /*
-/   List of one user  
+/   List of one interpreter
 */
-async function userSelect(req, res) {
+async function oneInterpreter(req, res) {
   const { id } = req.params;
   
   console.log(id); 
@@ -91,70 +161,12 @@ async function userSelectByWork(req, res) {
   return res.json(events); 
 }
 
-/*
-/   Insert new user  
-*/
-async function userNew(req, res) {
-  const info = [req.body.nafn, req.body.simi, req.body.netfang];
-  let success = true; 
+/*function checkTulkur(req, res){
+  console.log("hello tulkur - console");
+  return res.json('hello Check tulkur');
+}*/
 
-  const sql = `
-    INSERT INTO 
-      tblTulkur(nafn, simi, netfang, stada)
-    VALUES($1, $2, $3, $4rs
-      );
-  `;
-
-  try {
-    success = await insertApp(sql, info); 
-  }
-  catch(e){
-    console.error(e);
-  }
-  
-  if(success){
-    return res.redirect('/');
-  }
-}
-
-/*
-/   Update user  
-*/
-async function userUpdate(req, res) {
-  //const { id } = req.params;
-  const info = [req.body.id, req.body.nafn, req.body.simi, req.body.netfang, req.body.stada];
-  
-  console.log(info); 
-
-  let success = true; 
-
-  const sql = `
-    UPDATE 
-      tblTulkur 
-    SET 
-      id = $1,
-      nafn = $2, 
-      simi = $3, 
-      netfang = $4, 
-      stada = $5
-    WHERE 
-      tblTulkur.id = $1;
-  `;
-  
-  try{
-    success = await updateApp(sql, info)
-    //console.log('ello');
-  }
-  catch(e){
-    console.error(e); 
-  }
-
-  if(success){
-    return res.redirect('/');
-  }
-}
-
-async function checkInterpreter(req, res) {
+/*async function checkInterpreter(req, res) {
   //let info  = [ req.body.dag ];
   const info = [req.body.day, req.body.start, req.body.last];
   //const dagur = [req.body.day];
@@ -213,8 +225,7 @@ async function checkInterpreter(req, res) {
   console.log(idv2); 
 
   return res.json(interpreter);
-}
-
+}*/
 
 /*
 /   Change user  
@@ -241,13 +252,14 @@ async function checkInterpreter(req, res) {
   const change = [req.params.nr];
 }*/
 
-router.get('/', user);
-router.get('/byname', userbyname);
-router.get('/athuga', checkTulkur);
-router.get('/:id', catchErrors(userSelect));
+/* GET */
+router.get('/', getInterpreter);
+router.get('/getName', getNameInterpreter);
+//router.get('/athuga', checkTulkur);
+router.get('/:id', catchErrors(oneInterpreter));
 router.get('/tulkurskoda/:id', catchErrors(userSelectByWork));
 
-router.post('/adduser', catchErrors(userNew));
-router.put('/updateuser', catchErrors(userUpdate));
-
-router.post('/athugapost', catchErrors(checkInterpreter));
+/* POST */
+router.post('/addinterpreter', catchErrors(addInterprter));
+router.post('/updateinterpreter/:id', catchErrors(updateInterpreter));
+//router.post('/athugapost', catchErrors(checkInterpreter));

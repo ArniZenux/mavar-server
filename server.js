@@ -7,8 +7,9 @@ import passport from './auth/login.js';
 //import jsonwebtoken from 'jsonwebtoken'; 
 //const jwt = require('jsonwebtoken');
 //import { router as adminRoute } from './auth/auth.js';
-import { router as tulkurRoute } from './api/tulkur.js';
+import { router as interpreterRoute } from './api/interpreterAPI.js';
 import { router as projectRoute } from './api/project.js';
+import { router as customRoute } from './api/customAPI.js';
 //import { router as beidniRoute } from './api/beidni.js';
 import { router as beidniPontunRoute } from './api/beidniPontun.js';
 
@@ -99,9 +100,10 @@ app.get('/logout', (req, res) => {
 /   Route - server.
 */
 //app.use('/admin', adminRoute ); 
-app.use('/tulkur', tulkurRoute );
+app.use('/tulkur', interpreterRoute );  //chnage tulkur to interpreter
 app.use('/project', projectRoute); 
-app.use('/beidni', beidniPontunRoute); 
+app.use('/custom', customRoute); 
+app.use('/beidni', beidniPontunRoute);   // change beidni to request
 
 function notFoundHandler(req, res, next) {
   const title = 'Sida fannst ekki';

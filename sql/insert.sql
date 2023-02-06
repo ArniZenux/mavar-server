@@ -1,5 +1,5 @@
  INSERT INTO tblTulkur 
-(nafn, simi, netfang, stada) 
+(zname, phonenr, email, zstatus) 
 VALUES ('Eyrún Helga', 
         '9871234', 
         'eh@mavar.is',
@@ -7,7 +7,7 @@ VALUES ('Eyrún Helga',
       );
 
 INSERT INTO tblTulkur 
-(nafn, simi, netfang, stada) 
+(zname, phonenr, email, zstatus) 
 VALUES ('Anna Dagmar', 
         '9877777', 
         'ad@mavar.is',
@@ -15,7 +15,7 @@ VALUES ('Anna Dagmar',
       );
 
 INSERT INTO tblTulkur 
-(nafn, simi, netfang, stada) 
+(zname, phonenr, email, zstatus) 
 VALUES ('Sigrún Erna', 
         '4448785', 
         'se@mavar.is',
@@ -93,18 +93,18 @@ VALUES ('John',
         false
       );
 
-INSERT INTO tblVidskiptavinur 
-(nameuser, email, phonenr) 
+INSERT INTO tblCustom 
+(zname, email, phonenr) 
 VALUES ('Þór Ingi Jónsson',
-        'thor@hti.is',
-        '5551254'
+        '5551254',
+        'thor@hti.is'
       );
 
-INSERT INTO tblVidskiptavinur 
-(nameuser, email, phonenr) 
+INSERT INTO tblCustom 
+(zname, email, phonenr) 
 VALUES ('Hjördis Ösp Karlsdóttir',
-        'hjordis_osp@gmail.com',
-        '8548362'
+        '8548362',
+        'hjordis_osp@gmail.com'
       );
 
 INSERT INTO tblBeidni
