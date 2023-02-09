@@ -55,6 +55,66 @@ async function afbokaBeidniFall(req, res) {
 }
 
 /*
+/   Hafna beiðni  
+*/
+async function hafnaBeidniFall(req, res) {
+  const id = req.body;
+  let success = true; 
+
+  const sql = `
+    UPDATE 
+      tblBeidni 
+    SET 
+      explanation = 'Enginn laus',
+      interpreter = 'Enginn laus',
+      zstatus = 0
+    WHERE 
+      tblBeidni.id = $1;
+  `;
+  
+  try{
+    success = await updateApp(sql, id)
+  }
+  catch(e){
+    console.error(e); 
+  }
+
+  if(success){
+    return res.redirect('/');
+  }
+}
+
+/*
+/   Samþykkt beiðni  
+*/
+async function stadfestaBeidniFall(req, res) {
+  const id = req.body;
+  let success = true; 
+  console.log(id); 
+  const sql = `
+    UPDATE 
+      tblBeidni 
+    SET 
+      explanation = 'Túlkur kemur',
+      interpreter = '',
+      zstatus = 1
+    WHERE 
+      tblBeidni.id = $1;
+  `;
+  
+  /*try{
+    success = await updateApp(sql, id)
+  }
+  catch(e){
+    console.error(e); 
+  }
+
+  if(success){
+    return res.redirect('/');
+  }*/
+}
+
+/*
 /   By one (id) beidni - projects  
 */
 /*
@@ -191,6 +251,7 @@ async function addBeidni(req, res){
 /   Add new beidni
 /   Pöntunarsíða  
 */
+/*
 async function newBeidni(req, res){
   const newOrder = req.body;
   let success = true; 
@@ -232,14 +293,15 @@ async function newBeidni(req, res){
     return res.redirect('/');
   }
 }
+*/
 
 /* GET */
 router.get('/byBeidni', catchErrors(projectBeidni));
 //router.get('/byIdBeidni/:id', catchErrors(projectIdBeidni));
 
-/* PUT - UPDATE */
-router.post('/afbokaBeidni', catchErrors(afbokaBeidniFall));
-
 /* POST */
-//router.post('/addBeidniProject/:id', catchErrors(addBeidni));   // Bókunarsíða
-router.post('/sendaBeidni', catchErrors(newBeidni));      // Pöntunarsíða 
+router.post('/afbokaBeidni', catchErrors(afbokaBeidniFall));
+router.post('/hafnaBeidni', catchErrors(hafnaBeidniFall));
+router.post('/samtykktBeidni', catchErrors(stadfestaBeidniFall));
+
+//router.post('/sendaBeidni', catchErrors(newBeidni));              // Pöntunarsíða 

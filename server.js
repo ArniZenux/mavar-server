@@ -8,9 +8,9 @@ import passport from './auth/login.js';
 //const jwt = require('jsonwebtoken');
 //import { router as adminRoute } from './auth/auth.js';
 import { router as interpreterRoute } from './api/interpreterAPI.js';
-import { router as projectRoute } from './api/project.js';
+import { router as projectRoute } from './api/projectAPI.js';
 import { router as customRoute } from './api/customAPI.js';
-//import { router as beidniRoute } from './api/beidni.js';
+import { router as beidniBokunRoute } from './api/beidniBokun.js';
 import { router as beidniPontunRoute } from './api/beidniPontun.js';
 
 //import { findById } from './auth/users.js';
@@ -104,6 +104,7 @@ app.use('/tulkur', interpreterRoute );  //chnage tulkur to interpreter
 app.use('/project', projectRoute); 
 app.use('/custom', customRoute); 
 app.use('/beidni', beidniPontunRoute);   // change beidni to request
+app.use('/beidnibokun', beidniBokunRoute);   // change beidni to request
 
 function notFoundHandler(req, res, next) {
   const title = 'Sida fannst ekki';

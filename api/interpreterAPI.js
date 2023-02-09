@@ -13,7 +13,7 @@ async function getInterpreter(req, res) {
     SELECT 
       *
     FROM 
-      tblTulkur  
+      tblInterpreter  
     ORDER BY 
       id 
     DESC;
@@ -27,7 +27,7 @@ async function getInterpreter(req, res) {
 /*
 /   Insert new interpreter  
 */
-async function addInterprter(req, res) {
+async function postInterprter(req, res) {
   const info = [
       req.body.zname, 
       req.body.phonenr, 
@@ -37,11 +37,11 @@ async function addInterprter(req, res) {
   
   let success = true; 
 
-  console.log(info); 
+  //console.log(info); 
 
   const sql = `
     INSERT INTO 
-      tblTulkur(zname, phonenr, email, zstatus)
+      tblInterpreter(zname, phonenr, email, zstatus)
     VALUES($1, $2, $3, $4);
   `;
 
@@ -73,14 +73,14 @@ async function updateInterpreter(req, res) {
 
   const sql = `
     UPDATE 
-      tblTulkur 
+      tblInterpreter 
     SET 
       zname = $2, 
       phonenr = $3, 
       email = $4, 
       zstatus = $5
     WHERE 
-      tblTulkur.id = $1;
+      tblInterpreter.id = $1;
   `;
   
   try{
@@ -95,7 +95,6 @@ async function updateInterpreter(req, res) {
   }
 }
 
-
 /*
 /   Túlkur by name. 
 */
@@ -105,7 +104,9 @@ async function getNameInterpreter(req, res) {
     SELECT 
       id, zname
     FROM 
-      tblTulkur;
+      tblInterpreter
+    WHERE
+      tblInterpreter.zstatus = 'Virkur';
   `;
   
   const events = await listApp(sql);
@@ -114,7 +115,7 @@ async function getNameInterpreter(req, res) {
 }
 
 /*
-/   List of one interpreter
+/   List of one interpreter  ????????
 */
 async function oneInterpreter(req, res) {
   const { id } = req.params;
@@ -125,9 +126,9 @@ async function oneInterpreter(req, res) {
     SELECT 
       *
     FROM 
-      tblTulkur
+      tblInterpreter
     WHERE 
-      tblTulkur.id = $1; 
+      tblInterpreter.id = $1; 
   `;
   
   const events = await listApp(sql, [id]);
@@ -145,15 +146,15 @@ async function userSelectByWork(req, res) {
     SELECT 
       *
     FROM 
-      tblTulkur,
-      tblVinna,
-      tblVerkefni
+      tblInterpreter,
+      tblWorks,
+      tblProject
     WHERE 
-      tblTulkur.id = tblVinna.idtulkur
+      tblInterpreter.id = tblWorks.idtulkur
     AND
-      tblVinna.idverkefni = tblVerkefni.id
+      tblWorks.idverkefni = tblProject.id
     AND
-      tblTulkur.id = $1;
+      tblInterpreter.id = $1;
   `;
   
   const events = await listApp(sql, [id]);
@@ -237,7 +238,7 @@ async function userSelectByWork(req, res) {
 
   const sql = `
     UPDATE 
-      tblVinna 
+      tblWorks 
     SET 
       id = $1 
     WHERE 
@@ -260,6 +261,6 @@ router.get('/:id', catchErrors(oneInterpreter));
 router.get('/tulkurskoda/:id', catchErrors(userSelectByWork));
 
 /* POST */
-router.post('/addinterpreter', catchErrors(addInterprter));
+router.post('/addinterpreter', catchErrors(postInterprter));
 router.post('/updateinterpreter/:id', catchErrors(updateInterpreter));
 //router.post('/athugapost', catchErrors(checkInterpreter));

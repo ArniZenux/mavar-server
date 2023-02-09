@@ -25,22 +25,41 @@ async function getCustom(req, res) {
 }
 
 /*
+/   Get name's custom and id  
+*/
+async function getNameCustom(req, res) {
+
+  const sql = `
+    SELECT 
+      id, znamec
+    FROM 
+      tblCustom
+    ORDER BY 
+      id 
+    DESC;
+  `;
+  
+  const events = await listApp(sql);
+  
+  return res.json(events); 
+}
+/*
 /   Insert new custom  
 */
-async function addCustom(req, res) {
+async function postCustom(req, res) {
   const info = [
-      req.body.zname, 
+      req.body.znamec, 
       req.body.phonenr, 
       req.body.email
   ];
   
   let success = true; 
   
-  console.log(info);
+  //console.log(info);
 
   const sql = `
     INSERT INTO 
-      tblCustom(zname, phonenr, email)
+      tblCustom(znamec, phonenr, email)
     VALUES($1, $2, $3);
   `;
   
@@ -62,12 +81,12 @@ async function addCustom(req, res) {
 async function updateCustom(req, res) {
   const info = [
       req.body.id, 
-      req.body.zname, 
+      req.body.znamec, 
       req.body.phonenr, 
       req.body.email
   ];
   
-  console.log(info); 
+  //console.log(info); 
 
   let success = true; 
 
@@ -75,7 +94,7 @@ async function updateCustom(req, res) {
     UPDATE 
       tblCustom 
     SET 
-      zname = $2, 
+      znamec = $2, 
       phonenr = $3, 
       email = $4 
     WHERE 
@@ -121,7 +140,8 @@ async function getCustomListByProject(req, res) {
 
 /* GET */
 router.get('/', getCustom);
+router.get('/getNameCustom', getNameCustom);
 
 /* POST */
-router.post('/addcustom', catchErrors(addCustom));
+router.post('/addcustom', catchErrors(postCustom));
 router.post('/updatecustom/:id', catchErrors(updateCustom));

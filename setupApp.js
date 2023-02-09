@@ -1,7 +1,7 @@
 import { promises } from 'fs';
 import { query, end } from './lib/db.js';
 
-const dropfile = './sql/drop.sql';
+const dropfile = './sql/drop2.sql';
 const schemaFile = './sql/schema.sql';
 const insertFile = './sql/insert.sql';
 
