@@ -34,13 +34,14 @@ async function newBeidni(req, res){
   const sql_beidni = `
     INSERT INTO 
       tblBeidni(
-          zname,
+          znamec,
           place, 
           zdesc,
           zday, 
           start_time, 
           last_time,
           zstatus,
+          zchecked,
           explanation,
           interpreter
           )
@@ -53,7 +54,8 @@ async function newBeidni(req, res){
            $6, 
            $7,
            $8,
-           $9
+           $9,
+           $10
            );
   `;
   

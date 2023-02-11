@@ -25,6 +25,35 @@ async function projectBeidni(req, res) {
 }
 
 /*
+/   opin beiðni
+*/
+async function opinBeidni(req, res){
+  const data = req.body; 
+  let success = true; 
+  
+  const sql = `
+    UPDATE 
+      tblBeidni 
+    SET 
+      zchecked = $2 
+    WHERE 
+      tblBeidni.id = $1;
+  `;
+
+  try{
+    success = await updateApp(sql, data)
+  }
+  catch(e){
+    console.error(e); 
+  }
+
+  if(success){
+    return res.redirect('/');
+  }
+}
+
+
+/*
 /   Afbókun beiðni  
 */
 async function afbokaBeidniFall(req, res) {
@@ -90,19 +119,19 @@ async function hafnaBeidniFall(req, res) {
 async function stadfestaBeidniFall(req, res) {
   const id = req.body;
   let success = true; 
-  console.log(id); 
+  
   const sql = `
     UPDATE 
       tblBeidni 
     SET 
       explanation = 'Túlkur kemur',
-      interpreter = '',
+      interpreter = $2,
       zstatus = 1
     WHERE 
       tblBeidni.id = $1;
   `;
   
-  /*try{
+  try{
     success = await updateApp(sql, id)
   }
   catch(e){
@@ -111,13 +140,12 @@ async function stadfestaBeidniFall(req, res) {
 
   if(success){
     return res.redirect('/');
-  }*/
+  }
 }
 
 /*
 /   By one (id) beidni - projects  
 */
-/*
 async function projectIdBeidni(req, res){
   const { id } = req.params;
 
@@ -133,10 +161,11 @@ async function projectIdBeidni(req, res){
   const events = await listApp(sql, [id]);
   
   return res.json(events); 
-}*/
+}
 
 /*
-/   Add new beidni - project
+/   Add request with custom and interpreter 
+/   in tblproject, tblorder, tblworks
 /   Bókunarsíða  
 */
 /*
@@ -298,10 +327,12 @@ async function newBeidni(req, res){
 /* GET */
 router.get('/byBeidni', catchErrors(projectBeidni));
 //router.get('/byIdBeidni/:id', catchErrors(projectIdBeidni));
+router.get('/idBeidni/:id', catchErrors(projectIdBeidni));
 
 /* POST */
 router.post('/afbokaBeidni', catchErrors(afbokaBeidniFall));
 router.post('/hafnaBeidni', catchErrors(hafnaBeidniFall));
 router.post('/samtykktBeidni', catchErrors(stadfestaBeidniFall));
+router.post('/opinBeidni', catchErrors(opinBeidni));     
 
 //router.post('/sendaBeidni', catchErrors(newBeidni));              // Pöntunarsíða 

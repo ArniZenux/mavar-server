@@ -85,6 +85,7 @@ CREATE TABLE IF NOT EXISTS tblBeidni (
   start_time varchar(64) not null,
   last_time varchar(64) not null,
   zstatus integer not null,
+  zchecked integer not null,
   explanation varchar(64),
   interpreter varchar(64)
 );

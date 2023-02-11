@@ -106,7 +106,7 @@ VALUES ('2'
         );
 
 INSERT INTO tblBeidni
-(znamec, zdesc, place, zday, start_time, last_time, zstatus, explanation, interpreter)
+(znamec, zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
 VALUES ('Sæþór Jónsson',
         'Fundur með ráðherra um túlkamál',
         'Reykjavík',
@@ -114,12 +114,13 @@ VALUES ('Sæþór Jónsson',
         '10:00',
         '12:00',
         3,
+        1,
         'Afbókun',
         'Afbókun'
        );
 
 INSERT INTO tblBeidni
-(znamec, zdesc, place, zday, start_time, last_time, zstatus, explanation, interpreter)
+(znamec, zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
 VALUES ('Sæþór Jónsson',
         'Námskeið í FB',
         'Reykjavík',
@@ -127,12 +128,13 @@ VALUES ('Sæþór Jónsson',
         '11:00',
         '00:00',
         0,
+        1,
         'Enginn laus',
         'Enginn laus'
        );
 
 INSERT INTO tblBeidni
-(znamec, zdesc, place, zday, start_time, last_time, zstatus, explanation, interpreter)
+(znamec, zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
 VALUES ('Þórhallur Ingasson',
         'Námskeið í Reykjavíkarskóli um ljós og hljóð',
         'Reykjavík',
@@ -140,12 +142,13 @@ VALUES ('Þórhallur Ingasson',
         '18:00',
         '18:30',
         1,
+        1,
         'Túlkur kemur',
         'Árný Rósa'
        );
 
 INSERT INTO tblBeidni
-(znamec, zdesc, place, zday, start_time, last_time, zstatus, explanation, interpreter)
+(znamec, zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
 VALUES ('Jónas Ingasson',
         'Námskeið í fjallaskíða',
         'Bláfjöll',
@@ -153,6 +156,7 @@ VALUES ('Jónas Ingasson',
         '18:00',
         '19:30',
         2,
+        0,
         'í vinnslu',
         'í vinnslu'
        );
