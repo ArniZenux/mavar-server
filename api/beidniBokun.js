@@ -116,7 +116,7 @@ async function hafnaBeidniFall(req, res) {
 /*
 /   Samþykkt beiðni  
 */
-async function stadfestaBeidniFall(req, res) {
+async function samtykktBeidniFall(req, res) {
   const id = req.body;
   let success = true; 
   
@@ -332,7 +332,7 @@ router.get('/idBeidni/:id', catchErrors(projectIdBeidni));
 /* POST */
 router.post('/afbokaBeidni', catchErrors(afbokaBeidniFall));
 router.post('/hafnaBeidni', catchErrors(hafnaBeidniFall));
-router.post('/samtykktBeidni', catchErrors(stadfestaBeidniFall));
+router.post('/samtykktBeidni', catchErrors(samtykktBeidniFall));
 router.post('/opinBeidni', catchErrors(opinBeidni));     
 
 //router.post('/sendaBeidni', catchErrors(newBeidni));              // Pöntunarsíða 

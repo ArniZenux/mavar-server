@@ -4,7 +4,6 @@ import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
 
-
 ///////////////
 //  Project  //
 ///////////////
@@ -27,7 +26,7 @@ async function getProject(req, res) {
 }
 
 /*
-/   All projects - customs and interpreters 
+/   All projects - customs and interpreters by ID
 */
 async function getProjectCustomInterpreter(req, res) {
 
@@ -57,8 +56,9 @@ async function getProjectCustomInterpreter(req, res) {
   
   return res.json(events); 
 }
+
 /*
-/   Project by user  
+/   Project by interpreter  
 */
 async function getProjectByTulkur(req, res) {
 
@@ -114,24 +114,24 @@ async function postOrder(zorder){
   console.log(zorder);
 
   const sql_order = `
-  INSERT INTO 
-    tblOrder(idcustom)
-  VALUES(
-    $1);
-`;
+    INSERT INTO 
+      tblOrder(idcustom)
+    VALUES(
+      $1);
+  `;
 
-let success_order = true; 
+  let success_order = true; 
 
-try {
-  success_order = await insertApp(sql_order, [zorder]);
-}
-catch(e){
+  try {
+    success_order = await insertApp(sql_order, [zorder]);
+  }
+  catch(e){
     console.error(e);
-}
+  }
 
-if(success_order){
-  return success_order;
-}
+  if(success_order){
+    return success_order;
+  }
 }
 
 /*
@@ -207,26 +207,57 @@ async function postProject(req, res){
 }
 
 /*
-/   Update project  
+/   Update tblWorks 
+/   Change interpreter.  
 */
-async function projectUpdate(req, res){
-  //const { id } = req.params;
-  const zproject = [
-    req.body.id,
-    req.body.title, 
-    req.body.place, 
-    req.body.day, 
-    req.body.start_time, 
-    req.body.last_time, 
-    req.body.scene,
-    req.body.start_event, 
-    req.body.last_event, 
-    req.body.allday    
-  ];
+async function updateWork(zworks){
+  
+  console.log(zworks); 
 
   let success = true; 
+  
+  const sql_updateWork = `
+    UPDATE 
+      tblWorks 
+    SET 
+      idinterpreter = $2 
+    WHERE 
+      tblWorks.idproject = $1;
+  `;
 
-  const sql = `
+  try{
+    success = await updateApp(sql_updateWork, zworks);
+  }
+  catch(e){
+    console.error(e); 
+  }
+
+  if(success){
+    return res.redirect('/');
+  }
+}
+
+/*
+/   Update project and change interpreter 
+*/
+async function projectUpdate(req, res){
+  let xproject = [];
+  let zwho_work = [];
+  let zproject = req.body;
+  
+  console.log(zproject);
+
+  xproject.push(zproject[0]);
+  xproject.push(zproject[1]);
+  xproject.push(zproject[2]);
+  xproject.push(zproject[3]);
+  xproject.push(zproject[4]);
+  xproject.push(zproject[5]);
+  xproject.push(zproject[6]);
+  
+  console.log(xproject); 
+
+  const sql_updateProject = `
     UPDATE 
       tblProject
     SET 
@@ -235,80 +266,36 @@ async function projectUpdate(req, res){
       zday = $4,
       start_time = $5,
       last_time = $6,
-      scene = $7,
-      start_event = $8,
-      last_event = $9,
-      allDay = $10 
+      scene = $7
     WHERE 
       tblProject.id = $1;
   `;
-  
-  try{
-    success = await updateApp(sql, zproject)
+
+  zwho_work.push(zproject[0]);
+  zwho_work.push(zproject[7]);
+
+  let success_upddate_project = true; 
+  let success_work_res;
+
+  try {
+    success_upddate_project = await updateApp(sql_updateProject, xproject);
   }
   catch(e){
-    console.error(e); 
+    console.error(e);
   }
 
-  if(success){
-    return res.redirect('/');
-  }
-}
-
-/*
-/   Update tblWorks - change user - skipta um túlk.  
-*/
-async function VinnaUpdate(req, res){
-  
-  const data = req.body
-
-  const tulkur = data.tulkur; 
-  const idverkefni = data.idverkefni; 
-  
-  console.log(tulkur);
-  console.log(idverkefni);  
-
-  let success = true; 
-  
-  const sql_oneTulkur = `
-  SELECT 
-    id
-  FROM
-    tblInterpreter
-  WHERE
-    tblInterpreter.zname = $1;
-  `;
-
-  const sql = `
-    UPDATE 
-      tblWorks 
-    SET 
-      idinterpreter = $1 
-    WHERE 
-      tblWorks.idproject = $2;
-  `;
-  
-  const ress = await listApp(sql_oneTulkur, [tulkur]); 
-  const obj2 = JSON.stringify(ress);
-  const obj_st = obj2.split(":");
-  const id_t = obj_st[1];
-  const idt = id_t.slice(0,1);
-  
-  try{
-    success = await updateApp(sql, [idt, idverkefni]);
-  }
-  catch(e){
-    console.error(e); 
+  if(success_upddate_project){
+    success_work_res = updateWork(zwho_work);
   }
 
-  if(success){
+  if(success_work_res){
     return res.redirect('/');
   }
 }
 
 /*
 /   Delete project  
-*/
+*//*
 async function projectDelete(req, res){
   
   const info = req.body;
@@ -343,150 +330,18 @@ async function projectDelete(req, res){
   }
   catch(e){
     console.log(e); 
-  }
+  }  
+    success_order_res = postWork(zwho_work);
+
 
   if(success && success2){
     return res.redirect('/');
   }
-}
-
-///////////////////////////
-//  Project in Calander  //
-///////////////////////////
-
-/*
-/   All projects  - FullCalander - Table
-*/
-async function CountEvents(id) {
-
-  const tblEvents = `
-    SELECT 
-      COUNT(tblEventVinna.idproject)
-    FROM 
-      tblInterpreter,
-      tblEventVinna,
-      tblEventTable
-    WHERE 
-      tblInterpreter.id=tblEventVinna.idinterpreter
-    AND
-      tblEventVinna.idproject=tblEventTable.id
-    AND
-      tblInterpreter.id=$1;
-    `;
-  
-  let events = await listApp(tblEvents, [id] );
-  return events;
-  //console.log(events);
-  //return res.json(events);  
-  //return events; 
-}
-
-/*
-/   All projects  - FullCalander - Table
-*/
-async function getProjectEvents(req, res) {
-  const { id } = req.params;
-  
-  let group = []; 
-
-  const tblEventsCounter = `
-  SELECT 
-    COUNT(tblEventVinna.idproject)
-  FROM 
-    tblInterpreter,
-    tblEventVinna,
-    tblEventTable
-  WHERE 
-    tblInterpreter.id=tblEventVinna.idinterpreter
-  AND
-    tblEventVinna.idproject=tblEventTable.id
-  AND
-    tblInterpreter.id=$1;
-  `;
-
-  const tblEvents = `
-    SELECT
-      tblEventVinna.idproject,
-      tblEventTable.title, 
-      tblEventTable.start_event, 
-      tblEventTable.end_event, 
-      tblEventTable.allday
-    FROM 
-      tblInterpreter
-      INNER JOIN tblEventVinna ON tblInterpreter.id=tblEventVinna.idinterpreter
-      INNER JOIN tblEventTable ON tblEventVinna.idproject=tblEventTable.id
-    WHERE 
-      tblInterpreter.id=$1;
-    `;
-  
- 
-  let events = await listApp(tblEvents, [id] );
-  
-  return res.json(events); 
-  //return strengur; 
-}
-
-async function addEvent(req, res){
-  const info = [req.body.title, req.body.dag_byrja, req.body.dag_endir, req.body.satt];
-  const idTulkur = [req.body.id];
-
-  console.log(info); 
-  console.log(idTulkur); 
-
-  let success = true; 
-  let success2 = true; 
-
-  const sqlNewEvent = `
-    INSERT INTO 
-      tblEventTable(title, start_event, end_event, allDay)
-    VALUES($1, $2, $3, $4);
-  `;
-
-  const sqlNewEventVinna = `
-    INSERT INTO 
-      tblEventVinna(idinterpreter)
-    VALUES($1);
-  `;
-  
-  try {
-    success = await insertApp(sqlNewEvent, info); 
-    success2 = await insertApp(sqlNewEventVinna, idTulkur); 
-  }
-  catch(e){
-    console.error(e);
-  }
-  
-  if(success){
-    return res.redirect('/');
-  }
-  
-  //console.log('hello hello');
-  //res.send('hello res');
-}
-
-/*
-/   All projects - DEAF  
-*//*
-async function projectDeaf(req, res) {
-
-  const tblVerkefni4 = `
-    SELECT 
-      *
-    FROM 
-      tblList;
-  `;
-  
-  const events4 = await listApp(tblVerkefni4);
-  
-  return res.json(events4); 
 }*/
-
-
 
 
 /* GET */
 router.get('/', catchErrors(getProject));
-router.get('/events/:id', catchErrors(getProjectEvents));
 router.get('/byTulkur', catchErrors(getProjectByTulkur));
 router.get('/allProject', catchErrors(getProjectCustomInterpreter));
 
@@ -495,11 +350,9 @@ router.post('/add_project', catchErrors(postProject));
 router.post('/add_work_project', catchErrors(postWork)); 
 router.post('/add_order_project', catchErrors(postOrder)); 
 
-router.post('/addnewevent', catchErrors(addEvent)); 
-
 /* PUT */
-router.put('/updateproject/:id', catchErrors(projectUpdate));
-router.put('/updatevinna/:id', catchErrors(VinnaUpdate));
+router.post('/updateproject', catchErrors(projectUpdate));
+//router.post('/updateworks', catchErrors(worksUpdate));
 
 /* DELETE */ 
-router.delete('/delverkefniprofa', catchErrors(projectDelete));
+//router.delete('/delverkefniprofa', catchErrors(projectDelete));

@@ -12,6 +12,7 @@ import { router as projectRoute } from './api/projectAPI.js';
 import { router as customRoute } from './api/customAPI.js';
 import { router as beidniBokunRoute } from './api/beidniBokun.js';
 import { router as beidniPontunRoute } from './api/beidniPontun.js';
+import { router as calenderRoute } from './api/calanderAPI.js';
 
 //import { findById } from './auth/users.js';
 
@@ -105,6 +106,7 @@ app.use('/project', projectRoute);
 app.use('/custom', customRoute); 
 app.use('/beidni', beidniPontunRoute);   // change beidni to request
 app.use('/beidnibokun', beidniBokunRoute);   // change beidni to request
+app.use('/calander', calenderRoute);   // change beidni to request
 
 function notFoundHandler(req, res, next) {
   const title = 'Sida fannst ekki';
