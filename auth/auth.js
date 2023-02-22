@@ -1,10 +1,14 @@
 import express from 'express';
-//import jwt from 'jsonwebtoken';
 import passport, { ensureLoggedIn } from './login.js';
 //import { catchErrors } from '../lib/utils.js';
+import jsonwebtoken from 'jsonwebtoken'; 
+import jwt from 'jsonwebtoken';
 
 export const router = express.Router();
 
+function getToken(username){
+  return jwt.sign(username, process.env.SESSION_SECRET, { expiresIn: '1800s' });
+}
 /*
 /   Login - indexAdmin  
 */
@@ -71,8 +75,11 @@ router.post('/login',
 
   // Ef við komumst hingað var notandi skráður inn, senda á /admin
   (req, res) => {
-    const token = "#$asdfasdf"; //getToken(); 
+    console.log(req.user.username); 
+
+    const token = getToken(req.user.username); //"#$asdfasdf"; //getToken(); 
     res.send({ success : true, token });
+    
     //res.redirect('/admin');
     //console.log('hello admin');
   },

@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
-import { query } from '../lib/db.js';
+import xss from 'xss';
+import { conditionalUpdate, query } from '../lib/db.js';
 
 export async function comparePasswords(password, user) {
   const ok = await bcrypt.compare(password, user.password);
@@ -20,7 +21,8 @@ export async function findByUsername(username) {
     WHERE 
       username = $1;
   `;
-
+  console.log('FindByUsername');
+    
   try {
     const result = await query(q, [username]);
     
@@ -44,11 +46,11 @@ export async function findByEmail(email) {
     WHERE 
       email = $1;
   `;
-  console.log("helo");
+  console.log("FindByEmail - console");
 
   try {
     const result = await query(q, [email]);
-    console.log("hello - Email soul");
+    console.log("FindByEmail - Found - console");
 
     if (result.rowCount === 1) {
       return result.rows[0];
@@ -87,20 +89,65 @@ export async function findById(id) {
 export async function createUser(username, password) {
   // Geymum hashað password!
   const hashedPassword = await bcrypt.hash(password, 11);
+  let admin_false = false; 
 
   const q = `
     INSERT INTO
-      tblUsers (username, password)
-    VALUES ($1, $2)
+      tblUsers (username, email, password, admin)
+    VALUES ($1, $2, $3, $4)
     RETURNING *
   `;
 
   try {
-    const result = await query(q, [username, hashedPassword]);
+    const result = await query(q, [username, email, hashedPassword, admin_false]);
     return result.rows[0];
   } catch (e) {
     console.error('Gat ekki búið til notanda');
   }
 
   return null;
+}
+
+function isInt(i) {
+  return i !== '' && Number.isInteger(Number(i));
+}
+
+function isString(s) {
+  return typeof s === 'string';
+}
+
+export async function updateUser(id, password, email){
+  if(!isInt(id)){
+    return null; 
+  }
+
+  const fields = [ 
+    isString(password) ? 'password' : null,
+    isString(email) ? 'email' : null,
+  ];
+
+  let hashedPassword = null;
+
+  if(password){
+    hashedPassword = await bcrypt.hash(password, parseInt(bcryptRounds, 11));
+  }
+
+  const values = [
+    hashedPassword,
+    isString(email) ? xss(email) : null,
+  ];
+
+  fields.push('updated');
+  values.push(new Date());
+
+  const result = await conditionalUpdate('users', id, fields, values);
+
+  if(!result){
+    return null;
+  }
+
+  const updateUser = result.rows[0];
+  delete updateUser.password;
+
+  return updateUser;
 }

@@ -66,10 +66,8 @@ CREATE TABLE IF NOT EXISTS tblEventVinna (
 /* Notandi og password for login */
 CREATE TABLE IF NOT EXISTS tblUsers (
   id serial primary key,
-  zname varchar(64) not null, 
+  username varchar(64) not null, 
   email character varying(100) not null, 
-  phonenr varchar(10) not null, 
-  username character varying(64) not null,
   password character varying(256) not null,
   admin boolean not null
 );
@@ -92,10 +90,8 @@ CREATE TABLE IF NOT EXISTS tblBeidni (
 
 CREATE TABLE IF NOT EXISTS tblUsers (
   id serial primary key,
-  nameuser varchar(64) not null, 
+  username varchar(64) not null, 
   email character varying(100) not null, 
-  phonenr varchar(10) not null, 
-  username character varying(64) not null,
   password character varying(256) not null,
   admin boolean not null
 );

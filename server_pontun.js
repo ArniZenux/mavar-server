@@ -5,8 +5,6 @@ import bodyParse from 'body-parser';
 import cors from 'cors'; 
 import passport from './auth/login.js';
 
-//import jsonwebtoken from 'jsonwebtoken'; 
-//const jwt = require('jsonwebtoken');
 
 import { router as adminRoute } from './auth/auth.js';
 import { router as interpreterRoute } from './api/interpreterAPI.js';
@@ -49,13 +47,10 @@ app.use((req, res, next) => {
     // getum núna notað user í viewum
     res.locals.user = req.user;
   }
-
   next();
 });
 
-/*function generateAccessToken(username){
-  return jwt.sign(username, process.env.SESSION_SECRET, { expiresIn: '1800s' });
-}*/
+
 
 //-------------------//
 //   Main server     //

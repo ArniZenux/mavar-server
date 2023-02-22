@@ -210,21 +210,17 @@ INSERT INTO tblEventVinna
 VALUES ('3');
 
 INSERT INTO tblUsers 
-(zname, email, phonenr, username, password, admin) 
-VALUES ('Admin',
+(username, email, password, admin) 
+VALUES ('Administration',
         'admin@shh.is',
-        '1234567',
-        'admin', 
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         true
       );
 
 INSERT INTO tblUsers 
-(zname, email, phonenr, username, password, admin) 
-VALUES ('John', 
+(username, email, password, admin) 
+VALUES ('Anna', 
         'anna@shh.is',
-        '9876543',
-        'anna', 
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         false
       );
