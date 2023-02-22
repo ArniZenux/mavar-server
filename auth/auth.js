@@ -1,21 +1,9 @@
 import express from 'express';
-import jwt from 'jsonwebtoken';
-//import passport, { ensureLoggedIn } from './login.js';
-import { catchErrors } from '../lib/utils.js';
+//import jwt from 'jsonwebtoken';
+import passport, { ensureLoggedIn } from './login.js';
+//import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
-
-
-//*****************************/
-//   route                    //
-//*****************************/
-export function ensureLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-
-  return res.redirect('/admin/login');
-}
 
 /*
 /   Login - indexAdmin  
@@ -62,10 +50,18 @@ async function login(req, res) {
   `);
 }
 
+async function utskra(req, res) {
+  req.logout();
+  req.redirect('/');
+}
+
+/* GET */
 router.get('/', indexAdmin);
 router.get('/login', login); 
-router.get('/info', ensureLoggedIn, infoAdmin);
+router.get('/info', infoAdmin);
+router.get('/logout', utskra) ;
 
+/* POST */
 router.post('/login', 
   // Þetta notar strat að ofan til að skrá notanda inn
   passport.authenticate('local', {
@@ -82,7 +78,4 @@ router.post('/login',
   },
 );
 
-router.get('/logout', (req, res) => {
-  req.logout();
-  req.redirect('/');
-});
+

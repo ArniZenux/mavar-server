@@ -222,7 +222,7 @@ VALUES ('Admin',
 INSERT INTO tblUsers 
 (zname, email, phonenr, username, password, admin) 
 VALUES ('John', 
-        'anna@simnet.is',
+        'anna@shh.is',
         '9876543',
         'anna', 
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',

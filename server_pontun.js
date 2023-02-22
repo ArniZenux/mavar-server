@@ -10,11 +10,6 @@ import passport from './auth/login.js';
 
 import { router as adminRoute } from './auth/auth.js';
 import { router as interpreterRoute } from './api/interpreterAPI.js';
-import { router as projectRoute } from './api/projectAPI.js';
-import { router as customRoute } from './api/customAPI.js';
-import { router as beidniBokunRoute } from './api/beidniBokun.js';
-import { router as beidniPontunRoute } from './api/beidniPontun.js';
-import { router as calenderRoute } from './api/calanderAPI.js';
 
 //import { findById } from './auth/users.js';
 
@@ -70,43 +65,10 @@ app.get('/' , (req, res) => {
 });
 
 /*
-app.post(
-  '/login',
-  
-  // Þetta notar strat að ofan til að skrá notanda inn
-  passport.authenticate('local', {
-    failureMessage: 'Email eða lykilorð vitlaust.',
-    failureRedirect: '/login',
-  }),
-  
-  // Ef við komumst hingað var notandi skráður inn, senda á /admin
-  (req, res) => {
-    const token = "asdfasdf"; //generateAccessToken(user); //getToken(); 
-    //const user = findById(username);
-    res.send({ success : true, token });
-    //res.redirect('/admin');
-    //console.log('hello admin');
-    //res.send('asdfdsaf');
-  },
-);
-*/
-
-/*app.get('/logout', (req, res) => {
-  // logout hendir session cookie og session
-  req.logout();
-  res.redirect('/');
-});*/
-
-/*
 /   Routes - server.
 */
 app.use('/admin', adminRoute ); 
 app.use('/tulkur', interpreterRoute );  //chnage tulkur to interpreter
-app.use('/project', projectRoute); 
-app.use('/custom', customRoute); 
-app.use('/beidni', beidniPontunRoute);   // change beidni to request
-app.use('/beidnibokun', beidniBokunRoute);   // change beidni to request
-app.use('/calander', calenderRoute);   // change beidni to request
 
 function notFoundHandler(req, res, next) {
   const title = 'Sida fannst ekki';

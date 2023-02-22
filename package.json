@@ -6,8 +6,8 @@
   "main": "server.js",
   "scripts": {
     "setup": "node setupApp.js",
-    "start": "node server.js",
-    "dev": "dotenv -e .env -- nodemon server.js"
+    "start": "node server_pontun.js",
+    "dev": "dotenv -e .env -- nodemon server_pontun.js"
   },
   "repository": {
     "type": "git",
