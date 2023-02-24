@@ -5,8 +5,7 @@ import bodyParse from 'body-parser';
 import cors from 'cors'; 
 import passport from './auth/login.js';
 
-
-import { router as adminRoute } from './auth/auth.js';
+import { router as adminRoute } from './auth/admin.js';
 import { router as interpreterRoute } from './api/interpreterAPI.js';
 
 //import { findById } from './auth/users.js';
@@ -14,15 +13,21 @@ import { router as interpreterRoute } from './api/interpreterAPI.js';
 dotenv.config();
 
 const {
-  PORT: port,
+  PORT: port = 8080,
+  JWT_SECRET : jwtSecret,
   SESSION_SECRET: sessionSecret,
   DATABASE_URL: connectionString,
 } = process.env;
 
-if ( !connectionString || !sessionSecret )  {
-  console.error('Vantar ConnectionString eða SessionSecret í env - app');
+if (!jwtSecret || !connectionString) {
+  console.error('Vantar .env gildi');
   process.exit(1);
 }
+
+/*if ( !connectionString || !sessionSecret)  {
+  console.error('Vantar ConnectionString , SessionSecret eða jwtSecret í env - app');
+  process.exit(1);
+}*/
 
 const app = express();
 
@@ -42,15 +47,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+/*
 app.use((req, res, next) => {
   if (req.isAuthenticated()) {
     // getum núna notað user í viewum
     res.locals.user = req.user;
   }
   next();
-});
-
-
+});*/
 
 //-------------------//
 //   Main server     //

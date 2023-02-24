@@ -1,6 +1,9 @@
 import passport from 'passport';
 import { Strategy } from 'passport-local';
-import { comparePasswords, findByUsername, findByEmail, findById } from './users.js';
+//import { Strategy, ExtractJwt } from 'passport-jwt';
+import { comparePasswords, findByEmail, findById } from './users.js';
+
+//const zjwt = process.env.jwtSecret;
 
 /**
  * Athugar hvort username og password sé til í notandakerfi.
@@ -17,7 +20,7 @@ async function strat(email, password, done) {
     //const user = await findByUsername(email);  // Username
     const user = await findByEmail(email);       // Email
     
-    console.log("hello FindByUsername");
+    console.log("strat - findByEmail");
 
     if (!user) {
       console.log('Ekki til');
@@ -36,14 +39,20 @@ async function strat(email, password, done) {
   }
 }
 
+/*
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: zjwt,
+};*/
+
 // Notum local strategy með „strattinu“ okkar til að leita að notanda
 passport.use(new Strategy(strat));
 passport.use(new Strategy({ usernameField: 'email' }, strat));
 
 // getum stillt með því að senda options hlut með
-
 // Geymum id á notanda í session, það er nóg til að vita hvaða notandi þetta er
 passport.serializeUser((user, done) => {
+  //console.log('user  - serializeUser :>> ', user); 
   done(null, user.id);
 });
 
@@ -51,11 +60,26 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await findById(id);
+    //console.log('user :>> ', user); 
     done(null, user);
   } catch (err) {
     done(err);
   }
 });
+
+/*function pickUp(id){
+  return passport.deserializeUser(async (id, done) => {
+    try {
+      const user = await findById(id);
+      console.log('user :>> ', user); 
+      done(null, user);
+    } catch (err) {
+      done(err);
+    }
+  });
+}*/
+//console.log('hallo administrator');
+//console.log(pickUp(1));
 
 // Hjálpar middleware sem athugar hvort notandi sé innskráður og hleypir okkur
 // þá áfram, annars sendir á /login
@@ -64,14 +88,14 @@ export function ensureLoggedIn(req, res, next) {
     return next();
   }
 
-  return res.redirect('/login');
+  return res.redirect('/admin/login');
 }
 
 export function isAdmin(req, res, next){
   if (req.isAuthenticated()){
     const u = req.user;
     console.log('user.admin --> ' + u.admin);
-    if(u.amdin) {
+    if(u.admin) {
       return next(); 
     }
   }
