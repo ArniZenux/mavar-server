@@ -1,10 +1,10 @@
 import express from 'express';
 import passport, { ensureLoggedIn } from './login.js';
 import { listApp } from '../lib/db.js';
+import jwt from 'jsonwebtoken';
+
 //import { getToken, verifyUser } from './authenticate.js';
 //import { catchErrors } from '../lib/utils.js';
-//import jsonwebtoken from 'jsonwebtoken'; 
-import jwt from 'jsonwebtoken';
 
 export const router = express.Router();
 
@@ -13,12 +13,19 @@ function getToken(user){
   //const payload = { id: user.id};
   //const tokenOptions = { expireIn: tokenLifetime };
   //return jwt.sign(payload, process.env.JWT_SECRET, tokenOptions);
-  return jwt.sign(user, process.env.SESSION_SECRET);
+  //return jwt.sign(user, process.env.SESSION_SECRET);
+  return jwt.sign(user, process.env.JWT_SECRET);
 }
 
+/*
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: zjwt,
+};*/
+
 function requireAuthentication(req, res, next) {
-  return passport.authenticate('jwt', { session: false })(req, res, next);
-  /*
+  //return passport.authenticate('jwt', { session: false })(req, res, next);
+  
   return passport.authenticate(
     'jwt',
     { session: false },
@@ -38,7 +45,7 @@ function requireAuthentication(req, res, next) {
       req.user = user;
       return next();
     },
-  )(req, res, next);*/
+  )(req, res, next);
 }
 //_____________________________________________________________________________
 
@@ -46,10 +53,12 @@ function requireAuthentication(req, res, next) {
 /   Login - indexAdmin - GET
 */
 async function indexAdmin(req, res) {
+  
+  console.log(req); 
+
   if(req.isAuthenticated()){
     res.send( { data: req.user });
   }
-
   return res.send({ data: 'top sercet' });
 }
 
@@ -57,9 +66,7 @@ async function indexAdmin(req, res) {
 /   Info about Admin - GET 
 */
 async function infoAdmin(req, res) {
-
   console.log(req.user); 
-  
   res.json({ data: 'top secret' });
   /*console.log('Herna er console - Nav- call you');
   if(req.isAuthenticated()){
@@ -120,7 +127,7 @@ async function oneAdmin(req, res) {
 }
 
 /* GET */
-router.get('/', indexAdmin);
+router.get('/', requireAuthentication, indexAdmin);
 router.get('/login', login); 
 router.get('/me', infoAdmin);
 router.get('/:id', oneAdmin);
@@ -139,12 +146,9 @@ router.post('/login',
 
     console.log(req.isAuthenticated());
     console.log(req.user); 
-    //const token = getToken(req.user); //"#$asdfasdf"; //getToken(); 
-    
-    const token = req.user.id; 
-
+    const token = getToken(req.user); //"#$asdfasdf"; //getToken(); 
+    //const token = req.user.id; 
     res.send({ token });
-    
     //res.redirect('/admin');
     //console.log('hello admin');
   },

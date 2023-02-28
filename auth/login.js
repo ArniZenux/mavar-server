@@ -1,6 +1,7 @@
 import passport from 'passport';
-import { Strategy } from 'passport-local';
-//import { Strategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+
 import { comparePasswords, findByEmail, findById } from './users.js';
 
 //const zjwt = process.env.jwtSecret;
@@ -39,16 +40,11 @@ async function strat(email, password, done) {
   }
 }
 
-/*
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: zjwt,
-};*/
+
 
 // Notum local strategy með „strattinu“ okkar til að leita að notanda
-passport.use(new Strategy(strat));
-passport.use(new Strategy({ usernameField: 'email' }, strat));
-
+passport.use(new LocalStrategy (strat));
+passport.use(new LocalStrategy ({ usernameField: 'email' }, strat));
 // getum stillt með því að senda options hlut með
 // Geymum id á notanda í session, það er nóg til að vita hvaða notandi þetta er
 passport.serializeUser((user, done) => {
@@ -67,19 +63,24 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-/*function pickUp(id){
-  return passport.deserializeUser(async (id, done) => {
-    try {
-      const user = await findById(id);
-      console.log('user :>> ', user); 
-      done(null, user);
-    } catch (err) {
-      done(err);
-    }
-  });
-}*/
-//console.log('hallo administrator');
-//console.log(pickUp(1));
+
+async function stratID(data, next) {
+  // fáum id gegnum data sem geymt er í token
+  const user = await findById(data.id);
+
+  if (user) {
+    next(null, user);
+  } else {
+    next(null, false);
+  }
+}
+
+const jwtOpts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET,
+}
+
+passport.use(new JwtStrategy(jwtOpts, stratID));
 
 // Hjálpar middleware sem athugar hvort notandi sé innskráður og hleypir okkur
 // þá áfram, annars sendir á /login
