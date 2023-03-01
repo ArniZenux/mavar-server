@@ -14,7 +14,7 @@ function getToken(user){
   //const tokenOptions = { expireIn: tokenLifetime };
   //return jwt.sign(payload, process.env.JWT_SECRET, tokenOptions);
   //return jwt.sign(user, process.env.SESSION_SECRET);
-  return jwt.sign(user, process.env.JWT_SECRET);
+  return jwt.sign(user, process.env.jwtSecret);
 }
 
 /*

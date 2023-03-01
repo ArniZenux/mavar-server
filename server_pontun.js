@@ -5,7 +5,8 @@ import bodyParse from 'body-parser';
 import cors from 'cors'; 
 import passport from './auth/login.js';
 
-import { router as adminRoute } from './auth/admin.js';
+//import { router as adminRoute } from './auth/admin.js';
+import { router as adminRoute } from './auth/admin_mini.js';
 import { router as interpreterRoute } from './api/interpreterAPI.js';
 
 //import { findById } from './auth/users.js';
@@ -31,7 +32,20 @@ if (!jwtSecret || !connectionString) {
 
 const app = express();
 
+const whitelist = ['http://localhost:8080'];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error())
+    }
+  }
+}
+
 app.use(cors());
+
 app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({ extended: true }));
 

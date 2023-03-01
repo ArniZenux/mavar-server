@@ -1,4 +1,5 @@
 import express from 'express';
+import { requireAuthentication } from '../auth/login.js';
 import { listApp, insertApp, updateApp } from '../lib/db.js';
 import { catchErrors } from '../lib/utils.js';
 
