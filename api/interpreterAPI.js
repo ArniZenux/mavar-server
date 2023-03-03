@@ -8,21 +8,44 @@ export const router = express.Router();
 /*
 /   All interpreters  
 */
+async function getHello(req, res) {
+  console.log('Interpreter');
+  return res.send({data: 'secret data túlkur!!--'});
+  //return res.json(events); 
+}
+
 async function getInterpreter(req, res) {
 
-  const sql = `
+  console.log(req.user.admin); 
+  if(req.user.admin){
+    const sql = `
+      SELECT 
+        *
+      FROM 
+        tblInterpreter  
+      ORDER BY 
+        id 
+      DESC;
+    `;
+    
+    const events = await listApp(sql);
+    
+    return res.json(events);
+  } else {
+    const sql = `
     SELECT 
       *
     FROM 
       tblInterpreter  
     ORDER BY 
       id 
-    DESC;
+    ASC;
   `;
   
   const events = await listApp(sql);
   
-  return res.json(events); 
+  return res.json(events);
+  } 
 }
 
 /*
@@ -255,7 +278,8 @@ async function userSelectByWork(req, res) {
 }*/
 
 /* GET */
-router.get('/', getInterpreter);
+router.get('/', requireAuthentication, getInterpreter);
+router.get('/getHello',requireAuthentication, getHello);
 router.get('/getName', getNameInterpreter);
 //router.get('/athuga', checkTulkur);
 router.get('/:id', catchErrors(oneInterpreter));

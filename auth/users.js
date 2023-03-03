@@ -22,11 +22,12 @@ export async function findByUsername(username) {
       username = $1;
   `;
   console.log('FindByUsername');
+  console.log(username);
     
   try {
     const result = await query(q, [username]);
-    
     if (result.rowCount === 1) {
+      console.log(result.rows[0]);
       return result.rows[0];
     }
   } catch (e) {
@@ -86,7 +87,7 @@ export async function findById(id) {
   return null;
 }
 
-export async function createUser(username, password) {
+export async function createUser(username, email, password) {
   // Geymum hashað password!
   const hashedPassword = await bcrypt.hash(password, 11);
   let admin_false = false; 

@@ -5,28 +5,6 @@ import { comparePasswords, findByEmail, findById } from './users.js';
 
 export function requireAuthentication(req, res, next) {
   return passport.authenticate('jwt', { session: false })(req, res, next);
-  /*return passport.authenticate(
-    'jwt',
-    { session: false },
-    (err, user, info) => {
-      if (err) {
-        console.log('errrroor');
-        return next(err);
-      }
-      
-      if (!user) {
-        console.log('not notnaotnat');
-        const error = info.name === 'TokenExpiredError'
-          ? 'expired token' : 'invalid token';
-
-        return res.status(401).json({ error });
-      }
-      
-      // Látum notanda vera aðgengilegan í rest af middlewares
-      req.user = user;
-      return next();
-    },
-  )(req, res, next);*/
 }
 
 async function stratID(data, next) {
@@ -36,14 +14,9 @@ async function stratID(data, next) {
   console.log(user); 
  
   if (user) {
-    //console.log('fundið');
-    //return next(); 
-    //return done(null, user); 
     next(null, user);
   } 
   else {
-    //console.log('Ekki fundið');
-    //return done(null, false); 
     next(null, false);
   }
 }

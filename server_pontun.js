@@ -9,8 +9,6 @@ import passport from './auth/login.js';
 import { router as adminRoute } from './auth/admin_mini.js';
 import { router as interpreterRoute } from './api/interpreterAPI.js';
 
-//import { findById } from './auth/users.js';
-
 dotenv.config();
 
 const {
@@ -20,30 +18,12 @@ const {
   DATABASE_URL: connectionString,
 } = process.env;
 
-if (!jwtSecret || !connectionString) {
+if (!jwtSecret || !connectionString || !sessionSecret) {
   console.error('Vantar .env gildi');
   process.exit(1);
 }
 
-/*if ( !connectionString || !sessionSecret)  {
-  console.error('Vantar ConnectionString , SessionSecret eða jwtSecret í env - app');
-  process.exit(1);
-}*/
-
 const app = express();
-
-const whitelist = ['http://localhost:8080'];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error())
-    }
-  }
-}
-
 app.use(cors());
 
 app.use(bodyParse.json());

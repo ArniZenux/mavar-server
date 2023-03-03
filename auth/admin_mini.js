@@ -1,5 +1,6 @@
 import express from 'express';
 import passport, { requireAuthentication } from './login.js';
+import { findByUsername, findByEmail, createUser } from './users.js';
 import jwt from 'jsonwebtoken';
 
 export const router = express.Router();
@@ -11,6 +12,12 @@ function getToken(user){
   //return jwt.sign(user, process.env.SESSION_SECRET);
   return jwt.sign(user, process.env.JWT_SECRET);
 }
+
+/*
+function getRefreshToken(){
+  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+}
+*/
 
 /*
 /   Login - indexAdmin - GET
@@ -29,12 +36,52 @@ async function indexAdmin(req, res) {
 */
 async function utskra(req, res) {
   req.logout();
+  res.clearCookie('token');
   req.redirect('/');
+}
+
+async function validateUser(name){
+  console.log(name);
+  const user = await findByUsername(name);
+  console.log(user);
+  if(user){
+    return true; 
+  } else {
+    return false; 
+  }
+}
+
+async function validateEmail(email){
+  const user = await findByEmail(email);
+  
+  if(user){
+    return true; 
+  } else {
+    return false; 
+  }
+}
+
+async function register(req, res, next){
+  const {name, email, password} = req.body; 
+  const validateMessage = await validateUser(name); 
+  
+  console.log('Create new user in database');
+  //console.log(validateMessage); 
+
+  /*if(validateMessage){
+    console.log('user mesaage');
+  } else {
+    console.log('ogilt');
+  }*/
+
+  await createUser(name,email,password);
+  //const validateMessageEmail =  validateEmail(email,password); 
+  return next(); 
 }
 
 /* GET */
 router.get('/', requireAuthentication, indexAdmin);
-router.get('/logout', utskra) ;
+router.get('/logout', requireAuthentication, utskra);
 
 /* POST */
 router.post('/login', 
@@ -50,3 +97,17 @@ router.post('/login',
     res.send({ token });
   },
 );
+
+router.post('/register', 
+    register,
+    passport.authenticate('local', {
+      failureMessage: 'Notandanafn eða lykilorð vitlaust.',
+      failureRedirect: '/admin/login',
+    }),
+    
+    (req, res) => {
+      const token = getToken(req.user);
+      //res.redirect('/');
+      res.send({ token });
+    }
+  );
