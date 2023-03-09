@@ -1,6 +1,6 @@
 import express from 'express';
 import passport, { requireAuthentication } from './login.js';
-import { findByUsername, findByEmail, createUser } from './users.js';
+import { findByEmail, createUser } from './users.js';
 import jwt from 'jsonwebtoken';
 
 export const router = express.Router();
@@ -40,7 +40,7 @@ async function utskra(req, res) {
   req.redirect('/');
 }
 
-async function validateUser(name){
+/*async function validateUser(name){
   console.log(name);
   const user = await findByUsername(name);
   console.log(user);
@@ -49,11 +49,12 @@ async function validateUser(name){
   } else {
     return false; 
   }
-}
+}*/
 
 async function validateEmail(email){
   const user = await findByEmail(email);
-  
+  console.log(user); 
+
   if(user){
     return true; 
   } else {
@@ -63,10 +64,10 @@ async function validateEmail(email){
 
 async function register(req, res, next){
   const {name, email, password} = req.body; 
-  const validateMessage = await validateUser(name); 
+  const validateMessage = await validateEmail(email); 
   
   console.log('Create new user in database');
-  //console.log(validateMessage); 
+  console.log(validateMessage); 
 
   /*if(validateMessage){
     console.log('user mesaage');
@@ -75,7 +76,7 @@ async function register(req, res, next){
   }*/
 
   await createUser(name,email,password);
-  //const validateMessageEmail =  validateEmail(email,password); 
+  
   return next(); 
 }
 
@@ -99,15 +100,20 @@ router.post('/login',
 );
 
 router.post('/register', 
-    register,
-    passport.authenticate('local', {
-      failureMessage: 'Notandanafn eða lykilorð vitlaust.',
-      failureRedirect: '/admin/login',
-    }),
-    
-    (req, res) => {
-      const token = getToken(req.user);
-      //res.redirect('/');
-      res.send({ token });
+  register,
+  passport.authenticate('local', {
+    failureMessage: 'Notandanafn eða lykilorð vitlaust.',
+    failureRedirect: '/admin/login',
+  }),
+  
+  (req, res) => {
+    const token = getToken(req.user);
+    res.send({ token });
+    if(res.headersSent !== true){
+      //console.log('Hello header');
     }
-  );
+    else {
+      //console.log('virkar');
+    }
+  }
+);

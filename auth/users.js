@@ -48,7 +48,7 @@ export async function findByEmail(email) {
       email = $1;
   `;
   console.log("FindByEmail - console");
-
+  console.log(email); 
   try {
     const result = await query(q, [email]);
     console.log("FindByEmail - Found - console");
