@@ -8,7 +8,8 @@ import passport from './auth/login.js';
 //import jsonwebtoken from 'jsonwebtoken'; 
 //const jwt = require('jsonwebtoken');
 
-import { router as adminRoute } from './auth/auth.js';
+import { router as adminRoute } from './auth/admin_mini.js';
+//import { router as adminRoute } from './auth/auth.js';
 import { router as interpreterRoute } from './api/interpreterAPI.js';
 import { router as projectRoute } from './api/projectAPI.js';
 import { router as customRoute } from './api/customAPI.js';
@@ -22,18 +23,19 @@ dotenv.config();
 
 const {
   PORT: port,
+  JWT_SECRET : jwtSecret,
   SESSION_SECRET: sessionSecret,
   DATABASE_URL: connectionString,
 } = process.env;
 
-if ( !connectionString || !sessionSecret )  {
-  console.error('Vantar ConnectionString eða SessionSecret í env - app');
+if (!jwtSecret || !connectionString || !sessionSecret )  {
+  console.error('Vantar .env');
   process.exit(1);
 }
 
 const app = express();
-
 app.use(cors());
+
 app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({ extended: true }));
 
@@ -49,18 +51,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
   if (req.isAuthenticated()) {
     // getum núna notað user í viewum
     res.locals.user = req.user;
   }
-
   next();
 });
-
-/*function generateAccessToken(username){
-  return jwt.sign(username, process.env.SESSION_SECRET, { expiresIn: '1800s' });
-}*/
+*/
 
 //-------------------//
 //   Main server     //
@@ -70,38 +68,10 @@ app.get('/' , (req, res) => {
 });
 
 /*
-app.post(
-  '/login',
-  
-  // Þetta notar strat að ofan til að skrá notanda inn
-  passport.authenticate('local', {
-    failureMessage: 'Email eða lykilorð vitlaust.',
-    failureRedirect: '/login',
-  }),
-  
-  // Ef við komumst hingað var notandi skráður inn, senda á /admin
-  (req, res) => {
-    const token = "asdfasdf"; //generateAccessToken(user); //getToken(); 
-    //const user = findById(username);
-    res.send({ success : true, token });
-    //res.redirect('/admin');
-    //console.log('hello admin');
-    //res.send('asdfdsaf');
-  },
-);
-*/
-
-/*app.get('/logout', (req, res) => {
-  // logout hendir session cookie og session
-  req.logout();
-  res.redirect('/');
-});*/
-
-/*
 /   Routes - server.
 */
 app.use('/admin', adminRoute ); 
-app.use('/tulkur', interpreterRoute );  //chnage tulkur to interpreter
+app.use('/tulkur', interpreterRoute );  //change tulkur to interpreter
 app.use('/project', projectRoute); 
 app.use('/custom', customRoute); 
 app.use('/beidni', beidniPontunRoute);   // change beidni to request
