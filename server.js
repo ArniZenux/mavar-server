@@ -70,11 +70,15 @@ app.get('/' , (req, res) => {
 /*
 /   Routes - server.
 */
+
+// - Pöntunarkerfi - //
 app.use('/admin', adminRoute ); 
-app.use('/tulkur', interpreterRoute );  //change tulkur to interpreter
-app.use('/project', projectRoute); 
 app.use('/custom', customRoute); 
 app.use('/beidni', beidniPontunRoute);   // change beidni to request
+
+// - Bókunarkerfi - //
+app.use('/tulkur', interpreterRoute );  //change tulkur to interpreter
+app.use('/project', projectRoute); 
 app.use('/beidnibokun', beidniBokunRoute);   // change beidni to request
 app.use('/calander', calenderRoute);   // change beidni to request
 

@@ -1,4 +1,5 @@
 import express from 'express';
+import { requireAuthentication } from '../auth/login.js';
 import { listApp, insertApp, updateApp } from '../lib/db.js';
 import { catchErrors } from '../lib/utils.js';
 
@@ -9,7 +10,10 @@ export const router = express.Router();
 */
 async function getCustom(req, res) {
 
-  const sql = `
+  console.log(req.user.id); 
+  const id = req.user.id; 
+  
+  /*const sql = `
     SELECT 
       *
     FROM 
@@ -17,9 +21,18 @@ async function getCustom(req, res) {
     ORDER BY 
       id 
     DESC;
-  `;
+  `;*/
+
+  const sql = `
+    SELECT 
+      *
+    FROM 
+      tblCustom
+    WHERE
+      tblCustom.id = $1;
+    `;
   
-  const events = await listApp(sql);
+  const events = await listApp(sql,[id]);
   
   return res.json(events); 
 }
@@ -86,7 +99,7 @@ async function updateCustom(req, res) {
       req.body.email
   ];
   
-  //console.log(info); 
+  console.log(info); 
 
   let success = true; 
 
@@ -100,7 +113,7 @@ async function updateCustom(req, res) {
     WHERE 
       tblCustom.id = $1;
   `;
-  
+  /*
   try{
     success = await updateApp(sql, info)
   }
@@ -110,7 +123,7 @@ async function updateCustom(req, res) {
 
   if(success){
     return res.redirect('/');
-  }
+  }*/
 }
 
 /*
@@ -139,7 +152,7 @@ async function getCustomListByProject(req, res) {
 */
 
 /* GET */
-router.get('/', getCustom);
+router.get('/', requireAuthentication, getCustom);
 router.get('/getNameCustom', getNameCustom);
 
 /* POST */

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS tblInterpreter (
 
 /* Customs */
 CREATE TABLE IF NOT EXISTS tblCustom (
-  id serial primary key,
+  zidcustom serial primary key,
   znamec varchar(64) not null, 
   phonenr varchar(64) not null,
   email character varying(100) not null
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS tblWorks (
   id serial primary key,
   idinterpreter integer not null, 
   idproject serial,
-  constraint idinterpreter foreign key (idinterpreter) references tblInterpreter(id),
+  constraint idinterpreter foreign key (idinterpreter) references tblInterpreter (id),
   constraint idproject foreign key (idproject) references tblProject (id)
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS tblOrder (
   id serial primary key,
   idcustom integer not null, 
   idproject serial,
-  constraint idcustom foreign key (idcustom) references tblCustom(id),
+  constraint idcustom foreign key (idcustom) references tblCustom(zidcustom),
   constraint idproject foreign key (idproject) references tblProject (id)
 );
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS tblEventVinna (
   id serial primary key,
   idinterpreter integer not null, 
   idproject serial, 
-  constraint idinterpreter foreign key (idinterpreter) references tblInterpreter(id),
+  constraint idinterpreter foreign key (idinterpreter) references tblInterpreter (id),
   constraint idproject foreign key (idproject) references tblEventTable (id)
 );
 
@@ -75,8 +75,7 @@ CREATE TABLE IF NOT EXISTS tblUsers (
 /* Pöntunarsíða og bókunarsíða */
 /*  Beiðni  -> tblRequest */ 
 CREATE TABLE IF NOT EXISTS tblBeidni (
-  id serial primary key,
-  znamec varchar(64) not null, 
+  zidbeidni serial primary key,
   zdesc varchar(300) not null, 
   place varchar(64) not null,
   zday varchar(64) not null,
@@ -88,12 +87,13 @@ CREATE TABLE IF NOT EXISTS tblBeidni (
   interpreter varchar(64)
 );
 
-CREATE TABLE IF NOT EXISTS tblUsers (
-  id serial primary key,
-  username varchar(64) not null, 
-  email character varying(100) not null, 
-  password character varying(256) not null,
-  admin boolean not null
+/* Custom order a project and interpreter works on a project*/
+CREATE TABLE IF NOT EXISTS tblAsk (
+  zidask serial primary key,
+  idcustom integer not null, 
+  idbeidni serial,
+  constraint idcustom foreign key (idcustom) references tblCustom (zidcustom),
+  constraint idbeidni foreign key (idbeidni) references tblBeidni (zidbeidni)
 );
 
 /*

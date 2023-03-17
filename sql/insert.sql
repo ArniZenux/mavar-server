@@ -63,16 +63,23 @@ VALUES ('Námskeið fyrir viðgerð á hjól',
 
 INSERT INTO tblCustom 
 (znamec, email, phonenr) 
-VALUES ('Þór Ingi Jónsson',
-        '5551254',
-        'thor@hti.is'
+VALUES ('Administration',
+        'admin@shh.is',
+        '555-5555'
       );
 
 INSERT INTO tblCustom 
 (znamec, email, phonenr) 
-VALUES ('Hjördis Ösp Karlsdóttir',
-        '8548362',
-        'hjordis_osp@gmail.com'
+VALUES ('Anna Ösp Karlsdóttir',
+        'anna@shh.is',
+        '854-5874'
+      );
+
+INSERT INTO tblCustom 
+(znamec, email, phonenr) 
+VALUES ('Jónas Jónsson',
+        'jonas@shh.is',
+        '784-4521'
       );
 
 INSERT INTO tblWorks 
@@ -105,38 +112,10 @@ INSERT INTO tblOrder
 VALUES ('2' 
         );
 
-INSERT INTO tblBeidni
-(znamec, zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
-VALUES ('Sæþór Jónsson',
-        'Fundur með ráðherra um túlkamál',
-        'Reykjavík',
-        '11.04.2023',
-        '10:00',
-        '12:00',
-        3,
-        1,
-        'Afbókun',
-        'Afbókun'
-       );
 
 INSERT INTO tblBeidni
-(znamec, zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
-VALUES ('Sæþór Jónsson',
-        'Námskeið í FB',
-        'Reykjavík',
-        '11.03.2023',
-        '11:00',
-        '00:00',
-        0,
-        1,
-        'Enginn laus',
-        'Enginn laus'
-       );
-
-INSERT INTO tblBeidni
-(znamec, zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
-VALUES ('Þórhallur Ingasson',
-        'Námskeið í Reykjavíkarskóli um ljós og hljóð',
+(zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
+VALUES ('Námskeið í Reykjavíkarskóli um ljós og hljóð',
         'Reykjavík',
         '18.11.2022',
         '18:00',
@@ -148,9 +127,8 @@ VALUES ('Þórhallur Ingasson',
        );
 
 INSERT INTO tblBeidni
-(znamec, zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
-VALUES ('Jónas Ingasson',
-        'Námskeið í fjallaskíða',
+(zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
+VALUES ('Námskeið í fjallaskíða',
         'Bláfjöll',
         '18.02.2023',
         '18:00',
@@ -224,6 +202,24 @@ VALUES ('Anna',
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         false
       );
+
+INSERT INTO tblUsers 
+(username, email, password, admin) 
+VALUES ('Jónas', 
+        'jonas@shh.is',
+        '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
+        false
+      );
+
+INSERT INTO tblAsk 
+(idcustom) 
+VALUES ('2' 
+        );
+        
+INSERT INTO tblAsk 
+(idcustom) 
+VALUES ('3' 
+        );
 
 /*
 INSERT INTO tblList

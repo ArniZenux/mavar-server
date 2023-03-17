@@ -1,4 +1,5 @@
 import express from 'express';
+import { requireAuthentication } from '../auth/login.js';
 import { listApp, insertApp, updateApp } from '../lib/db.js';
 import { catchErrors } from '../lib/utils.js';
 
@@ -7,21 +8,65 @@ export const router = express.Router();
 /*
 /   All beidni - Listi by order DESC - Pöntunarsíða
 */
-async function projectBeidni(req, res) {
+async function projectBeidniOne(req, res) {
 
-  const tblVerkefni = `
+  const zid = req.user.id; 
+
+  /*const tblVerkefni = `
     SELECT 
       *
     FROM 
       tblBeidni
-    ORDER BY 
-      id 
-    DESC;
+      INNER JOIN tblAsk ON tblBeidni.id=tblAsk.idbeidni
+      INNER JOIN tblCustom ON tblAsk.idcustom=tblCustom.id
+    WHERE
+      tblCustom.id = $1
+  `;*/
+  const sql_verkefni = `
+    SELECT 
+      *
+    FROM 
+      tblBeidni,
+      tblAsk,
+      tblCustom
+    WHERE
+      tblBeidni.zidbeidni = tblAsk.idbeidni
+    AND
+      tblAsk.idcustom = tblCustom.zidcustom
+    AND
+      tblCustom.zidcustom = $1;
   `;
 
-  const events = await listApp(tblVerkefni);
-  
+  const events = await listApp(sql_verkefni,[zid]);
+  //console.log(events);
+
   return res.json(events); 
+}
+
+/*
+/   Add new ask side by tblAsk  
+*/
+async function postAsk(zid){
+  //console.log(zid);
+  
+  const sql_ask = `
+    INSERT INTO
+      tblAsk(idcustom)
+    VALUES($1);
+  `;
+
+  let success_work = true; 
+
+  try {
+    success_work = await insertApp(sql_ask, [zid]);
+  }
+  catch(e){
+      console.error(e);
+  }
+
+  if(success_work){
+    return success_work;
+  }
 }
 
 /*
@@ -29,12 +74,16 @@ async function projectBeidni(req, res) {
 */
 async function newBeidni(req, res){
   const newOrder = req.body;
-  let success = true; 
+  let success_beidni = true; 
+  let success_ask = true; 
+    
+  const zid = req.user.id; 
+  //console.log(zid);
+  //console.log(newOrder);
 
   const sql_beidni = `
     INSERT INTO 
       tblBeidni(
-          znamec,
           place, 
           zdesc,
           zday, 
@@ -54,19 +103,22 @@ async function newBeidni(req, res){
            $6, 
            $7,
            $8,
-           $9,
-           $10
+           $9
            );
   `;
-  
+
   try {
-      success = await insertApp(sql_beidni, newOrder);
+      success_beidni = await insertApp(sql_beidni, newOrder);
   }
   catch(e) {
     console.error(e);
   }
 
-  if(success){
+  if(success_beidni){
+    success_ask = postAsk(zid);
+  }
+
+  if(success_ask){
     return res.redirect('/');
   }
 }
@@ -77,6 +129,7 @@ async function newBeidni(req, res){
 async function updateBeidniFall(req, res){
   const data = req.body; 
   let success = true; 
+  //console.log(data); 
 
   const sql = `
     UPDATE 
@@ -88,11 +141,12 @@ async function updateBeidniFall(req, res){
       start_time = $5, 
       last_time = $6
     WHERE 
-      tblBeidni.id = $1;
+      tblBeidni.zidbeidni = $1;
   `;
 
   try{
     success = await updateApp(sql, data)
+    console.log(success);
   }
   catch(e){
     console.error(e); 
@@ -118,7 +172,7 @@ async function afbokaBeidniFall(req, res) {
       interpreter = 'Afbókun',
       zstatus = 3
     WHERE 
-      tblBeidni.id = $1;
+      tblBeidni.zidbeidni = $1;
   `;
   
   try{
@@ -134,9 +188,9 @@ async function afbokaBeidniFall(req, res) {
 }
 
 /* GET */
-router.get('/byBeidni', catchErrors(projectBeidni));
+router.get('/byBeidniOne/', requireAuthentication, catchErrors(projectBeidniOne));
 
 /* POST */
-router.post('/sendaBeidni', catchErrors(newBeidni));     
-router.post('/afbokaBeidni', catchErrors(afbokaBeidniFall));
-router.post('/updateBeidni', catchErrors(updateBeidniFall));
+router.post('/sendaBeidni', requireAuthentication, catchErrors(newBeidni));     
+router.post('/afbokaBeidni', requireAuthentication, catchErrors(afbokaBeidniFall));
+router.post('/updateBeidni', requireAuthentication, catchErrors(updateBeidniFall));

@@ -87,6 +87,24 @@ export async function findById(id) {
   return null;
 }
 
+export async function createCustom(username, email, phonenr ) {
+  const q = `
+    INSERT INTO
+      tblCustom (znamec, phonenr, email)
+    VALUES ($1, $2, $3)
+    RETURNING *
+  `;
+  
+  try {
+    const result = await query(q, [username, phonenr, email]);
+    return result.rows[0];
+  } catch (e) {
+    console.error('Gat ekki búið til notanda - tblCustom');
+  }
+
+  return null;
+}
+
 export async function createUser(username, email, password) {
   // Geymum hashað password!
   const hashedPassword = await bcrypt.hash(password, 11);
@@ -98,12 +116,12 @@ export async function createUser(username, email, password) {
     VALUES ($1, $2, $3, $4)
     RETURNING *
   `;
-
+  
   try {
     const result = await query(q, [username, email, hashedPassword, admin_false]);
     return result.rows[0];
   } catch (e) {
-    console.error('Gat ekki búið til notanda');
+    console.error('Gat ekki búið til notanda - tblUsers');
   }
 
   return null;

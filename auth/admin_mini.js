@@ -1,6 +1,6 @@
 import express from 'express';
 import passport, { requireAuthentication } from './login.js';
-import { findByEmail, createUser } from './users.js';
+import { findByEmail, createUser, createCustom } from './users.js';
 import jwt from 'jsonwebtoken';
 
 export const router = express.Router();
@@ -63,20 +63,19 @@ async function validateEmail(email){
 }
 
 async function register(req, res, next){
-  const {name, email, password} = req.body; 
+  const {name, email, phonenr, password} = req.body; 
   const validateMessage = await validateEmail(email); 
   
   console.log('Create new user in database');
   console.log(validateMessage); 
 
-  /*if(validateMessage){
-    console.log('user mesaage');
+  if(validateMessage){
+    console.log('Þú hefur skráð þig.');
   } else {
-    console.log('ogilt');
-  }*/
+    await createUser(name,email, password);
+    await createCustom(name, email, phonenr);
+  }
 
-  await createUser(name,email,password);
-  
   return next(); 
 }
 
@@ -98,6 +97,8 @@ router.post('/login',
     res.send({ token });
   },
 );
+
+//router.post('/register', register);
 
 router.post('/register', 
   register,

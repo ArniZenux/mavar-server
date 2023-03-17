@@ -10,8 +10,8 @@ export function requireAuthentication(req, res, next) {
 async function stratID(data, next) {
   const user = await findById(data.id);
   
-  console.log("stratID - findById"); 
-  console.log(user); 
+  //console.log("stratID - findById"); 
+  //console.log(user); 
  
   if (user) {
     next(null, user);
