@@ -34,7 +34,10 @@ async function projectBeidniOne(req, res) {
     AND
       tblAsk.idcustom = tblCustom.zidcustom
     AND
-      tblCustom.zidcustom = $1;
+      tblCustom.zidcustom = $1
+    ORDER BY 
+      zidbeidni 
+    DESC;
   `;
 
   const events = await listApp(sql_verkefni,[zid]);

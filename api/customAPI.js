@@ -29,7 +29,7 @@ async function getCustom(req, res) {
     FROM 
       tblCustom
     WHERE
-      tblCustom.id = $1;
+      tblCustom.zidcustom = $1;
     `;
   
   const events = await listApp(sql,[id]);
@@ -44,11 +44,11 @@ async function getNameCustom(req, res) {
 
   const sql = `
     SELECT 
-      id, znamec
+      zidcustom, znamec
     FROM 
       tblCustom
     ORDER BY 
-      id 
+      zidcustom 
     DESC;
   `;
   
@@ -93,7 +93,7 @@ async function postCustom(req, res) {
 */
 async function updateCustom(req, res) {
   const info = [
-      req.body.id, 
+      req.body.zidcustom, 
       req.body.znamec, 
       req.body.phonenr, 
       req.body.email
@@ -111,9 +111,9 @@ async function updateCustom(req, res) {
       phonenr = $3, 
       email = $4 
     WHERE 
-      tblCustom.id = $1;
+      tblCustom.zidcustom = $1;
   `;
-  /*
+  
   try{
     success = await updateApp(sql, info)
   }
@@ -123,7 +123,7 @@ async function updateCustom(req, res) {
 
   if(success){
     return res.redirect('/');
-  }*/
+  }
 }
 
 /*

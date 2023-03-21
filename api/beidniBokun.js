@@ -13,9 +13,15 @@ async function projectBeidni(req, res) {
     SELECT 
       *
     FROM 
-      tblBeidni
+      tblBeidni,
+      tblAsk,
+      tblCustom
+    WHERE
+      tblBeidni.zidbeidni = tblAsk.idbeidni
+    AND
+      tblAsk.idcustom = tblCustom.zidcustom
     ORDER BY 
-      id 
+      zidbeidni 
     DESC;
   `;
 
@@ -37,7 +43,7 @@ async function opinBeidni(req, res){
     SET 
       zchecked = $2 
     WHERE 
-      tblBeidni.id = $1;
+      tblBeidni.zidbeidni = $1;
   `;
 
   try{
@@ -68,7 +74,7 @@ async function afbokaBeidniFall(req, res) {
       interpreter = 'Afbókun',
       zstatus = 3
     WHERE 
-      tblBeidni.id = $1;
+      tblBeidni.zidbeidni = $1;
   `;
   
   try{
@@ -98,7 +104,7 @@ async function hafnaBeidniFall(req, res) {
       interpreter = 'Enginn laus',
       zstatus = 0
     WHERE 
-      tblBeidni.id = $1;
+      tblBeidni.zidbeidni = $1;
   `;
   
   try{
@@ -128,7 +134,7 @@ async function samtykktBeidniFall(req, res) {
       interpreter = $2,
       zstatus = 1
     WHERE 
-      tblBeidni.id = $1;
+      tblBeidni.zidbeidni = $1;
   `;
   
   try{
@@ -155,7 +161,7 @@ async function projectIdBeidni(req, res){
     FROM 
      tblBeidni
     WHERE 
-      tblBeidni.id = $1;
+      tblBeidni.zidbeidni = $1;
   `;
   
   const events = await listApp(sql, [id]);
