@@ -17,6 +17,10 @@ import { router as beidniBokunRoute } from './api/beidniBokun.js';
 import { router as beidniPontunRoute } from './api/beidniPontun.js';
 import { router as calenderRoute } from './api/calanderAPI.js';
 
+import { router as studentRoute } from './api/studentAPI.js';
+import { router as kennslutimaRoute } from './api/kennslutimaAPI.js';
+
+
 //import { findById } from './auth/users.js';
 
 dotenv.config();
@@ -81,6 +85,11 @@ app.use('/tulkur', interpreterRoute );  //change tulkur to interpreter
 app.use('/project', projectRoute); 
 app.use('/beidnibokun', beidniBokunRoute);   // change beidni to request
 app.use('/calander', calenderRoute);   // change beidni to request
+
+
+app.use('/student', studentRoute ); 
+app.use('/kennslutima', kennslutimaRoute ); 
+
 
 function notFoundHandler(req, res, next) {
   const title = 'Sida fannst ekki';

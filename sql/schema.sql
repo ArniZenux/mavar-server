@@ -1,3 +1,19 @@
+/* Student */ 
+CREATE TABLE IF NOT EXISTS tblStudent (
+  id serial primary key,
+  zname varchar(64) not null, 
+  phonenr varchar(64) not null,
+  email varchar(256) not null,
+  zstatus varchar(64) not null
+);
+
+/* Kennslutimar */ 
+CREATE TABLE IF NOT EXISTS tblKennslutima (
+  id serial primary key,
+  titli varchar(64) not null,
+  web varchar(2) not null
+);
+
 /* Interpreter */ 
 CREATE TABLE IF NOT EXISTS tblInterpreter (
   id serial primary key,

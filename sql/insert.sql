@@ -211,6 +211,30 @@ VALUES ('Jónas',
         false
       );
 
+INSERT INTO tblUsers 
+(username, email, password, admin) 
+VALUES ('Uldis Ozols',
+        'uldis@shh.is',
+        '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
+        true
+      );
+
+INSERT INTO tblUsers 
+(username, email, password, admin) 
+VALUES ('Júlía Guðný Hreinsdóttir',
+        'julia@shh.is',
+        '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
+        true
+      );
+
+INSERT INTO tblUsers 
+(username, email, password, admin) 
+VALUES ('Kristín Lena Þorvaldsdóttir', 
+        'kristin.lena.thorvaldsdottir@shh.is',
+        '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
+        false
+      );
+
 INSERT INTO tblAsk 
 (idcustom) 
 VALUES ('2' 
@@ -221,6 +245,100 @@ INSERT INTO tblAsk
 VALUES ('3' 
         );
 
+ INSERT INTO tblStudent
+(zname, phonenr, email, zstatus) 
+VALUES ('Eyrún Helga Jónsdóttir', 
+        '9871234', 
+        'eyrun@gmail.com',
+        'Hættur'
+      );
+
+INSERT INTO tblStudent 
+(zname, phonenr, email, zstatus) 
+VALUES ('Anna Dagmar Helgadóttir', 
+        '9877777', 
+        'annadagmar@hi.is',
+        'Virkur'
+      );
+
+INSERT INTO tblStudent 
+(zname, phonenr, email, zstatus) 
+VALUES ('Jón Gunnarsson', 
+        '4448785', 
+        'jon@netfangi.is',
+        'Virkur'
+      );
+
+INSERT INTO tblStudent 
+(zname, phonenr, email, zstatus) 
+VALUES ('Kristín Lena Þorvaldsdóttir', 
+        '5487458', 
+        'kristin.lena.thorvaldsdottir@shh.is',
+        'Virkur'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 1', 
+        '0'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 2', 
+        '0'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 3', 
+        '1'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 4',  
+        '0'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 5', 
+        '0'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 6', 
+        '0'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 7', 
+        '1'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 8', 
+        '0'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 9', 
+        '0'
+      );
+
+INSERT INTO tblKennslutima 
+(titli, web) 
+VALUES ('Kennslutíma - 10', 
+        '1'
+      );
+
+
+      
 /*
 INSERT INTO tblList
 (lysing, stadur, dagur, byrja_timi, tulkur)
