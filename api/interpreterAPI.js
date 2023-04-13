@@ -8,45 +8,21 @@ export const router = express.Router();
 /*
 /   All interpreters  
 */
-async function getHello(req, res) {
-  console.log('Interpreter');
-  return res.send({data: 'secret data túlkur!!--'});
-  //return res.json(events); 
-}
-
 async function getInterpreter(req, res) {
-
-  console.log(req.user.admin); 
-  if(req.user.admin){
-    const sql = `
-      SELECT 
-        *
-      FROM 
-        tblInterpreter  
-      ORDER BY 
-        id 
-      DESC;
-    `;
-    
-    const events = await listApp(sql);
-    
-    return res.json(events);
-  } else {
-    const sql = `
+  const sql = `
     SELECT 
       *
     FROM 
       tblInterpreter  
     ORDER BY 
       id 
-    ASC;
+    DESC;
   `;
-  
+    
   const events = await listApp(sql);
-  
+    
   return res.json(events);
-  } 
-}
+} 
 
 /*
 /   Insert new interpreter  
@@ -60,8 +36,6 @@ async function postInterprter(req, res) {
   ];
   
   let success = true; 
-
-  //console.log(info); 
 
   const sql = `
     INSERT INTO 
@@ -278,14 +252,11 @@ async function userSelectByWork(req, res) {
 }*/
 
 /* GET */
-router.get('/', requireAuthentication, getInterpreter);
-router.get('/getHello',requireAuthentication, getHello);
-router.get('/getName', getNameInterpreter);
-//router.get('/athuga', checkTulkur);
+router.get('/',requireAuthentication, getInterpreter);
+router.get('/getName', requireAuthentication, getNameInterpreter);
 router.get('/:id', catchErrors(oneInterpreter));
 router.get('/tulkurskoda/:id', catchErrors(userSelectByWork));
 
 /* POST */
-router.post('/addinterpreter', catchErrors(postInterprter));
-router.post('/updateinterpreter/:id', catchErrors(updateInterpreter));
-//router.post('/athugapost', catchErrors(checkInterpreter));
+router.post('/addinterpreter', requireAuthentication, catchErrors(postInterprter));
+router.post('/updateinterpreter/:id', requireAuthentication, catchErrors(updateInterpreter));

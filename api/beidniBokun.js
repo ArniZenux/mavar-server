@@ -58,7 +58,6 @@ async function opinBeidni(req, res){
   }
 }
 
-
 /*
 /   Afbókun beiðni  
 */
@@ -331,7 +330,7 @@ async function newBeidni(req, res){
 */
 
 /* GET */
-router.get('/byBeidni', catchErrors(projectBeidni));
+router.get('/byBeidni/',  catchErrors(projectBeidni));
 //router.get('/byIdBeidni/:id', catchErrors(projectIdBeidni));
 router.get('/idBeidni/:id', catchErrors(projectIdBeidni));
 

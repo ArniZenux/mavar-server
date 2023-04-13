@@ -10,29 +10,14 @@ export const router = express.Router();
 */
 async function getCustom(req, res) {
 
-  console.log(req.user.id); 
-  const id = req.user.id; 
-  
-  /*const sql = `
-    SELECT 
-      *
-    FROM 
-      tblCustom
-    ORDER BY 
-      id 
-    DESC;
-  `;*/
-
   const sql = `
     SELECT 
       *
     FROM 
-      tblCustom
-    WHERE
-      tblCustom.zidcustom = $1;
+      tblCustom;
     `;
   
-  const events = await listApp(sql,[id]);
+  const events = await listApp(sql);
   
   return res.json(events); 
 }
@@ -153,8 +138,8 @@ async function getCustomListByProject(req, res) {
 
 /* GET */
 router.get('/', requireAuthentication, getCustom);
-router.get('/getNameCustom', getNameCustom);
+router.get('/getNameCustom', requireAuthentication, getNameCustom);
 
 /* POST */
-router.post('/addcustom', catchErrors(postCustom));
-router.post('/updatecustom/:id', catchErrors(updateCustom));
+router.post('/addcustom', requireAuthentication, catchErrors(postCustom));
+router.post('/updatecustom/:id', requireAuthentication, catchErrors(updateCustom));

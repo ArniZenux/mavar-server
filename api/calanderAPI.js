@@ -1,12 +1,9 @@
 import express from 'express';
+import { requireAuthentication } from '../auth/login.js';
 import { listApp, insertApp, updateApp } from '../lib/db.js';
 import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
-
-///////////////////////////
-//  Project in Calander  //
-///////////////////////////
 
 /*
 /   All projects  - FullCalander - Table
@@ -30,9 +27,6 @@ async function CountEvents(id) {
   
   let events = await listApp(tblEvents, [id] );
   return events;
-  //console.log(events);
-  //return res.json(events);  
-  //return events; 
 }
 
 /*
@@ -40,6 +34,7 @@ async function CountEvents(id) {
 */
 async function getProjectEvents(req, res) {
   const { id } = req.params;
+  console.log(id); 
   
   let group = []; 
 
@@ -77,6 +72,7 @@ async function getProjectEvents(req, res) {
   let events = await listApp(tblEvents, [id] );
   
   return res.json(events); 
+
   //return strengur; 
 }
 
@@ -136,7 +132,7 @@ async function projectDeaf(req, res) {
 }*/
 
 /* GET */
-router.get('/events/:id', catchErrors(getProjectEvents));
+router.get('/events/:id', requireAuthentication, catchErrors(getProjectEvents));
 
 /* POST */
-router.post('/addnewevent', catchErrors(addEvent)); 
+router.post('/addnewevent', requireAuthentication, catchErrors(addEvent)); 

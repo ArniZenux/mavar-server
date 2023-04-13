@@ -5,23 +5,13 @@ import bodyParse from 'body-parser';
 import cors from 'cors'; 
 import passport from './auth/login.js';
 
-//import jsonwebtoken from 'jsonwebtoken'; 
-//const jwt = require('jsonwebtoken');
-
 import { router as adminRoute } from './auth/admin_mini.js';
-//import { router as adminRoute } from './auth/auth.js';
 import { router as interpreterRoute } from './api/interpreterAPI.js';
 import { router as projectRoute } from './api/projectAPI.js';
 import { router as customRoute } from './api/customAPI.js';
 import { router as beidniBokunRoute } from './api/beidniBokun.js';
 import { router as beidniPontunRoute } from './api/beidniPontun.js';
 import { router as calenderRoute } from './api/calanderAPI.js';
-
-import { router as studentRoute } from './api/studentAPI.js';
-import { router as kennslutimaRoute } from './api/kennslutimaAPI.js';
-
-
-//import { findById } from './auth/users.js';
 
 dotenv.config();
 
@@ -55,15 +45,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-/*app.use((req, res, next) => {
-  if (req.isAuthenticated()) {
-    // getum núna notað user í viewum
-    res.locals.user = req.user;
-  }
-  next();
-});
-*/
-
 //-------------------//
 //   Main server     //
 //-------------------//
@@ -75,8 +56,10 @@ app.get('/' , (req, res) => {
 /   Routes - server.
 */
 
-// - Pöntunarkerfi - //
+// - Innskráningukerfi - //
 app.use('/admin', adminRoute ); 
+
+// - Pöntunarkerfi - //
 app.use('/custom', customRoute); 
 app.use('/beidni', beidniPontunRoute);   // change beidni to request
 
@@ -85,11 +68,6 @@ app.use('/tulkur', interpreterRoute );  //change tulkur to interpreter
 app.use('/project', projectRoute); 
 app.use('/beidnibokun', beidniBokunRoute);   // change beidni to request
 app.use('/calander', calenderRoute);   // change beidni to request
-
-
-app.use('/student', studentRoute ); 
-app.use('/kennslutima', kennslutimaRoute ); 
-
 
 function notFoundHandler(req, res, next) {
   const title = 'Sida fannst ekki';

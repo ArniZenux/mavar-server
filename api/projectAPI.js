@@ -1,12 +1,9 @@
 import express from 'express';
+import { requireAuthentication } from '../auth/login.js';
 import { listApp, insertApp, updateApp } from '../lib/db.js';
 import { catchErrors } from '../lib/utils.js';
 
 export const router = express.Router();
-
-///////////////
-//  Project  //
-///////////////
 
 /*
 /   All projects  
@@ -44,7 +41,7 @@ async function getProjectCustomInterpreter(req, res) {
     AND 
       tblWorks.idproject=tblProject.id
     AND
-      tblCustom.id=tblOrder.idcustom
+      tblCustom.zidcustom=tblOrder.idcustom
     AND 
       tblOrder.idproject=tblProject.id
     ORDER BY 
@@ -214,7 +211,7 @@ async function updateWork(zworks){
   
   console.log(zworks); 
 
-  let success = true; 
+  let success_update = true; 
   
   const sql_updateWork = `
     UPDATE 
@@ -226,14 +223,14 @@ async function updateWork(zworks){
   `;
 
   try{
-    success = await updateApp(sql_updateWork, zworks);
+    success_update = await updateApp(sql_updateWork, zworks);
   }
   catch(e){
     console.error(e); 
   }
 
-  if(success){
-    return res.redirect('/');
+  if(success_update){
+    return success_update;
   }
 }
 
@@ -339,19 +336,19 @@ async function projectDelete(req, res){
   }
 }*/
 
-
 /* GET */
-router.get('/', catchErrors(getProject));
-router.get('/byTulkur', catchErrors(getProjectByTulkur));
-router.get('/allProject', catchErrors(getProjectCustomInterpreter));
+router.get('/', requireAuthentication, catchErrors(getProject));
+router.get('/byTulkur', requireAuthentication, catchErrors(getProjectByTulkur));
+router.get('/allProject', requireAuthentication, catchErrors(getProjectCustomInterpreter));
 
 /* POST */
-router.post('/add_project', catchErrors(postProject)); 
-router.post('/add_work_project', catchErrors(postWork)); 
-router.post('/add_order_project', catchErrors(postOrder)); 
+router.post('/add_project', requireAuthentication, catchErrors(postProject)); 
+//router.post('/add_work_project', requireAuthentication, catchErrors(postWork)); 
+//router.post('/add_order_project', requireAuthentication, catchErrors(postOrder)); 
 
 /* PUT */
-router.post('/updateproject', catchErrors(projectUpdate));
+router.post('/add_project', requireAuthentication, catchErrors(postProject)); 
+router.post('/updateproject', requireAuthentication, catchErrors(projectUpdate));
 //router.post('/updateworks', catchErrors(worksUpdate));
 
 /* DELETE */ 

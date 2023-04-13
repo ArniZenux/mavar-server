@@ -12,16 +12,6 @@ async function projectBeidniOne(req, res) {
 
   const zid = req.user.id; 
 
-  /*const tblVerkefni = `
-    SELECT 
-      *
-    FROM 
-      tblBeidni
-      INNER JOIN tblAsk ON tblBeidni.id=tblAsk.idbeidni
-      INNER JOIN tblCustom ON tblAsk.idcustom=tblCustom.id
-    WHERE
-      tblCustom.id = $1
-  `;*/
   const sql_verkefni = `
     SELECT 
       *
@@ -41,7 +31,6 @@ async function projectBeidniOne(req, res) {
   `;
 
   const events = await listApp(sql_verkefni,[zid]);
-  //console.log(events);
 
   return res.json(events); 
 }
@@ -50,7 +39,6 @@ async function projectBeidniOne(req, res) {
 /   Add new ask side by tblAsk  
 */
 async function postAsk(zid){
-  //console.log(zid);
   
   const sql_ask = `
     INSERT INTO
@@ -81,8 +69,6 @@ async function newBeidni(req, res){
   let success_ask = true; 
     
   const zid = req.user.id; 
-  //console.log(zid);
-  //console.log(newOrder);
 
   const sql_beidni = `
     INSERT INTO 
@@ -132,7 +118,6 @@ async function newBeidni(req, res){
 async function updateBeidniFall(req, res){
   const data = req.body; 
   let success = true; 
-  //console.log(data); 
 
   const sql = `
     UPDATE 
