@@ -290,6 +290,22 @@ async function projectUpdate(req, res){
   }
 }
 
+async function countAlmenntStada(req, res){
+ console.log('hello');
+  const count_sql = `
+    SELECT 
+      COUNT(tblProject.id)
+    FROM 
+      tblProject
+    WHERE 
+      tblProject.scene = 'Almennt';
+  `;
+
+  const events = await listApp(count_sql);
+  
+  return res.json(events); 
+}
+
 /*
 /   Delete project  
 *//*
@@ -340,6 +356,8 @@ async function projectDelete(req, res){
 router.get('/', requireAuthentication, catchErrors(getProject));
 router.get('/byTulkur', requireAuthentication, catchErrors(getProjectByTulkur));
 router.get('/allProject', requireAuthentication, catchErrors(getProjectCustomInterpreter));
+
+router.get('/stadaAlmennt', requireAuthentication, catchErrors(countAlmenntStada));
 
 /* POST */
 router.post('/add_project', requireAuthentication, catchErrors(postProject)); 

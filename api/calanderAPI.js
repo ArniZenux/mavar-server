@@ -72,8 +72,6 @@ async function getProjectEvents(req, res) {
   let events = await listApp(tblEvents, [id] );
   
   return res.json(events); 
-
-  //return strengur; 
 }
 
 async function addEvent(req, res){
@@ -109,9 +107,6 @@ async function addEvent(req, res){
   if(success){
     return res.redirect('/');
   }
-  
-  //console.log('hello hello');
-  //res.send('hello res');
 }
 
 /*

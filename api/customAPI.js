@@ -53,8 +53,6 @@ async function postCustom(req, res) {
   
   let success = true; 
   
-  //console.log(info);
-
   const sql = `
     INSERT INTO 
       tblCustom(znamec, phonenr, email)

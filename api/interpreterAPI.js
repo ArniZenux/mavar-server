@@ -160,11 +160,6 @@ async function userSelectByWork(req, res) {
   return res.json(events); 
 }
 
-/*function checkTulkur(req, res){
-  console.log("hello tulkur - console");
-  return res.json('hello Check tulkur');
-}*/
-
 /*async function checkInterpreter(req, res) {
   //let info  = [ req.body.dag ];
   const info = [req.body.day, req.body.start, req.body.last];
