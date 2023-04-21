@@ -2,7 +2,7 @@
 
 Útgáfunúmer : 0.3
 
-## Images of Pöntunarkerfi.
+## Images of backend system.
 ![alt text](https://github.com/ArniZenux/mavar-server/blob/main/image/backend-image.jpg)
 
 ### Built With
