@@ -1,19 +1,3 @@
-/* Student */ 
-CREATE TABLE IF NOT EXISTS tblStudent (
-  id serial primary key,
-  zname varchar(64) not null, 
-  phonenr varchar(64) not null,
-  email varchar(256) not null,
-  zstatus varchar(64) not null
-);
-
-/* Kennslutimar */ 
-CREATE TABLE IF NOT EXISTS tblKennslutima (
-  id serial primary key,
-  titli varchar(64) not null,
-  web varchar(2) not null
-);
-
 /* Interpreter */ 
 CREATE TABLE IF NOT EXISTS tblInterpreter (
   id serial primary key,
@@ -106,7 +90,7 @@ CREATE TABLE IF NOT EXISTS tblBeidni (
 /* Custom order a project and interpreter works on a project*/
 CREATE TABLE IF NOT EXISTS tblAsk (
   zidask serial primary key,
-  idcustom integer not null, 
+  idcustom integer not null,
   idbeidni serial,
   constraint idcustom foreign key (idcustom) references tblCustom (zidcustom),
   constraint idbeidni foreign key (idbeidni) references tblBeidni (zidbeidni)

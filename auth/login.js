@@ -25,14 +25,14 @@ async function strat(email, password, done) {
   try {
     const user = await findByEmail(email); 
     
-    console.log("strat - findByEmail");
+    //console.log("strat - findByEmail");
 
     if (!user) {
-      console.log('Ekki til');
+      console.log('Cusutom is not in a database');
       return done(null, false);
     }
     else{
-      console.log('yes found');
+      console.log('Done');
     }
 
     const result = await comparePasswords(password, user);
@@ -47,12 +47,12 @@ passport.use(new LocalStrategy (strat));
 passport.use(new LocalStrategy ({ usernameField: 'email' }, strat));
 
 passport.serializeUser((user, done) => {
-  console.log("serializeUser - skilgreining");
+  //console.log("serializeUser - skilgreining");
   done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
-  console.log("deserializeUser - skilgreining");
+  //console.log("deserializeUser - skilgreining");
   try {
     const user = await findById(id);
     done(null, user);

@@ -69,6 +69,8 @@ async function newBeidni(req, res){
   let success_ask = true; 
     
   const zid = req.user.id; 
+  
+  //console.log(zid); 
 
   const sql_beidni = `
     INSERT INTO 

@@ -24,7 +24,7 @@ function getRefreshToken(){
 */
 async function indexAdmin(req, res) {
   //console.log(req); req.user
-  console.log("indexAdmin - send til þín");
+  //console.log("indexAdmin - send til þín");
   if(req.isAuthenticated()){
     return res.send({ data: req.user });
   }
@@ -53,7 +53,7 @@ async function utskra(req, res) {
 
 async function validateEmail(email){
   const user = await findByEmail(email);
-  console.log(user); 
+  //console.log(user); 
 
   if(user){
     return true; 
@@ -66,8 +66,8 @@ async function register(req, res, next){
   const {name, email, phonenr, password} = req.body; 
   const validateMessage = await validateEmail(email); 
   
-  console.log('Create new user in database');
-  console.log(validateMessage); 
+  //console.log('Create new user in database');
+  //console.log(validateMessage); 
 
   if(validateMessage){
     console.log('Þú hefur skráð þig.');

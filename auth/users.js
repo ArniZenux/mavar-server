@@ -21,13 +21,13 @@ export async function findByUsername(username) {
     WHERE 
       username = $1;
   `;
-  console.log('FindByUsername');
-  console.log(username);
+  //console.log('FindByUsername');
+  //console.log(username);
     
   try {
     const result = await query(q, [username]);
     if (result.rowCount === 1) {
-      console.log(result.rows[0]);
+      //console.log(result.rows[0]);
       return result.rows[0];
     }
   } catch (e) {
@@ -47,11 +47,11 @@ export async function findByEmail(email) {
     WHERE 
       email = $1;
   `;
-  console.log("FindByEmail - console");
-  console.log(email); 
+  //console.log("FindByEmail - console");
+  //console.log(email); 
   try {
     const result = await query(q, [email]);
-    console.log("FindByEmail - Found - console");
+    //console.log("FindByEmail - Found - console");
 
     if (result.rowCount === 1) {
       return result.rows[0];
