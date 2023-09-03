@@ -26,7 +26,7 @@ INSERT INTO tblProject
 (title, place, zday, start_time, last_time, scene, start_event, last_event, allDay) 
 VALUES ('Marel í viðtal', 
         'Garðabæ', 
-        '2.1.2023',
+        '2.01.2023',
         '10:00',
         '12:00',
         'Atvinnumál',
@@ -39,7 +39,7 @@ INSERT INTO tblProject
 (title, place, zday, start_time, last_time, scene, start_event, last_event, allDay) 
 VALUES ('Brúðkaup þeirra Katheine og John Romer', 
         'Viðey', 
-        '7.1.2023',
+        '7.01.2023',
         '12:00',
         '18:00',
         'Almennt',
@@ -52,7 +52,7 @@ INSERT INTO tblProject
 (title, place, zday, start_time, last_time, scene, start_event, last_event, allDay) 
 VALUES ('Námskeið fyrir viðgerð á hjól', 
         'Reykholt', 
-        '10.1.2023',
+        '10.01.2023',
         '19:00',
         '20:00',
         'Skólamál',
@@ -64,14 +64,14 @@ VALUES ('Námskeið fyrir viðgerð á hjól',
 INSERT INTO tblCustom 
 (znamec, email, phonenr) 
 VALUES ('Administration',
-        'admin@shh.is',
+        'admin@mavar.is',
         '555-5555'
       );
 
 INSERT INTO tblCustom 
 (znamec, email, phonenr) 
 VALUES ('Anna Ösp Karlsdóttir',
-        'anna@shh.is',
+        'anna@mavar.is',
         '854-5874'
       );
 
@@ -183,7 +183,7 @@ VALUES ('3');
 INSERT INTO tblUsers 
 (username, email, password, admin) 
 VALUES ('Administration',
-        'admin@shh.is',
+        'admin@mavar.is',
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         true
       );
@@ -191,7 +191,7 @@ VALUES ('Administration',
 INSERT INTO tblUsers 
 (username, email, password, admin) 
 VALUES ('Anna', 
-        'anna@shh.is',
+        'anna@mavar.is',
         '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
         false
       );

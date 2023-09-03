@@ -61,6 +61,41 @@ async function postAsk(zid){
 }
 
 /*
+/   Check interpreter avilable 
+*/
+async function checkBeidni(req, res){
+  const checkDate = req.body; 
+  console.log(checkDate);
+  let zcheckDate = checkDate.pop();
+  let newcheckDate = zcheckDate.replaceAll('/','.');
+  console.log(newcheckDate);
+  
+  //let chec = '10.01.2023';
+  //console.log(chec);
+  
+  const sql_verkefni = `
+  SELECT 
+    start_time, last_time
+  FROM 
+    tblProject
+  WHERE
+    tblProject.zday = $1;
+  `;
+
+  /*const sql_day = `
+  SELECT 
+    *
+  FROM 
+    tblProject; 
+  `;*/
+
+  const events = await listApp(sql_verkefni, [newcheckDate]);
+  console.log(events); 
+
+  return res.json(events); 
+}
+
+/*
 /   Add new beidni - Pöntunarsíða  
 */
 async function newBeidni(req, res){
@@ -181,6 +216,7 @@ async function afbokaBeidniFall(req, res) {
 router.get('/byBeidniOne/', requireAuthentication, catchErrors(projectBeidniOne));
 
 /* POST */
+router.post('/checkBeidni', requireAuthentication, catchErrors(checkBeidni));
 router.post('/sendaBeidni', requireAuthentication, catchErrors(newBeidni));     
 router.post('/afbokaBeidni', requireAuthentication, catchErrors(afbokaBeidniFall));
 router.post('/updateBeidni', requireAuthentication, catchErrors(updateBeidniFall));
