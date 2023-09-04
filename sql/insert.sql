@@ -26,7 +26,7 @@ INSERT INTO tblProject
 (title, place, zday, start_time, last_time, scene, start_event, last_event, allDay) 
 VALUES ('Marel í viðtal', 
         'Garðabæ', 
-        '2.9.2023',
+        '02/09/2023',
         '10:00',
         '12:00',
         'Atvinnumál',
@@ -39,7 +39,7 @@ INSERT INTO tblProject
 (title, place, zday, start_time, last_time, scene, start_event, last_event, allDay) 
 VALUES ('Brúðkaup þeirra Katheine og John Romer', 
         'Viðey', 
-        '10.9.2023',
+        '10/09/2023',
         '12:00',
         '18:00',
         'Almennt',
@@ -52,7 +52,7 @@ INSERT INTO tblProject
 (title, place, zday, start_time, last_time, scene, start_event, last_event, allDay) 
 VALUES ('Námskeið fyrir viðgerð á hjól', 
         'Reykholt', 
-        '10.9.2023',
+        '10/09/2023',
         '19:00',
         '20:00',
         'Skólamál',
@@ -110,7 +110,7 @@ INSERT INTO tblBeidni
 (zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
 VALUES ('Námskeið í Reykjavíkarskóli um ljós og hljóð',
         'Reykjavík',
-        '18.11.2022',
+        '18/11/2022',
         '18:00',
         '18:30',
         1,
@@ -123,7 +123,7 @@ INSERT INTO tblBeidni
 (zdesc, place, zday, start_time, last_time, zstatus, zchecked, explanation, interpreter)
 VALUES ('Námskeið í fjallaskíða',
         'Bláfjöll',
-        '18.02.2023',
+        '18/02/2023',
         '18:00',
         '19:30',
         2,

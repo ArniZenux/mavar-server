@@ -65,20 +65,25 @@ async function postAsk(zid){
 */
 async function checkBeidni(req, res){
   const checkDate = req.body; 
-  console.log(checkDate);
+  //console.log(checkDate);
+  //console.log('Hello hello');
   
-  console.log('Hello hello');
-
   let zcheckDate = checkDate.pop();
-  let newcheckDate = zcheckDate.replaceAll('/','.');
-  console.log(newcheckDate);
+  //let newcheckDate = zcheckDate.replaceAll('/','.');
+  console.log(zcheckDate);
   
   const sql_verkefni = `
-  SELECT 
-    start_time, last_time
+  SELECT  
+    zname, start_time, last_time
   FROM 
+    tblInterpreter,
+    tblWorks,
     tblProject
   WHERE
+    tblInterpreter.id = tblWorks.id
+  AND
+    tblWorks.id = tblProject.id 
+  AND 
     tblProject.zday = $1;
   `;
 
@@ -87,12 +92,13 @@ async function checkBeidni(req, res){
     *
   FROM 
     tblProject; 
-  `;*/
-
-  const events = await listApp(sql_verkefni, [newcheckDate]);
-  console.log(events); 
+  `;
+  */
+  const events = await listApp(sql_verkefni, [zcheckDate]);
+  //console.log(events); 
 
   return res.json(events); 
+  
 }
 
 /*
