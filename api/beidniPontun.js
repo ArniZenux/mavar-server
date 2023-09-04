@@ -70,7 +70,7 @@ async function checkBeidni(req, res){
   
   let zcheckDate = checkDate.pop();
   //let newcheckDate = zcheckDate.replaceAll('/','.');
-  console.log(zcheckDate);
+  //console.log(zcheckDate);
   
   const sql_verkefni = `
   SELECT  
