@@ -66,12 +66,12 @@ async function postAsk(zid){
 async function checkBeidni(req, res){
   const checkDate = req.body; 
   console.log(checkDate);
+  
+  console.log('Hello hello');
+
   let zcheckDate = checkDate.pop();
   let newcheckDate = zcheckDate.replaceAll('/','.');
   console.log(newcheckDate);
-  
-  //let chec = '10.01.2023';
-  //console.log(chec);
   
   const sql_verkefni = `
   SELECT 
