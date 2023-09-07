@@ -65,12 +65,12 @@ async function postAsk(zid){
 */
 async function checkBeidni(req, res){
   const checkDate = req.body; 
-  //console.log(checkDate);
+  console.log(checkDate);
   //console.log('Hello hello');
   
   let zcheckDate = checkDate.pop();
   //let newcheckDate = zcheckDate.replaceAll('/','.');
-  //console.log(zcheckDate);
+  console.log(zcheckDate);
   
   const sql_verkefni = `
   SELECT  
@@ -95,7 +95,7 @@ async function checkBeidni(req, res){
   `;
   */
   const events = await listApp(sql_verkefni, [zcheckDate]);
-  //console.log(events); 
+  console.log(events); 
 
   return res.json(events); 
   
