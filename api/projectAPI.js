@@ -37,15 +37,15 @@ async function getProjectCustomInterpreter(req, res) {
       tblOrder,
       tblCustom
     WHERE
-      tblInterpreter.id=tblWorks.idinterpreter
+      tblInterpreter.i_id=tblWorks.idinterpreter
     AND 
-      tblWorks.idproject=tblProject.id
+      tblWorks.idproject=tblProject.p_id
     AND
       tblCustom.zidcustom=tblOrder.idcustom
     AND 
-      tblOrder.idproject=tblProject.id
+      tblOrder.idproject=tblProject.p_id
     ORDER BY 
-      tblProject.id 
+      tblProject.p_id 
     DESC;
   `;
   
@@ -67,9 +67,9 @@ async function getProjectByTulkur(req, res) {
       tblWorks, 
       tblProject 
     WHERE 
-      tblInterpreter.id=tblWorks.idinterpreter 
+      tblInterpreter.i_id=tblWorks.idinterpreter 
     AND 
-      tblWorks.idproject=tblProject.id;
+      tblWorks.idproject=tblProject.p_id;
   `;
       
   const events = await listApp(sql);
@@ -265,7 +265,7 @@ async function projectUpdate(req, res){
       last_time = $6,
       scene = $7
     WHERE 
-      tblProject.id = $1;
+      tblProject.p_id = $1;
   `;
 
   zwho_work.push(zproject[0]);
@@ -294,7 +294,7 @@ async function countAlmenntStada(req, res){
  console.log('hello');
   const count_sql = `
     SELECT 
-      COUNT(tblProject.id)
+      COUNT(tblProject.p_id)
     FROM 
       tblProject
     WHERE 

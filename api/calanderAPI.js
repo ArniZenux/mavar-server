@@ -18,11 +18,11 @@ async function CountEvents(id) {
       tblEventVinna,
       tblEventTable
     WHERE 
-      tblInterpreter.id=tblEventVinna.idinterpreter
+      tblInterpreter.i_id=tblEventVinna.idinterpreter
     AND
       tblEventVinna.idproject=tblEventTable.id
     AND
-      tblInterpreter.id=$1;
+      tblInterpreter.i_id=$1;
     `;
   
   let events = await listApp(tblEvents, [id] );
@@ -46,11 +46,11 @@ async function getProjectEvents(req, res) {
     tblEventVinna,
     tblEventTable
   WHERE 
-    tblInterpreter.id=tblEventVinna.idinterpreter
+    tblInterpreter.i_id=tblEventVinna.idinterpreter
   AND
     tblEventVinna.idproject=tblEventTable.id
   AND
-    tblInterpreter.id=$1;
+    tblInterpreter.i_id=$1;
   `;
 
   const tblEvents = `
@@ -62,10 +62,10 @@ async function getProjectEvents(req, res) {
       tblEventTable.allday
     FROM 
       tblInterpreter
-      INNER JOIN tblEventVinna ON tblInterpreter.id=tblEventVinna.idinterpreter
+      INNER JOIN tblEventVinna ON tblInterpreter.i_id=tblEventVinna.idinterpreter
       INNER JOIN tblEventTable ON tblEventVinna.idproject=tblEventTable.id
     WHERE 
-      tblInterpreter.id=$1;
+      tblInterpreter.i_id=$1;
     `;
   
  

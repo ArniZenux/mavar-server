@@ -26,6 +26,7 @@ async function getCustom(req, res) {
 /   Get name's custom and id  
 */
 async function getNameCustom(req, res) {
+  console.log(req); 
 
   const sql = `
     SELECT 
@@ -38,9 +39,31 @@ async function getNameCustom(req, res) {
   `;
   
   const events = await listApp(sql);
-  
   return res.json(events); 
 }
+
+/*
+/   Get name's custom and id  
+*/
+async function getOneCustom(req, res) {
+  const { id } = req.params;
+  console.log(id); 
+
+  const sql = `
+    SELECT 
+      *
+    FROM 
+      tblCustom
+    WHERE
+      tblCustom.zidcustom = $1;  
+    `;
+  
+  const events = await listApp(sql, [id]);
+  
+  return res.json(events); 
+  
+}
+
 /*
 /   Insert new custom  
 */
@@ -137,6 +160,7 @@ async function getCustomListByProject(req, res) {
 /* GET */
 router.get('/', requireAuthentication, getCustom);
 router.get('/getNameCustom', requireAuthentication, getNameCustom);
+router.get('/getOneCustom/:id', requireAuthentication, getOneCustom);
 
 /* POST */
 router.post('/addcustom', requireAuthentication, catchErrors(postCustom));

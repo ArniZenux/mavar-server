@@ -107,7 +107,7 @@ async function hafnaBeidniFall(req, res) {
   `;
   
   try{
-    success = await updateApp(sql, id)
+    success = await updateApp(sql, id);
   }
   catch(e){
     console.error(e); 
@@ -119,13 +119,144 @@ async function hafnaBeidniFall(req, res) {
 }
 
 /*
+/   add new Work side by project  
+*/
+async function postWork(zwork){
+  console.log(zwork);
+  
+  const sql_work = `
+    INSERT INTO 
+      tblWorks(idinterpreter)
+    VALUES(
+      $1);
+  `;
+
+  let success_work = true; 
+
+  try {
+    success_work = await insertApp(sql_work, zwork);
+  }
+  catch(e){
+      console.error(e);
+  }
+
+  if(success_work){
+    return success_work;
+  }
+}
+
+/*
+/   add new Order side by project   
+*/
+async function postOrder(zorder){
+  console.log(zorder);
+
+  const sql_order = `
+    INSERT INTO 
+      tblOrder(idcustom)
+    VALUES(
+      $1);
+  `;
+
+  let success_order = true; 
+
+  try {
+    success_order = await insertApp(sql_order, zorder);
+  }
+  catch(e){
+    console.error(e);
+  }
+
+  if(success_order){
+    return success_order;
+  }
+}
+
+async function postProject(z_project, z_work, z_order){
+  console.log('post on disord'); 
+  console.log(z_project); 
+  
+  const sql_project = `
+  INSERT INTO 
+    tblProject(
+        title, 
+        place, 
+        zday, 
+        start_time, 
+        last_time,
+        scene,
+        start_event,
+        last_event,
+        allday) 
+  VALUES($1, 
+         $2, 
+         $3, 
+         $4, 
+         $5, 
+         $6,
+         $7,
+         $8,
+         $9 );
+  `;
+
+  let success_project = true; 
+  let success_order_res; 
+  let success_work_res;
+
+  try {
+    success_project = await insertApp(sql_project, z_project);
+  }
+  catch(e){
+    console.error(e);
+  }
+
+  if(success_project){
+    success_order_res = postWork(z_work);
+    success_work_res =  postOrder(z_order);
+  }
+
+  if(success_order_res && success_work_res){
+    return true;
+  }
+}
+
+/*
 /   Samþykkt beiðni  
 */
 async function samtykktBeidniFall(req, res) {
+  let x_beidni = [];
+  let x_project = [];
+  let x_work = [];
+  let x_order = [];
+
   const id = req.body;
-  let success = true; 
+  //console.log(id); 
   
-  const sql = `
+  x_beidni.push(id[0]);   //id_Z
+  x_beidni.push(id[12]);  //id_name
+  console.log(x_beidni); 
+
+  x_project.push(id[2]);
+  x_project.push(id[3]);
+  x_project.push(id[4]);
+  x_project.push(id[5]);
+  x_project.push(id[6]);
+  x_project.push(id[7]);
+  x_project.push('Mars 22, 2023 20:00:00');
+  x_project.push('Mars 22, 2023 21:00:00');
+  x_project.push(id[10]);
+  //console.log(x_project); 
+
+  x_work.push(id[11]);
+  //console.log(x_work);
+
+  x_order.push(id[1]);
+  //console.log(x_order);
+
+  let success_beidni = true; 
+  let success_project;
+  
+  const sqlBeidni = `
     UPDATE 
       tblBeidni 
     SET 
@@ -135,17 +266,22 @@ async function samtykktBeidniFall(req, res) {
     WHERE 
       tblBeidni.zidbeidni = $1;
   `;
-  
+    
   try{
-    success = await updateApp(sql, id)
+    success_beidni = await updateApp(sqlBeidni, x_beidni);
   }
   catch(e){
     console.error(e); 
   }
 
-  if(success){
+  if(success_beidni){
+    success_project = postProject(x_project, x_work, x_order);
+  }
+
+  if(success_project){
     return res.redirect('/');
   }
+  
 }
 
 /*
@@ -177,18 +313,20 @@ async function projectIdBeidni(req, res){
 async function addBeidni(req, res){
 
   const { id } = req.params;
-  const verkefni = [
-      req.body.lysing, 
-      req.body.stadur, 
+  const project = [
+      req.body.id-viðskiptavinur
+      req.body.title, 
+      req.body.place, 
       req.body.dagur, 
       req.body.byrja_timi, 
       req.body.endir_timi, 
       req.body.vettvangur,
       req.body.nameuser
+      req.body.idTulkur
     ];
   
   const verkefni_body = req.body; 
-  const nafn_tulkur = verkefni_body.tulkur;
+  const idInterpreter = verkefni_body.tulkur;
 
   console.log(verkefni_body);
   
@@ -196,67 +334,94 @@ async function addBeidni(req, res){
 
   console.log(nafn_tulkur); 
   
-  const sql_verkefni = `
+  const sqlProject = `
     INSERT INTO 
-      tblVerkefni(
-          heiti, 
-          stadur, 
-          dagur, 
-          byrja_timi, 
-          endir_timi, 
-          vettvangur,
-          nameuser) 
+      tblProject(
+          title, 
+          place, 
+          zday, 
+          start_time, 
+          last_time, 
+          scene,
+          start_event,
+          last_event,
+          allDay) 
     VALUES($1, 
            $2, 
            $3, 
            $4, 
            $5, 
            $6,
-           $7);
+           $7,
+           $8,
+           $9);
   `;
   
-  const sql_lastverkefni = `
-    SELECT 
-      id, heiti
-    FROM
-      tblVerkefni
-    ORDER BY
-      id
-    DESC LIMIT 1
+  const sqlWorks = `
+    INSERT INTO
+      tblWorks(
+            idinterpreter, 
+            idproject)
+      VALUES($1,
+            $2);
   `;
   
-  const sql_oneTulkur = `
-    SELECT 
-      id
-    FROM
-      tblTulkur
-    WHERE
-      tblTulkur.nafn = $1;
+  const sqlOrder = `
+    INSERT INTO
+      tblOrder(
+            idcustom, 
+            idproject)
+      VALUES($1,
+             $2);
   `;
   
-  const sql_tulkurvinna = `
-    INSERT INTO 
-      tblVinna(idtulkur, idverkefni)
-    VALUES(
-      $1, 
-      $2);
-  `;
-  
-  const sql_updateBeidni = `
-    UPDATE  
+  const sqlUpdateBeidni = `
+    UPDATE 
       tblBeidni 
     SET 
-      off = 0 
+      explanation = 'Túlkur kemur',
+      interpreter = $2,
+      zstatus = 1
     WHERE 
-      tblBeidni.id = $1;
+      tblBeidni.zidbeidni = $1;
   `;
 
-  let success = true; 
-  let success1 = true; 
-  let success2 = true; 
+  let success_project =   true; 
+  let success_works   =   true; 
+  let success_order   =   true; 
+  let success_beidni  =   true;
 
+  try{
+    success_project = await listApp(sqlProject, project);
+  }
+  catch(e){
+    console.error(e);
+  }
+  
+  try{
+    success_works = await listApp(sqlWorks, [idinterpreter, idproject] );
+  }
+  catch(e){
+    console.error(e);
+  }
+  
+  try{
+    success_project = await listApp(sqlOrder, [idcustom, idproject]);
+  }
+  catch(e){
+    console.error(e);
+  }
+  
+  try{
+    success_project = await listApp(sqlUpdateBeidni, zidbeidni);
+  }
+  catch(e){
+    console.error(e);
+  }
+  
+  /*
   try {
-      success = await insertApp(sql_verkefni, verkefni);
+      success = await insertApp(sqlProject, project);
       const last = await listApp(sql_lastverkefni); 
       const obj = JSON.stringify(last);
       const obj_s = obj.split(":");
@@ -276,7 +441,7 @@ async function addBeidni(req, res){
       console.error(e);
   }
 
-  if(success && success1){
+  if(success_project && success_works && success_order && success_beidni){
       return res.redirect('/');
   }  
 }*/

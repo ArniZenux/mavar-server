@@ -15,7 +15,7 @@ async function getInterpreter(req, res) {
     FROM 
       tblInterpreter  
     ORDER BY 
-      id 
+      i_id 
     DESC;
   `;
     
@@ -78,7 +78,7 @@ async function updateInterpreter(req, res) {
       email = $4, 
       zstatus = $5
     WHERE 
-      tblInterpreter.id = $1;
+      tblInterpreter.i_id = $1;
   `;
   
   try{
@@ -100,7 +100,7 @@ async function getNameInterpreter(req, res) {
 
   const sql = `
     SELECT 
-      id, zname
+      i_id, zname
     FROM 
       tblInterpreter
     WHERE
@@ -126,7 +126,7 @@ async function oneInterpreter(req, res) {
     FROM 
       tblInterpreter
     WHERE 
-      tblInterpreter.id = $1; 
+      tblInterpreter.i_id = $1; 
   `;
   
   const events = await listApp(sql, [id]);
@@ -148,11 +148,11 @@ async function userSelectByWork(req, res) {
       tblWorks,
       tblProject
     WHERE 
-      tblInterpreter.id = tblWorks.idtulkur
+      tblInterpreter.i_id = tblWorks.idtulkur
     AND
-      tblWorks.idverkefni = tblProject.id
+      tblWorks.idverkefni = tblProject.p_id
     AND
-      tblInterpreter.id = $1;
+      tblInterpreter.i_id = $1;
   `;
   
   const events = await listApp(sql, [id]);

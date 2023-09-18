@@ -1,6 +1,6 @@
 /* Interpreter */ 
 CREATE TABLE IF NOT EXISTS tblInterpreter (
-  id serial primary key,
+  i_id serial primary key,
   zname varchar(64) not null, 
   phonenr varchar(64) not null,
   email varchar(256) not null,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS tblCustom (
 
 /* Project */
 CREATE TABLE IF NOT EXISTS tblProject (
-  id serial primary key,
+  p_id serial primary key,
   title varchar(64) not null, 
   place varchar(64) not null,
   zday varchar(64) not null,
@@ -31,20 +31,20 @@ CREATE TABLE IF NOT EXISTS tblProject (
 
 /* Interpreter works a project */
 CREATE TABLE IF NOT EXISTS tblWorks (
-  id serial primary key,
+  w_id serial primary key,
   idinterpreter integer not null, 
   idproject serial,
-  constraint idinterpreter foreign key (idinterpreter) references tblInterpreter (id),
-  constraint idproject foreign key (idproject) references tblProject (id)
+  constraint idinterpreter foreign key (idinterpreter) references tblInterpreter (i_id),
+  constraint idproject foreign key (idproject) references tblProject (p_id)
 );
 
 /* Custom order a project and interpreter works on a project*/
 CREATE TABLE IF NOT EXISTS tblOrder (
-  id serial primary key,
+  o_id serial primary key,
   idcustom integer not null, 
   idproject serial,
   constraint idcustom foreign key (idcustom) references tblCustom(zidcustom),
-  constraint idproject foreign key (idproject) references tblProject (id)
+  constraint idproject foreign key (idproject) references tblProject (p_id)
 );
 
 CREATE TABLE IF NOT EXISTS tblEventTable (
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS tblEventVinna (
   id serial primary key,
   idinterpreter integer not null, 
   idproject serial, 
-  constraint idinterpreter foreign key (idinterpreter) references tblInterpreter (id),
+  constraint idinterpreter foreign key (idinterpreter) references tblInterpreter (i_id),
   constraint idproject foreign key (idproject) references tblEventTable (id)
 );
 

@@ -80,9 +80,9 @@ async function checkBeidni(req, res){
     tblWorks,
     tblProject
   WHERE
-    tblInterpreter.id = tblWorks.id
+    tblInterpreter.i_id = tblWorks.w_id
   AND
-    tblWorks.id = tblProject.id 
+    tblWorks.w_id = tblProject.p_id 
   AND 
     tblProject.zday = $1;
   `;
